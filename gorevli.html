@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Görevli Terminali</title>
+    <link rel="icon" type="image/jpeg" href="gorevli.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        :root { --primary: #1e3c72; --secondary: #2a5298; --bg: #f4f7f6; }
+        body { background-color: var(--bg); font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; padding-bottom: 80px; }
+
+        /* Giriş Ekranı */
+        #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--secondary)); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        .login-card { background: white; border-radius: 20px; padding: 30px; width: 100%; max-width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+
+        /* Üst Bar */
+        .app-header { background: linear-gradient(to right, var(--primary), var(--secondary)); color: white; padding: 15px 20px; border-radius: 0 0 25px 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .header-title { font-size: 1.2rem; font-weight: bold; margin: 0; }
+        .header-user { font-size: 0.8rem; opacity: 0.9; }
+
+        /* Kamera Alanı */
+        .scanner-wrapper { margin: 20px auto; width: 90%; max-width: 400px; position: relative; }
+        .scanner-box { background: #000; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 4px solid white; min-height: 250px; }
+        #reader { width: 100%; }
+        
+        /* Manuel Giriş */
+        .input-area { width: 90%; max-width: 400px; margin: 0 auto 20px; }
+        .search-input { height: 55px; border-radius: 30px 0 0 30px; border: 1px solid #ddd; padding-left: 20px; font-size: 1.1rem; }
+        .search-btn { width: 70px; border-radius: 0 30px 30px 0; background: var(--primary); border: none; font-size: 1.2rem; }
+
+        /* Öğrenci Kartı (Popup gibi) */
+        .student-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin: 0 auto; width: 90%; max-width: 400px; display: none; animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card-header-bg { height: 80px; position: relative; }
+        .bg-success-grad { background: linear-gradient(45deg, #11998e, #38ef7d); }
+        .bg-danger-grad { background: linear-gradient(45deg, #cb2d3e, #ef473a); }
+        .bg-dark-grad { background: linear-gradient(45deg, #232526, #414345); }
+        
+        .profile-pic { width: 100px; height: 100px; background: white; padding: 3px; border-radius: 50%; position: absolute; left: 50%; transform: translateX(-50%); bottom: -50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); object-fit: cover; }
+        
+        .card-content { margin-top: 55px; text-align: center; padding: 20px; }
+        .st-name { font-size: 1.4rem; font-weight: 800; color: #333; line-height: 1.2; margin-bottom: 5px; }
+        .st-meta { color: #666; font-size: 0.95rem; font-weight: 600; }
+        
+        .status-badge { display: inline-block; padding: 8px 20px; border-radius: 50px; color: white; font-weight: bold; margin-top: 15px; font-size: 1.1rem; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        .status-ok { background: #28a745; }
+        .status-err { background: #dc3545; }
+
+        /* Geçmiş Listesi */
+        .history-list { list-style: none; padding: 0; margin: 20px auto; width: 90%; max-width: 400px; }
+        .history-item { background: white; padding: 12px 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 0.9rem; }
+        .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+
+        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div id="loginOverlay">
+    <div class="login-card text-center">
+        <div class="mb-4 text-primary"><i class="fas fa-id-card-alt fa-4x"></i></div>
+        <h4 class="fw-bold mb-3">GÖREVLİ GİRİŞİ</h4>
+        <input type="email" id="scEmail" class="form-control mb-3 p-3 rounded-4 bg-light border-0" placeholder="E-Posta">
+        <input type="password" id="scPass" class="form-control mb-4 p-3 rounded-4 bg-light border-0" placeholder="Şifre">
+        <button onclick="scannerLogin()" class="btn btn-primary w-100 p-3 rounded-pill fw-bold shadow">GİRİŞ YAP</button>
+        <a href="index.html" class="d-block mt-4 text-muted text-decoration-none small"><i class="fas fa-arrow-left me-1"></i> Ana Menü</a>
+    </div>
+</div>
+
+<div id="appContainer" style="display:none;">
+    <div class="app-header">
+        <div>
+            <h1 class="header-title">Yemekhane</h1>
+            <span class="header-user" id="gorevliAdi">...</span>
+        </div>
+        <button onclick="cikisYap()" class="btn btn-sm btn-light text-primary rounded-pill px-3 fw-bold">Çıkış</button>
+    </div>
+
+    <div class="scanner-wrapper">
+        <div class="scanner-box">
+            <div id="reader"></div>
+        </div>
+        <div class="text-center mt-2 text-muted small"><i class="fas fa-qrcode me-1"></i>Barkod Okutunuz</div>
+    </div>
+
+    <div class="input-area">
+        <div class="input-group shadow-sm">
+            <input type="text" id="manualInput" class="form-control search-input" placeholder="No Gir (Misafir: 'm')" autocomplete="off">
+            <button class="btn btn-primary search-btn" onclick="manuelSorgula()"><i class="fas fa-search text-white"></i></button>
+        </div>
+    </div>
+
+    <div id="sonucKarti" class="student-card">
+        <div id="kartUstRenk" class="card-header-bg bg-success-grad">
+            <img id="ogrFoto" src="" class="profile-pic">
+        </div>
+        <div class="card-content">
+            <div id="ogrAd" class="st-name">Öğrenci Adı</div>
+            <div class="st-meta"><span id="ogrSinif" class="badge bg-light text-dark border me-2">9-A</span> <span id="ogrNo">1234</span></div>
+            
+            <div id="durumKutusu" class="status-badge status-ok">AFİYET OLSUN</div>
+            
+            <div class="mt-3 pt-3 border-top text-start">
+                <small class="text-muted d-block fw-bold mb-1" style="font-size:0.7rem">GÜNLÜK DURUM</small>
+                <div id="gunlukRapor" class="small text-secondary fw-bold">İlk girişi.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 px-3">
+        <h6 class="text-muted small fw-bold ms-2">SON GEÇİŞLER</h6>
+        <ul id="logListesi" class="history-list"></ul>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, query, where, getDocs, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const firebaseConfig = { apiKey: "AIzaSyC2ATSLTN8ba3pao1kKd2cT1vHcT8rafT8", authDomain: "yemekhane-8914d.firebaseapp.com", projectId: "yemekhane-8914d", storageBucket: "yemekhane-8914d.firebasestorage.app", messagingSenderId: "352053991912", appId: "1:352053991912:web:f4ea149d68f16ae5d8ec5d" };
+    const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
+    
+    const sesOnay = new Audio('https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg');
+    const sesHata = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+    const DEFAULT_FOTO = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
+    let islemMesgul = false; let aktifGorevliEmail = "";
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById("loginOverlay").style.display = "none"; document.getElementById("appContainer").style.display = "block";
+            aktifGorevliEmail = user.email; document.getElementById("gorevliAdi").innerText = user.email.split('@')[0];
+            if(!html5QrcodeScanner) kamerayiBaslat();
+        } else { document.getElementById("loginOverlay").style.display = "flex"; document.getElementById("appContainer").style.display = "none"; }
+    });
+
+    window.scannerLogin = async () => {
+        const e = document.getElementById("scEmail").value; const p = document.getElementById("scPass").value;
+        if(!e || !p) return Swal.fire("Hata", "Bilgileri giriniz", "warning");
+        try { await setPersistence(auth, browserLocalPersistence); await signInWithEmailAndPassword(auth, e, p); } catch(err) { Swal.fire("Giriş Hatası", err.message, "error"); }
+    }
+    window.cikisYap = () => { signOut(auth); location.reload(); }
+
+    let html5QrcodeScanner;
+    function kamerayiBaslat() { html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250}, aspectRatio: 1.0 }, false); html5QrcodeScanner.render(onScanSuccess, ()=>{}); }
+    function onScanSuccess(d) { if(!islemMesgul) anaIslem(d, false); }
+
+    window.manuelSorgula = async function() {
+        const val = document.getElementById("manualInput").value.trim(); if(!val) return;
+        document.getElementById("manualInput").blur();
+        if(val.toLowerCase() === 'm') { misafirGirisi(); }
+        else {
+            const qNo = query(collection(db, "ogrenciler"), where("numara", "==", val));
+            const snapNo = await getDocs(qNo);
+            if(!snapNo.empty) anaIslem(snapNo.docs[0].data().barkod, true); else anaIslem(val, true);
+        }
+        document.getElementById("manualInput").value = "";
+    }
+
+    async function misafirGirisi() { anaIslem("MISAFIR_" + new Date().getTime(), true, true); }
+
+    async function anaIslem(barkod, isManuel, isMisafir = false) {
+        islemMesgul = true; 
+        document.getElementById("sonucKarti").style.display = "none";
+
+        try {
+            let ogrenci = null;
+            if (isMisafir) { ogrenci = { ad_soyad: "MİSAFİR", sinif: "Ziyaretçi", numara: "-", foto: "", barkod: barkod }; } 
+            else {
+                const qOgr = query(collection(db, "ogrenciler"), where("barkod", "==", barkod)); const snapOgr = await getDocs(qOgr);
+                if (!snapOgr.empty) { ogrenci = snapOgr.docs[0].data(); } 
+                else {
+                    sesHata.play(); 
+                    uiGuncelleHata(barkod);
+                    logEkle("Bilinmeyen", "Reddedildi");
+                    setTimeout(() => { islemMesgul = false; }, 2000); return;
+                }
+            }
+
+            // Kartı Doldur
+            document.getElementById("ogrAd").innerText = ogrenci.ad_soyad; 
+            document.getElementById("ogrSinif").innerText = ogrenci.sinif;
+            document.getElementById("ogrNo").innerText = "No: " + (ogrenci.numara || "-"); 
+            document.getElementById("ogrFoto").src = (ogrenci.foto && ogrenci.foto.length > 5) ? ogrenci.foto : DEFAULT_FOTO;
+            
+            const bugun = new Date().toISOString().split('T')[0];
+            const qYemek = query(collection(db, "yemek_hareketleri"), where("barkod", "==", ogrenci.barkod), where("tarih", "==", bugun));
+            const snapYemek = await getDocs(qYemek);
+
+            if(snapYemek.empty) {
+                uiGuncelleBasarili();
+                sesOnay.play();
+                await addDoc(collection(db, "yemek_hareketleri"), { barkod: ogrenci.barkod, ad_soyad: ogrenci.ad_soyad, ogrenci_no: ogrenci.numara, tarih: bugun, zaman: Timestamp.now(), tur: "ilk_ogun", islem_yapan: aktifGorevliEmail });
+                logEkle(ogrenci.ad_soyad, "Giriş");
+            } else {
+                sesHata.play(); 
+                uiGuncelleCift();
+                Swal.fire({title: 'Dikkat!', text: `${ogrenci.ad_soyad} zaten yemiş. 2. hak verilsin mi?`, icon: 'warning', showCancelButton: true, confirmButtonText: 'Evet', confirmButtonColor: '#d33', heightAuto: false}).then(async (result) => {
+                    if (result.isConfirmed) {
+                        await addDoc(collection(db, "yemek_hareketleri"), { barkod: ogrenci.barkod, ad_soyad: ogrenci.ad_soyad, ogrenci_no: ogrenci.numara, tarih: bugun, zaman: Timestamp.now(), tur: "ikinci_ogun", islem_yapan: aktifGorevliEmail });
+                        document.getElementById("durumKutusu").innerHTML = "2. HAK VERİLDİ"; 
+                        document.getElementById("durumKutusu").style.background = "#0d6efd"; // Mavi
+                        logEkle(ogrenci.ad_soyad, "2. Hak");
+                    }
+                });
+            }
+            document.getElementById("sonucKarti").style.display = "block";
+        } catch(e) { console.error(e); if(e.code==='permission-denied') Swal.fire("Hata","Giriş yapmanız gerekiyor","error"); }
+        setTimeout(() => { islemMesgul = false; }, 2000);
+    }
+
+    function uiGuncelleBasarili() {
+        document.getElementById("kartUstRenk").className = "card-header-bg bg-success-grad";
+        document.getElementById("durumKutusu").className = "status-badge status-ok";
+        document.getElementById("durumKutusu").innerHTML = 'AFİYET OLSUN';
+        document.getElementById("gunlukRapor").innerHTML = '<span class="text-success">İlk girişi.</span>';
+    }
+    function uiGuncelleCift() {
+        document.getElementById("kartUstRenk").className = "card-header-bg bg-danger-grad";
+        document.getElementById("durumKutusu").className = "status-badge status-err";
+        document.getElementById("durumKutusu").innerHTML = 'ZATEN YEDİ!';
+        document.getElementById("gunlukRapor").innerHTML = '<span class="text-danger">Giriş kaydı var!</span>';
+    }
+    function uiGuncelleHata(barkod) {
+        document.getElementById("kartUstRenk").className = "card-header-bg bg-dark-grad";
+        document.getElementById("ogrAd").innerText = "TANIMSIZ";
+        document.getElementById("ogrSinif").innerText = "YOK";
+        document.getElementById("ogrNo").innerText = barkod;
+        document.getElementById("ogrFoto").src = "https://cdn-icons-png.flaticon.com/512/10336/10336582.png";
+        document.getElementById("durumKutusu").className = "status-badge status-err";
+        document.getElementById("durumKutusu").innerHTML = 'GİRİŞ YASAK';
+        document.getElementById("durumKutusu").style.background = "#333";
+        document.getElementById("gunlukRapor").innerHTML = '<span class="text-danger">Listede bulunamadı.</span>';
+        document.getElementById("sonucKarti").style.display = "block";
+    }
+
+    function logEkle(isim, tip) {
+        const list = document.getElementById("logListesi"); const li = document.createElement("li");
+        li.className = "history-item";
+        let renk = "#6c757d"; if(tip === "Giriş") renk = "#28a745"; if(tip === "2. Hak") renk = "#0d6efd"; if(tip === "Reddedildi") renk = "#dc3545";
+        li.innerHTML = `<span><span class="dot" style="background:${renk}"></span>${isim}</span> <span style="color:${renk};font-weight:bold;">${tip}</span>`;
+        list.prepend(li); if(list.children.length > 5) list.lastElementChild.remove();
+    }
+</script>
+</body>
+</html>

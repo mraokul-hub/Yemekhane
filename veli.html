@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Veli Bilgi Sistemi</title>
+    <link rel="icon" type="image/jpeg" href="veli.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { --primary: #667eea; --secondary: #764ba2; --bg: #f8f9fa; }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; padding-bottom: 20px; }
+        
+        .mobile-container { max-width: 480px; margin: 0 auto; min-height: 100vh; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+        
+        /* Giriş */
+        .auth-box { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 30px; }
+        .tab-btn { border-radius: 50px !important; font-weight: bold; }
+        .tab-btn.active { background: var(--primary) !important; color: white !important; }
+        .form-control { padding: 15px; border-radius: 12px; background: #f1f3f5; border: none; margin-bottom: 15px; }
+        .btn-main { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3); }
+
+        /* Panel Header */
+        .panel-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 40px 20px 30px; border-radius: 0 0 30px 30px; text-align: center; position: relative; }
+        .st-name { font-size: 1.8rem; font-weight: 800; margin-bottom: 5px; }
+        .st-class { background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
+        .btn-logout { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 20px; padding: 5px 15px; font-size: 0.8rem; }
+
+        /* Liste */
+        .meal-list { padding: 20px; }
+        .meal-card { background: white; border-radius: 15px; padding: 15px 20px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; border-left: 5px solid transparent; }
+        .meal-date { font-weight: 800; font-size: 1.1rem; color: #333; }
+        .meal-time { font-size: 0.85rem; color: #888; }
+        .meal-type { font-weight: bold; font-size: 0.9rem; padding: 5px 12px; border-radius: 10px; }
+        
+        .type-normal { border-left-color: #28a745; }
+        .tag-normal { background: #e6f9ec; color: #28a745; }
+        
+        .type-double { border-left-color: #dc3545; }
+        .tag-double { background: #fde8ea; color: #dc3545; }
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    
+    <div id="authSection" class="auth-box">
+        <div class="text-center mb-5">
+            <i class="fas fa-user-graduate fa-3x text-primary mb-3"></i>
+            <h3 class="fw-bold" style="color:var(--secondary)">Veli Sistemi</h3>
+            <p class="text-muted small">Öğrencinizin yemek takibi.</p>
+        </div>
+
+        <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light rounded-pill">
+            <li class="nav-item"><button class="nav-link tab-btn active" data-bs-toggle="pill" data-bs-target="#pills-login">Giriş</button></li>
+            <li class="nav-item"><button class="nav-link tab-btn" data-bs-toggle="pill" data-bs-target="#pills-register">Kayıt Ol</button></li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="pills-login">
+                <input type="email" id="loginEmail" class="form-control" placeholder="E-Posta Adresi">
+                <input type="password" id="loginPass" class="form-control" placeholder="Şifre">
+                <button onclick="loginVeli()" class="btn btn-primary btn-main">GİRİŞ YAP</button>
+            </div>
+            <div class="tab-pane fade" id="pills-register">
+                <div class="alert alert-primary py-2 px-3 small rounded-3"><i class="fas fa-info-circle me-1"></i> Okuldan verilen kodu giriniz.</div>
+                <input type="text" id="regCode" class="form-control text-center fw-bold fs-5" placeholder="123456" maxlength="6" style="letter-spacing:3px;">
+                <input type="email" id="regEmail" class="form-control" placeholder="E-Posta Belirle">
+                <input type="password" id="regPass" class="form-control" placeholder="Şifre Belirle">
+                <button onclick="registerVeli()" class="btn btn-success btn-main">KAYIT OL</button>
+            </div>
+        </div>
+        <div class="mt-4 text-center"><a href="index.html" class="text-muted small text-decoration-none">Ana Sayfaya Dön</a></div>
+    </div>
+
+    <div id="panelSection" class="d-none">
+        <div class="panel-header">
+            <button onclick="cikisYap()" class="btn-logout">Çıkış</button>
+            <div class="st-name" id="veliOgrAd">Yükleniyor...</div>
+            <span class="st-class" id="veliOgrSinif">...</span>
+        </div>
+
+        <div class="meal-list">
+            <h6 class="text-muted ms-1 mb-3 small fw-bold">SON HAREKETLER</h6>
+            <div id="yemekGecmisiListesi">
+                <div class="text-center text-muted mt-5"><i class="fas fa-spinner fa-spin"></i> Veriler alınıyor...</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const firebaseConfig = { apiKey: "AIzaSyC2ATSLTN8ba3pao1kKd2cT1vHcT8rafT8", authDomain: "yemekhane-8914d.firebaseapp.com", projectId: "yemekhane-8914d", storageBucket: "yemekhane-8914d.firebasestorage.app", messagingSenderId: "352053991912", appId: "1:352053991912:web:f4ea149d68f16ae5d8ec5d" };
+    const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
+
+    // --- GİRİŞ ---
+    window.loginVeli = async () => {
+        const e = document.getElementById("loginEmail").value; const p = document.getElementById("loginPass").value;
+        if(!e || !p) return alert("Bilgileri giriniz");
+        try { 
+            await signInWithEmailAndPassword(auth, e, p); 
+            verileriYukle(auth.currentUser.uid); 
+        } catch(err) { alert("Hata: " + err.message); }
+    }
+
+    // --- KAYIT ---
+    window.registerVeli = async () => {
+        const code = document.getElementById("regCode").value.trim(); const email = document.getElementById("regEmail").value; const pass = document.getElementById("regPass").value;
+        if(!code || !email || !pass) return alert("Tüm alanları doldurun");
+        
+        // Kodu Kontrol Et
+        const docRef = doc(db, "veli_kodlari", code); const docSnap = await getDoc(docRef);
+        if(!docSnap.exists() || docSnap.data().kullanildi) { return alert("Geçersiz veya kullanılmış kod!"); }
+        
+        try {
+            // Kullanıcı Oluştur
+            const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+            // İlişkilendir (Linked Student)
+            await setDoc(doc(db, "users", userCred.user.uid), { 
+                role: "veli", 
+                linked_student: String(docSnap.data().ogrenci_barkod), // String'e çevirerek garantiye alıyoruz
+                email: email 
+            });
+            // Kodu İptal Et
+            await updateDoc(docRef, { kullanildi: true }); 
+            alert("Kayıt başarılı! Giriş yapılıyor..."); verileriYukle(userCred.user.uid);
+        } catch(e) { alert("Hata: " + e.message); }
+    }
+
+    // --- VERİLERİ YÜKLE (GÜNCELLENDİ) ---
+    async function verileriYukle(uid) {
+        document.getElementById("authSection").classList.add("d-none"); document.getElementById("panelSection").classList.remove("d-none");
+        
+        try {
+            const userSnap = await getDoc(doc(db, "users", uid));
+            if(!userSnap.exists()) return alert("Kullanıcı verisi bulunamadı");
+            const barkod = userSnap.data().linked_student;
+
+            console.log("Aranan Barkod:", barkod); // Hata ayıklama için
+
+            // 1. Öğrenci Bilgisi
+            const qOgr = query(collection(db, "ogrenciler"), where("barkod", "==", barkod)); 
+            const snapOgr = await getDocs(qOgr);
+            
+            if(!snapOgr.empty) { 
+                const d = snapOgr.docs[0].data(); 
+                document.getElementById("veliOgrAd").innerText = d.ad_soyad; 
+                document.getElementById("veliOgrSinif").innerText = d.sinif; 
+            } else {
+                document.getElementById("veliOgrAd").innerText = "Öğrenci Bulunamadı";
+                document.getElementById("veliOgrSinif").innerText = "Barkod Hatası";
+            }
+
+            // 2. Yemek Listesi (ORDERBY KALDIRILDI - JS SIRALAMASI EKLENDİ)
+            const qYemek = query(collection(db, "yemek_hareketleri"), where("barkod", "==", barkod)); 
+            const snapYemek = await getDocs(qYemek);
+            
+            const listDiv = document.getElementById("yemekGecmisiListesi"); 
+            listDiv.innerHTML = "";
+            
+            if(snapYemek.empty) { 
+                listDiv.innerHTML = '<div class="text-center text-muted mt-5">Henüz kayıt yok.</div>'; 
+                return; 
+            }
+
+            // JavaScript ile Sıralama (Veritabanı hatasını önler)
+            let yemekler = [];
+            snapYemek.forEach(doc => yemekler.push(doc.data()));
+            yemekler.sort((a,b) => b.zaman.seconds - a.zaman.seconds);
+
+            yemekler.forEach(d => { 
+                const isDouble = d.tur === 'ikinci_ogun';
+                const cardClass = isDouble ? 'type-double' : 'type-normal';
+                const tagClass = isDouble ? 'tag-double' : 'tag-normal';
+                const text = isDouble ? '2. HAK' : 'GİRİŞ';
+                
+                listDiv.innerHTML += `
+                <div class="meal-card ${cardClass}">
+                    <div>
+                        <div class="meal-date">${d.tarih}</div>
+                        <div class="meal-time"><i class="far fa-clock me-1"></i>${new Date(d.zaman.seconds*1000).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'})}</div>
+                    </div>
+                    <div class="meal-type ${tagClass}">${text}</div>
+                </div>`;
+            });
+        } catch(e) {
+            console.error(e);
+            alert("Veri çekme hatası: " + e.message);
+        }
+    }
+    
+    window.cikisYap = () => { signOut(auth); location.reload(); }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
