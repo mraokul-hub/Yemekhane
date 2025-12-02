@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Yemekhane Yönetimi</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="icon" type="image/jpeg" href="Admin.jpg">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,186 +15,81 @@
     
     <style>
         :root { 
-            /* PREMIUM RENK PALETİ (Ice Blue & Slate) */
-            --bg-body: #e3e8ef;          
-            --bg-sidebar: #ffffff;       
-            --bg-card: #ffffff;          
-            
-            --text-main: #1e293b;        
-            --text-muted: #64748b;       
-            
-            --primary: #2563eb;          
-            --primary-hover: #1d4ed8;
-            --primary-light: #eff6ff;    
-            
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            
-            --border-color: #e2e8f0;
-            --border-radius: 16px;       
-            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            /* KURUMSAL RENK PALETİ (Ice Blue & Slate) */
+            --bg-body: #e3e8ef; --bg-sidebar: #ffffff; --bg-card: #ffffff;          
+            --text-main: #1e293b; --text-muted: #64748b;       
+            --primary: #2563eb; --primary-hover: #1d4ed8; --primary-light: #eff6ff;    
+            --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+            --border-color: #e2e8f0; --border-radius: 16px;       
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         
-        body { 
-            background-color: var(--bg-body); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
-            min-height: 100vh; 
-        }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; }
         
-        /* GİRİŞ EKRANI */
-        #loginSection {
-            background: var(--bg-body);
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-            background-size: 24px 24px;
+        /* MOBİL İÇİN ÖZEL ÜST BAR (Sadece mobilde görünür) */
+        .mobile-header {
+            display: none; /* Masaüstünde gizli */
+            background: var(--bg-card); padding: 15px; 
+            box-shadow: var(--shadow-sm); align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1040;
         }
-        .login-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid var(--border-color);
-        }
+        .mobile-logo { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid var(--border-color); }
 
-        /* SIDEBAR */
-        .sidebar { 
-            background-color: var(--bg-sidebar); 
-            min-height: 100vh; 
-            border-right: 1px solid var(--border-color);
-            box-shadow: 4px 0 15px rgba(0,0,0,0.02);
-        }
-        .sidebar-logo {
-            width: 90px; height: 90px; object-fit: cover;
-            border-radius: 50%; border: 4px solid var(--bg-body);
-            margin-bottom: 15px;
-            box-shadow: var(--shadow-sm);
-        }
+        /* GİRİŞ EKRANI */
+        #loginSection { background: var(--bg-body); background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 24px 24px; }
+        .login-card { background: var(--bg-card); border-radius: var(--border-radius); padding: 40px; width: 100%; max-width: 400px; border: 1px solid var(--border-color); box-shadow: var(--shadow-card); }
+
+        /* SIDEBAR (Masaüstü & Mobil Offcanvas) */
+        .sidebar { background-color: var(--bg-sidebar); height: 100vh; border-right: 1px solid var(--border-color); overflow-y: auto; }
+        .sidebar-logo { width: 90px; height: 90px; object-fit: cover; border-radius: 50%; border: 4px solid var(--bg-body); margin-bottom: 15px; box-shadow: var(--shadow-sm); }
         
-        .nav-link { 
-            color: var(--text-muted); 
-            margin-bottom: 5px; 
-            border-radius: 10px; 
-            padding: 12px 20px; 
-            font-weight: 600; 
-            transition: all 0.2s ease;
-        }
-        .nav-link:hover { 
-            background-color: var(--bg-body); 
-            color: var(--primary); 
-            transform: translateX(3px);
-        }
-        .nav-link.active { 
-            background-color: var(--primary-light); 
-            color: var(--primary);                  
-            border-right: 4px solid var(--primary); 
-        }
+        .nav-link { color: var(--text-muted); margin-bottom: 5px; border-radius: 10px; padding: 12px 20px; font-weight: 600; transition: all 0.2s ease; cursor: pointer; }
+        .nav-link:hover { background-color: var(--bg-body); color: var(--primary); transform: translateX(3px); }
+        .nav-link.active { background-color: var(--primary-light); color: var(--primary); border-right: 4px solid var(--primary); }
         .nav-link i { width: 24px; text-align: center; margin-right: 10px; }
 
-        /* KART TASARIMLARI */
-        .admin-card { 
-            background: var(--bg-card); 
-            border-radius: var(--border-radius); 
-            box-shadow: var(--shadow-card);
-            padding: 25px; 
-            margin-bottom: 25px; 
-            border: 1px solid #fff;
-        }
+        /* KARTLAR */
+        .admin-card { background: var(--bg-card); border-radius: var(--border-radius); box-shadow: var(--shadow-card); padding: 20px; margin-bottom: 20px; border: 1px solid #fff; }
         
-        .stat-card {
-            border-top: 4px solid transparent; 
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--text-muted); }
-        .stat-val { font-size: 2.5rem; font-weight: 800; margin-top: 5px; line-height: 1; color: var(--text-main); }
+        /* İstatistik Kartları Mobilde 2'li sığsın diye font ayarı */
+        .stat-card { border-top: 4px solid transparent; transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--text-muted); }
+        .stat-val { font-size: 2rem; font-weight: 800; margin-top: 5px; line-height: 1; color: var(--text-main); }
 
-        /* FORM ELEMANLARI */
-        .form-control {
-            background-color: #f8fafc;
-            border: 1px solid #cbd5e1;
-            padding: 12px;
-            border-radius: 10px;
-            color: var(--text-main);
-            transition: 0.3s;
-        }
-        .form-control:focus {
-            background-color: #fff;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-        }
-
-        /* BUTONLAR */
-        .btn-primary { 
-            background-color: var(--primary); border: none; padding: 10px 24px; 
-            border-radius: 10px; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); 
-            transition: 0.2s;
-        }
-        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
+        /* FORM & TABLO */
+        .form-control { background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 10px; }
+        .form-control:focus { background-color: #fff; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
         
-        .btn-warning { 
-            background-color: var(--warning); border:none; color:white; border-radius:10px; font-weight: 600;
-        }
-        .btn-warning:hover { background-color: #d97706; color: white; }
+        .table thead th { background-color: #f8fafc; color: var(--text-muted); font-size: 0.75rem; padding: 12px; }
+        .table tbody td { padding: 12px; vertical-align: middle; font-size: 0.9rem; }
+        .sortable-th { cursor: pointer; user-select: none; }
 
-        .btn-danger { background-color: var(--danger); border:none; border-radius:10px; }
-        .btn-secondary { background-color: var(--text-muted); border:none; border-radius:10px; }
-
-        /* TABLO */
-        .table { --bs-table-bg: transparent; }
-        .table thead th { 
-            background-color: #f8fafc; color: var(--text-muted); 
-            font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; 
-            border-bottom: 1px solid var(--border-color); padding: 15px;
-            border-top: none;
-        }
-        .table tbody td { padding: 15px; border-bottom: 1px solid #f1f5f9; color: var(--text-main); vertical-align: middle; }
-        
-        .sortable-th { cursor: pointer; transition: 0.2s; user-select: none; }
-        .sortable-th:hover { color: var(--primary); background-color: #eff6ff; }
-
-        /* --- GÜNCELLENEN CANLI AKIŞ (FEED) --- */
-        /* Satırlar arasında belirgin ayrım ve zebra deseni */
-        .feed-row { 
-            padding: 14px 15px; 
-            border-bottom: 1px solid var(--border-color); 
-            display: flex; align-items: center; justify-content: space-between; 
-            transition: all 0.2s ease; 
-            border-left: 4px solid transparent; /* Hover efekti için hazırlık */
-            margin-bottom: 2px;
-            border-radius: 6px;
-        }
-        
-        /* Zebra Deseni: Çift numaralı satırlar hafif gri */
-        .feed-row:nth-child(even) {
-            background-color: #f8fafc;
+        /* RESPONSIVE AYARLAR */
+        @media (max-width: 768px) {
+            .mobile-header { display: flex; } /* Mobilde üst barı aç */
+            .sidebar { display: none; } /* Mobilde normal sidebarı gizle */
+            
+            /* Offcanvas Sidebar Ayarları */
+            .offcanvas-start { width: 280px !important; border-right: 1px solid var(--border-color); }
+            
+            main { padding-top: 20px !important; }
+            .stat-val { font-size: 1.8rem; } /* Teleforda sayılar taşmasın */
+            
+            /* Tablolarda yatay kaydırma */
+            .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         }
 
-        /* Hover Efekti: Sağa kayma, renk değişimi ve sol şerit */
-        .feed-row:hover { 
-            background-color: var(--primary-light); /* Açık mavi zemin */
-            border-left-color: var(--primary);      /* Sol tarafta mavi çizgi */
-            transform: translateX(5px);             /* Sağa kayma */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Hafif gölge */
-            cursor: pointer;
-        }
-        
-        .feed-row:last-child { border-bottom: none; }
-
-        /* Yemeyenler Listesi */
-        .not-eaten-item { padding: 10px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; display: flex; justify-content: space-between; transition: 0.2s; }
-        .not-eaten-item:hover { background-color: #f1f5f9; padding-left: 15px; }
-        
-        /* Rozetler */
+        /* DİĞER */
+        .feed-row { padding: 12px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+        .feed-row:nth-child(even) { background-color: #f8fafc; }
         .badge-soft-success { background-color: #d1fae5; color: #065f46; }
         .badge-soft-danger { background-color: #fee2e2; color: #991b1b; }
-
+        
         #printArea { display: none; }
         @media print {
-            body * { visibility: hidden; } #dashboardSection, .sidebar { display: none !important; }
+            body * { visibility: hidden; } #dashboardSection, .sidebar, .mobile-header { display: none !important; }
             #printArea { display: flex !important; visibility: visible !important; position: absolute; left: 0; top: 0; width: 100%; flex-wrap: wrap; background: white; z-index: 99999; }
             #printArea * { visibility: visible !important; color: black !important; }
             .col-print { width: 30%; float: left; margin: 1.5%; border: 1px solid #000; padding: 10px; text-align: center; page-break-inside: avoid; }
@@ -204,94 +99,119 @@
 <body>
 
 <div id="loginSection" class="d-flex justify-content-center align-items-center vh-100">
-    <div class="login-card text-center">
+    <div class="login-card text-center mx-3">
         <img src="logo.jpg" alt="Logo" class="sidebar-logo shadow-sm">
         <h4 class="fw-bold mb-1 text-dark">YÖNETİCİ GİRİŞİ</h4>
-        <p class="text-muted small mb-4">Sisteme girmek için kimliğinizi doğrulayın.</p>
-        
+        <p class="text-muted small mb-4">Güvenli Yönetim Paneli</p>
         <input type="email" id="email" class="form-control mb-3" placeholder="E-Posta Adresi">
         <input type="password" id="password" class="form-control mb-4" placeholder="Şifre">
-        <button onclick="window.login()" class="btn btn-primary w-100 py-3">GÜVENLİ GİRİŞ</button>
+        <button onclick="window.login()" class="btn btn-primary w-100 py-3 fw-bold" style="background:var(--primary);">GÜVENLİ GİRİŞ</button>
     </div>
+</div>
+
+<div class="mobile-header" id="mobileHeader">
+    <div class="d-flex align-items-center">
+        <img src="logo.jpg" class="mobile-logo me-2">
+        <span class="fw-bold text-dark">YEMEKHANE</span>
+    </div>
+    <button class="btn btn-light text-primary border" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+        <i class="fas fa-bars fa-lg"></i>
+    </button>
 </div>
 
 <div id="dashboardSection" class="container-fluid d-none">
     <div class="row">
-        <nav class="col-md-3 col-lg-2 d-none d-md-block sidebar p-3 text-center text-md-start">
-            <div class="text-center py-4 border-bottom mb-3" style="border-color: var(--bg-body) !important;">
+        
+        <nav class="col-md-3 col-lg-2 d-none d-md-block sidebar p-3 text-center text-md-start position-fixed">
+            <div class="text-center py-4 border-bottom mb-3" style="border-color: #f1f5f9 !important;">
                 <img src="logo.jpg" alt="Logo" class="sidebar-logo">
                 <h6 class="fw-bold text-dark mb-0 mt-2" style="letter-spacing: 1px;">YEMEKHANE</h6>
                 <small class="text-muted" style="font-size: 0.7rem;">YÖNETİM PANELİ</small>
             </div>
-            
-            <ul class="nav flex-column gap-2">
-                <li class="nav-item"><a class="nav-link active" onclick="showTab('main', this)"><i class="fas fa-chart-line"></i> Genel Bakış</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showTab('students', this); loadStudents();"><i class="fas fa-user-graduate"></i> Öğrenci İşlemleri</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showTab('codes', this); loadVeliCodes();"><i class="fas fa-qrcode"></i> Erişim Kodları</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showTab('users', this); listScannerUsers();"><i class="fas fa-users-cog"></i> Personel Yönetimi</a></li>
-            </ul>
-            
-            <div class="mt-auto pt-5 pb-3 text-center">
-                <a class="nav-link text-danger fw-bold bg-light" onclick="window.logout()" style="border: 1px solid #fee2e2;"><i class="fas fa-sign-out-alt"></i> ÇIKIŞ YAP</a>
+            <div class="menu-items">
+                <a class="nav-link active" onclick="showTab('main', this)"><i class="fas fa-chart-line"></i> Genel Bakış</a>
+                <a class="nav-link" onclick="showTab('students', this); loadStudents();"><i class="fas fa-user-graduate"></i> Öğrenci İşlemleri</a>
+                <a class="nav-link" onclick="showTab('codes', this); loadVeliCodes();"><i class="fas fa-qrcode"></i> Erişim Kodları</a>
+                <a class="nav-link" onclick="showTab('users', this); listScannerUsers();"><i class="fas fa-users-cog"></i> Personel Yönetimi</a>
+            </div>
+            <div class="mt-auto pt-5 pb-3 text-center position-absolute bottom-0 w-100 start-0 px-3">
+                <a class="nav-link text-danger fw-bold bg-light" onclick="window.logout()" style="border: 1px solid #fee2e2;"><i class="fas fa-sign-out-alt"></i> ÇIKIŞ</a>
             </div>
         </nav>
+
+        <div class="offcanvas offcanvas-start bg-white" tabindex="-1" id="mobileMenu">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title fw-bold text-primary"><img src="logo.jpg" width="30" class="me-2 rounded-circle"> MENÜ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body p-3 d-flex flex-column">
+                <div class="menu-items">
+                    <a class="nav-link active mb-2" onclick="showTab('main', this); closeCanvas()"><i class="fas fa-chart-line"></i> Genel Bakış</a>
+                    <a class="nav-link mb-2" onclick="showTab('students', this); loadStudents(); closeCanvas()"><i class="fas fa-user-graduate"></i> Öğrenci İşlemleri</a>
+                    <a class="nav-link mb-2" onclick="showTab('codes', this); loadVeliCodes(); closeCanvas()"><i class="fas fa-qrcode"></i> Erişim Kodları</a>
+                    <a class="nav-link mb-2" onclick="showTab('users', this); listScannerUsers(); closeCanvas()"><i class="fas fa-users-cog"></i> Personel Yönetimi</a>
+                </div>
+                <div class="mt-auto">
+                    <a class="btn btn-danger w-100 fw-bold" onclick="window.logout()"><i class="fas fa-sign-out-alt me-2"></i> ÇIKIŞ YAP</a>
+                </div>
+            </div>
+        </div>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             
             <div id="tab-main" class="tab-content">
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                     <div>
-                        <h3 class="fw-bold text-dark mb-0">Genel Durum</h3>
-                        <p class="text-muted small mb-0">Günlük istatistikler ve canlı veri akışı.</p>
+                        <h4 class="fw-bold text-dark mb-0">Genel Durum</h4>
+                        <p class="text-muted small mb-0 d-none d-md-block">Günlük istatistikler.</p>
                     </div>
-                    <div class="bg-white px-4 py-2 rounded-pill shadow-sm fw-bold text-primary border">
+                    <div class="bg-white px-3 py-2 rounded-pill shadow-sm fw-bold text-primary border small">
                         <i class="far fa-calendar-alt me-2"></i><span id="bugunTarih"></span>
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
-                    <div class="col-md-3">
-                        <div class="admin-card stat-card h-100" style="border-top-color: var(--success);">
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                        <div class="admin-card stat-card h-100 p-3" style="border-top-color: var(--success);">
                             <div class="stat-label" style="color: var(--success);">BUGÜN YİYEN</div>
                             <div class="stat-val text-dark" id="lblBugunYiyen">0</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="admin-card stat-card h-100" style="border-top-color: var(--danger);">
+                    <div class="col-6 col-md-3">
+                        <div class="admin-card stat-card h-100 p-3" style="border-top-color: var(--danger);">
                             <div class="stat-label text-danger">ÇİFT DİKİŞ</div>
                             <div class="stat-val text-dark" id="lblCiftDikis">0</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="admin-card stat-card h-100" style="border-top-color: var(--warning);">
-                            <div class="stat-label" style="color: var(--warning);">HENÜZ YEMEYEN</div>
+                    <div class="col-6 col-md-3">
+                        <div class="admin-card stat-card h-100 p-3" style="border-top-color: var(--warning);">
+                            <div class="stat-label" style="color: var(--warning);">KALAN</div>
                             <div class="stat-val text-dark" id="lblYemeyen">0</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="admin-card h-100 d-flex align-items-center justify-content-center p-2">
-                            <canvas id="yemekPieChart" style="max-height: 100px;"></canvas>
+                    <div class="col-6 col-md-3">
+                        <div class="admin-card h-100 d-flex align-items-center justify-content-center p-1">
+                            <canvas id="yemekPieChart" style="max-height: 90px;"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="admin-card" style="height: 600px; display: flex; flex-direction: column;">
-                            <h5 class="fw-bold mb-3 pb-3 border-bottom text-dark">Canlı Akış</h5>
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="admin-card p-0 overflow-hidden" style="height: 500px; display: flex; flex-direction: column;">
+                            <div class="p-3 border-bottom bg-white sticky-top"><h6 class="fw-bold mb-0 text-dark">Canlı Akış</h6></div>
                             <div id="akisListesi" style="overflow-y: auto; flex: 1;"></div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <div class="admin-card">
-                            <h5 class="fw-bold mb-3 pb-3 border-bottom text-dark">Eksik Listesi</h5>
-                            <button class="btn btn-warning w-100 fw-bold d-flex justify-content-between align-items-center text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYemeyenler" aria-expanded="false" onclick="listYemeyenler()">
-                                <span><i class="fas fa-list-ul me-2"></i>Henüz Yemeyenler</span>
-                                <i class="fas fa-chevron-down"></i>
+                            <h6 class="fw-bold mb-3 pb-2 border-bottom text-dark">Eksik Listesi</h6>
+                            <button class="btn btn-warning w-100 fw-bold d-flex justify-content-between align-items-center text-white mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYemeyenler">
+                                <span><i class="fas fa-list-ul me-2"></i>Listeyi Aç</span> <i class="fas fa-chevron-down"></i>
                             </button>
-                            <div class="collapse mt-3" id="collapseYemeyenler">
-                                <div id="yemeyenlerListesi" style="max-height: 400px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                                    <div class="text-center text-muted small py-3">Veriler yükleniyor...</div>
+                            <div class="collapse show" id="collapseYemeyenler">
+                                <div id="yemeyenlerListesi" style="max-height: 350px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                    <div class="text-center text-muted small py-3">Yükleniyor...</div>
                                 </div>
                             </div>
                         </div>
@@ -300,24 +220,18 @@
             </div>
 
             <div id="tab-students" class="tab-content d-none">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h3 class="fw-bold text-dark mb-0">Öğrenci Yönetimi</h3>
-                        <p class="text-muted small mb-0">Öğrenci kayıtlarını ekleyin, düzenleyin veya silin.</p>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <h4 class="fw-bold text-dark mb-0">Öğrenci Yönetimi</h4>
                     <div class="d-flex gap-2">
-                        <button onclick="openStudentModal('add')" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Yeni Öğrenci</button>
-                        <button onclick="bulkDelete()" class="btn btn-danger"><i class="fas fa-trash-alt me-1"></i> Seçilenleri Sil</button>
+                        <button onclick="openStudentModal('add')" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Ekle</button>
+                        <button onclick="bulkDelete()" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Sil</button>
                     </div>
                 </div>
                 
-                <div class="admin-card">
-                    <div class="row mb-4 g-2">
+                <div class="admin-card p-3">
+                    <div class="row mb-3 g-2">
                         <div class="col-md-8">
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-search"></i></span>
-                                <input type="text" id="studentSearch" class="form-control border-start-0 ps-0" placeholder="İsim, Numara veya Sınıf Ara..." onkeyup="filterStudents()">
-                            </div>
+                            <input type="text" id="studentSearch" class="form-control" placeholder="Öğrenci Ara..." onkeyup="filterStudents()">
                         </div>
                         <div class="col-md-4">
                             <input type="file" id="excelDosyasi" class="form-control" accept=".xlsx" onchange="excelYukle()">
@@ -328,11 +242,11 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th width="40"><input type="checkbox" id="selectAll" class="form-check-input" onclick="toggleSelectAll()"></th>
-                                    <th class="sortable-th" onclick="sortStudents('numara')">No <i class="fas fa-sort float-end text-muted opacity-50"></i></th>
-                                    <th class="sortable-th" onclick="sortStudents('ad_soyad')">Ad Soyad <i class="fas fa-sort float-end text-muted opacity-50"></i></th>
-                                    <th class="sortable-th" onclick="sortStudents('sinif')">Sınıf <i class="fas fa-sort float-end text-muted opacity-50"></i></th>
-                                    <th>Barkod</th>
+                                    <th width="30"><input type="checkbox" id="selectAll" class="form-check-input" onclick="toggleSelectAll()"></th>
+                                    <th class="sortable-th" onclick="sortStudents('numara')">No</th>
+                                    <th class="sortable-th" onclick="sortStudents('ad_soyad')">Ad Soyad</th>
+                                    <th class="sortable-th" onclick="sortStudents('sinif')">Sınıf</th>
+                                    <th class="d-none d-md-table-cell">Barkod</th>
                                     <th>İşlem</th>
                                 </tr>
                             </thead>
@@ -343,66 +257,46 @@
             </div>
 
             <div id="tab-codes" class="tab-content d-none">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h3 class="fw-bold text-dark">Veli Erişim Kodları</h3>
-                </div>
-                
-                <div class="admin-card mb-4">
+                <h4 class="fw-bold text-dark mb-3">Erişim Kodları</h4>
+                <div class="admin-card mb-3 p-3">
                     <div class="d-flex flex-wrap gap-2 mb-3">
-                        <button onclick="generateMissingCodes()" class="btn btn-primary btn-sm">Eksikleri Tamamla</button>
-                        <button onclick="regenerateAllCodes()" class="btn btn-warning btn-sm text-white">Tümünü Yenile</button>
-                        <button onclick="deleteAllCodes()" class="btn btn-danger btn-sm">Tümünü Sil</button>
-                        <button onclick="window.print()" class="btn btn-secondary btn-sm ms-auto"><i class="fas fa-print me-1"></i> Yazdır</button>
+                        <button onclick="generateMissingCodes()" class="btn btn-primary btn-sm flex-fill">Tamamla</button>
+                        <button onclick="regenerateAllCodes()" class="btn btn-warning btn-sm text-white flex-fill">Yenile</button>
+                        <button onclick="deleteAllCodes()" class="btn btn-danger btn-sm flex-fill">Sil</button>
+                        <button onclick="window.print()" class="btn btn-secondary btn-sm ms-auto"><i class="fas fa-print"></i></button>
                     </div>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-search"></i></span>
-                        <input type="text" id="codeSearch" class="form-control border-start-0 ps-0" placeholder="Öğrenci Ara..." onkeyup="filterCodes()">
-                    </div>
+                    <input type="text" id="codeSearch" class="form-control" placeholder="Öğrenci Ara..." onkeyup="filterCodes()">
                 </div>
-                
-                <div class="admin-card" id="code-list" style="max-height: 600px; overflow-y: auto;">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Öğrenci</th>
-                                <th>Kod</th>
-                                <th>Durum</th>
-                                <th>İşlem</th>
-                            </tr>
-                        </thead>
+                <div class="admin-card p-0" id="code-list" style="max-height: 600px; overflow-y: auto;">
+                    <table class="table table-hover mb-0">
+                        <thead><tr><th>No</th><th>Öğrenci</th><th>Kod</th><th>Durum</th><th>Sil</th></tr></thead>
                         <tbody id="codeListBody"></tbody>
                     </table>
                 </div>
             </div>
 
             <div id="tab-users" class="tab-content d-none">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h3 class="fw-bold text-dark">Personel Yönetimi</h3>
-                    <button onclick="openScannerModal('add')" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i> Yeni Personel</button>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold text-dark">Personel</h4>
+                    <button onclick="openScannerModal('add')" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Yeni</button>
                 </div>
-                
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="admin-card">
-                            <h5 class="fw-bold mb-3 text-primary">Aktif Personel Listesi</h5>
+                <div class="row g-3">
+                    <div class="col-lg-8">
+                        <div class="admin-card p-0">
+                            <div class="p-3 border-bottom bg-light"><h6 class="fw-bold mb-0 text-primary">Personel Listesi</h6></div>
                             <div class="table-responsive">
-                                <table class="table table-hover align-middle">
+                                <table class="table table-hover align-middle mb-0">
                                     <thead><tr><th>İsim</th><th>E-Posta</th><th>Rol</th><th>İşlem</th></tr></thead>
                                     <tbody id="scannerListBody"></tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <div class="admin-card border-warning" style="border-left: 5px solid var(--warning);">
-                            <h5 class="fw-bold text-warning mb-3">Yönetici Güvenliği</h5>
-                            <div class="alert alert-warning small mb-3 border-0" style="background: #fff7ed; color: #9a3412;">
-                                <i class="fas fa-lock me-1"></i> Yönetici şifrenizi buradan değiştirebilirsiniz.
-                            </div>
-                            <label class="form-label fw-bold small text-muted">Yeni Şifre</label>
-                            <input type="text" id="newAdminPass" class="form-control mb-3" placeholder="En az 6 karakter">
-                            <button onclick="changeAdminPass()" class="btn btn-warning w-100 text-white fw-bold">Şifreyi Güncelle</button>
+                            <h6 class="fw-bold text-warning mb-3">Admin Şifre Değiştir</h6>
+                            <input type="text" id="newAdminPass" class="form-control mb-2" placeholder="Yeni Şifre">
+                            <button onclick="changeAdminPass()" class="btn btn-warning w-100 text-white fw-bold">Güncelle</button>
                         </div>
                     </div>
                 </div>
@@ -415,9 +309,10 @@
 
 <div class="modal fade" id="studentModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 shadow-lg"><div class="modal-header bg-primary text-white"><h5 class="modal-title fw-bold" id="modalTitle">Öğrenci İşlemi</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body p-4"><input type="hidden" id="editOldBarkod"><div class="mb-3"><label class="form-label fw-bold small text-muted">Ad Soyad</label><input type="text" id="editAd" class="form-control"></div><div class="row g-2 mb-3"><div class="col-6"><label class="form-label fw-bold small text-muted">Numara</label><input type="text" id="editNo" class="form-control"></div><div class="col-6"><label class="form-label fw-bold small text-muted">Sınıf</label><input type="text" id="editSinif" class="form-control"></div></div><div class="mb-3"><label class="form-label fw-bold small text-muted">Barkod</label><input type="text" id="editBarkodInput" class="form-control" placeholder="Otomatik Üret"></div></div><div class="modal-footer bg-light"><button onclick="saveStudent()" class="btn btn-primary w-100">Kaydet</button></div></div></div></div>
 <div class="modal fade" id="scannerModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 shadow-lg"><div class="modal-header bg-success text-white"><h5 class="modal-title fw-bold" id="scannerModalTitle">Personel İşlemi</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body p-4"><input type="hidden" id="editScannerId"><div class="mb-3"><label class="form-label fw-bold small text-muted">Görevli İsmi</label><input type="text" id="scName" class="form-control"></div><div class="mb-3"><label class="form-label fw-bold small text-muted">E-Posta</label><input type="email" id="scEmail" class="form-control"></div><div class="mb-3"><label class="form-label fw-bold small text-muted">Şifre</label><input type="text" id="scPass" class="form-control"></div></div><div class="modal-footer bg-light"><button onclick="saveScannerUser()" class="btn btn-success w-100">Kaydet</button></div></div></div></div>
-<div class="modal fade" id="historyModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 shadow-lg"><div class="modal-header bg-warning text-white"><h5 class="modal-title fw-bold">Son 10 Günlük Geçmiş</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body p-0"><div class="p-3 bg-light border-bottom"><h5 id="histName" class="m-0 fw-bold text-dark"></h5></div><ul id="historyList" class="list-group list-group-flush" style="max-height:300px;overflow-y:auto;"></ul></div></div></div></div>
+<div class="modal fade" id="historyModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 shadow-lg"><div class="modal-header bg-warning text-white"><h5 class="modal-title fw-bold">Geçmiş</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body p-0"><div class="p-3 bg-light border-bottom"><h5 id="histName" class="m-0 fw-bold text-dark"></h5></div><ul id="historyList" class="list-group list-group-flush" style="max-height:300px;overflow-y:auto;"></ul></div></div></div></div>
 
 <script type="module">
+    // Firebase ve Core JS kodları AYNEN KORUNMUŞTUR
     import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, updatePassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
     import { getFirestore, collection, query, where, onSnapshot, doc, setDoc, getDocs, orderBy, deleteDoc, limit, writeBatch } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
@@ -429,9 +324,25 @@
     let allStudents = [], allCodes = [], eatenTodaySet = new Set();
     let sortDir = 1;
 
+    // --- JS Helper for Mobile Offcanvas Close ---
+    window.closeCanvas = () => {
+        const el = document.getElementById('mobileMenu');
+        const bsOffcanvas = bootstrap.Offcanvas.getInstance(el);
+        if(bsOffcanvas) bsOffcanvas.hide();
+    }
+
     window.login = async () => { try { await setPersistence(auth, browserLocalPersistence); await signInWithEmailAndPassword(auth, document.getElementById("email").value, document.getElementById("password").value); await setDoc(doc(db,"users",auth.currentUser.uid),{role:"admin"},{merge:true}); } catch(e){Swal.fire("Hata",e.message,"error");} };
     window.logout = () => signOut(auth).then(()=>location.reload());
-    onAuthStateChanged(auth, user => { if(user) { document.getElementById("loginSection").classList.add("d-none"); document.getElementById("dashboardSection").classList.remove("d-none"); startSystem(); } });
+    onAuthStateChanged(auth, user => { 
+        if(user) { 
+            document.getElementById("loginSection").classList.add("d-none"); 
+            document.getElementById("dashboardSection").classList.remove("d-none"); 
+            document.getElementById("mobileHeader").classList.remove("d-none"); // Mobilde header göster
+            startSystem(); 
+        } else {
+             document.getElementById("mobileHeader").classList.add("d-none");
+        }
+    });
 
     function startSystem() {
         document.getElementById("bugunTarih").innerText = getTurkiyeDate();
@@ -542,7 +453,7 @@
                 <td>${s.numara}</td>
                 <td class="fw-bold text-primary">${s.ad_soyad}</td>
                 <td><span class="badge bg-light text-dark border">${s.sinif}</span></td>
-                <td class="text-muted small font-monospace">${s.barkod}</td>
+                <td class="text-muted small font-monospace d-none d-md-table-cell">${s.barkod}</td>
                 <td>
                     <button onclick="openStudentModal('edit', '${s.barkod}')" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button> 
                     <button onclick="deleteStudent('${s.barkod}')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
