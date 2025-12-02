@@ -2,250 +2,478 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Görevli Terminali</title>
-    <link rel="icon" type="image/jpeg" href="gorevli.jpg">
+    <title>Yemekhane Görevli</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3498db">
+    
+    <link rel="icon" type="image/jpeg" href="gorevli.jpg">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
-        :root { --primary: #1e3c72; --secondary: #2a5298; --bg: #f4f7f6; }
-        body { background-color: var(--bg); font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; padding-bottom: 80px; }
-
-        /* Giriş Ekranı */
-        #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--secondary)); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .login-card { background: white; border-radius: 20px; padding: 30px; width: 100%; max-width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-
-        /* Üst Bar */
-        .app-header { background: linear-gradient(to right, var(--primary), var(--secondary)); color: white; padding: 15px 20px; border-radius: 0 0 25px 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .header-title { font-size: 1.2rem; font-weight: bold; margin: 0; }
-        .header-user { font-size: 0.8rem; opacity: 0.9; }
-
-        /* Kamera Alanı */
-        .scanner-wrapper { margin: 20px auto; width: 90%; max-width: 400px; position: relative; }
-        .scanner-box { background: #000; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 4px solid white; min-height: 250px; }
-        #reader { width: 100%; }
+        :root {
+            --primary: #3498db; 
+            --primary-dark: #2980b9; 
+            --bg-soft: #f4f7f6;
+            --white: #ffffff;
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-orange: #f39c12;
+        }
         
-        /* Manuel Giriş */
-        .input-area { width: 90%; max-width: 400px; margin: 0 auto 20px; }
-        .search-input { height: 55px; border-radius: 30px 0 0 30px; border: 1px solid #ddd; padding-left: 20px; font-size: 1.1rem; }
-        .search-btn { width: 70px; border-radius: 0 30px 30px 0; background: var(--primary); border: none; font-size: 1.2rem; }
+        body { 
+            background-color: var(--bg-soft); 
+            font-family: 'Quicksand', sans-serif; 
+            color: #555;
+            min-height: 100vh;
+            /* Mobil çekme yenilemesini engeller (App hissi için) */
+            overscroll-behavior-y: none; 
+        }
 
-        /* Öğrenci Kartı (Popup gibi) */
-        .student-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin: 0 auto; width: 90%; max-width: 400px; display: none; animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .card-header-bg { height: 80px; position: relative; }
-        .bg-success-grad { background: linear-gradient(45deg, #11998e, #38ef7d); }
-        .bg-danger-grad { background: linear-gradient(45deg, #cb2d3e, #ef473a); }
-        .bg-dark-grad { background: linear-gradient(45deg, #232526, #414345); }
-        
-        .profile-pic { width: 100px; height: 100px; background: white; padding: 3px; border-radius: 50%; position: absolute; left: 50%; transform: translateX(-50%); bottom: -50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); object-fit: cover; }
-        
-        .card-content { margin-top: 55px; text-align: center; padding: 20px; }
-        .st-name { font-size: 1.4rem; font-weight: 800; color: #333; line-height: 1.2; margin-bottom: 5px; }
-        .st-meta { color: #666; font-size: 0.95rem; font-weight: 600; }
-        
-        .status-badge { display: inline-block; padding: 8px 20px; border-radius: 50px; color: white; font-weight: bold; margin-top: 15px; font-size: 1.1rem; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
-        .status-ok { background: #28a745; }
-        .status-err { background: #dc3545; }
+        .white-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.02);
+            padding: 20px;
+            margin-bottom: 15px;
+        }
 
-        /* Geçmiş Listesi */
-        .history-list { list-style: none; padding: 0; margin: 20px auto; width: 90%; max-width: 400px; }
-        .history-item { background: white; padding: 12px 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 0.9rem; }
-        .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        /* GİRİŞ EKRANI */
+        #loginOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-soft);
+            z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-logo {
+            width: 100px; height: 100px; object-fit: cover;
+            border-radius: 50%; border: 4px solid rgba(52, 152, 219, 0.1);
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
 
-        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .soft-input {
+            background: #f9f9f9; border: 2px solid #eee; border-radius: 15px;
+            padding: 15px; font-size: 16px; /* iOS zoom engellemek için min 16px */
+            width: 100%; margin-bottom: 15px;
+            text-align: center; transition: 0.3s;
+        }
+        .soft-input:focus { background: white; border-color: var(--primary); outline: none; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1); }
+
+        .btn-blue {
+            background: var(--primary); color: white; border: none;
+            padding: 15px; border-radius: 15px; font-weight: 700; width: 100%;
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3); transition: 0.3s;
+        }
+        .btn-blue:active { transform: scale(0.98); }
+
+        /* ANA EKRAN */
+        #appContainer { max-width: 100%; margin: 0 auto; padding-bottom: 30px; }
+
+        .app-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--white); padding: 12px 15px; border-radius: 0 0 20px 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); margin-bottom: 15px;
+        }
+        .header-logo {
+            width: 40px; height: 40px; object-fit: cover; border-radius: 50%;
+            border: 2px solid #eee; margin-right: 10px;
+        }
+        .btn-logout {
+            background: rgba(231, 76, 60, 0.1); color: var(--accent-red);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+            padding: 6px 12px; border-radius: 15px; font-weight: 700; font-size: 0.8rem;
+        }
+
+        /* İSTATİSTİKLER */
+        .stat-box {
+            text-align: center; padding: 10px 2px; border-radius: 12px;
+            background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid #f0f0f0;
+        }
+        .stat-val { font-size: 1.4rem; font-weight: 800; line-height: 1; }
+        .stat-label { font-size: 0.65rem; color: #888; text-transform: uppercase; font-weight: 600; margin-top: 5px; }
+
+        /* YEMEYENLER LİSTESİ */
+        .collapse-btn {
+            background: #fff; border: 1px solid var(--accent-orange); color: var(--accent-orange);
+            width: 100%; border-radius: 12px; padding: 12px; font-weight: 700; font-size: 0.9rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .not-eaten-list {
+            max-height: 50vh; overflow-y: auto; background: white; 
+            border-radius: 15px; margin-top: 10px; padding: 10px;
+            border: 1px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .student-row {
+            padding: 10px; border-bottom: 1px solid #f5f5f5; 
+            font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        /* SCANNER */
+        .scanner-frame {
+            position: relative; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 4px solid var(--white); background: #000;
+            height: 280px; /* Mobilde sabit yükseklik */
+            margin-bottom: 15px;
+        }
+        #reader video { object-fit: cover; width: 100%; height: 100%; }
+        .scan-line {
+            position: absolute; width: 100%; height: 3px; background: var(--accent-red);
+            box-shadow: 0 0 10px var(--accent-red); top: 0; left: 0; z-index: 10;
+            animation: scanAnim 2s infinite linear; opacity: 0.8;
+        }
+        @keyframes scanAnim { 0% {top: 0;} 50% {top: 100%;} 100% {top: 0;} }
+        #reader button {
+            background-color: var(--primary) !important; color: white !important;
+            border: none !important; padding: 10px 20px !important; border-radius: 10px !important;
+            font-weight: bold !important; margin-top: 80px !important; font-family: sans-serif !important;
+        }
+
+        /* MANUEL GİRİŞ */
+        .btn-search {
+            background: var(--primary); color: white; border: none; font-weight: 700;
+            padding: 0 20px; border-radius: 0 15px 15px 0; transition: 0.3s;
+        }
+        
+        /* SONUÇ KARTI */
+        .result-card {
+            display: none; margin-top: 15px; text-align: center;
+            border-top: 5px solid; animation: slideUp 0.3s ease; padding: 20px;
+        }
+        .status-box {
+            padding: 10px; border-radius: 10px; font-weight: 800; font-size: 1.1rem;
+            margin-top: 10px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        @keyframes slideUp { from {transform: translateY(20px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+
+        /* CANLI LİSTE */
+        .live-list-title { font-size: 0.85rem; font-weight: 700; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 8px; }
+        .live-list-container { max-height: 35vh; overflow-y: auto; }
+        .live-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px; border-bottom: 1px solid #f5f5f5;
+            animation: fadeIn 0.4s;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .live-name { font-weight: 700; color: #2c3e50; display: block; font-size: 0.95rem; }
+        .live-time { font-size: 0.75rem; color: #95a5a6; }
+        .live-badge { font-size: 0.7rem; padding: 4px 8px; border-radius: 12px; font-weight: 600; }
+        .badge-first { background: #e0f2f1; color: #00695c; }
+        .badge-double { background: #ffebee; color: #c62828; }
     </style>
 </head>
 <body>
 
 <div id="loginOverlay">
-    <div class="login-card text-center">
-        <div class="mb-4 text-primary"><i class="fas fa-id-card-alt fa-4x"></i></div>
-        <h4 class="fw-bold mb-3">GÖREVLİ GİRİŞİ</h4>
-        <input type="email" id="scEmail" class="form-control mb-3 p-3 rounded-4 bg-light border-0" placeholder="E-Posta">
-        <input type="password" id="scPass" class="form-control mb-4 p-3 rounded-4 bg-light border-0" placeholder="Şifre">
-        <button onclick="scannerLogin()" class="btn btn-primary w-100 p-3 rounded-pill fw-bold shadow">GİRİŞ YAP</button>
-        <a href="index.html" class="d-block mt-4 text-muted text-decoration-none small"><i class="fas fa-arrow-left me-1"></i> Ana Menü</a>
+    <div class="white-card text-center" style="width: 100%; max-width: 350px;">
+        <img src="logo.jpg" alt="Logo" class="login-logo">
+        <h5 class="mb-4 fw-bold text-secondary">YEMEKHANE GÖREVLİ<br>PERSONEL GİRİŞİ</h5>
+        <input type="email" id="scEmail" class="soft-input" placeholder="E-Posta Adresi">
+        <input type="password" id="scPass" class="soft-input" placeholder="Şifre">
+        <button onclick="scannerLogin()" class="btn-blue">SİSTEMİ AÇ</button>
     </div>
 </div>
 
-<div id="appContainer" style="display:none;">
+<div id="appContainer" class="d-none">
+    
     <div class="app-header">
-        <div>
-            <h1 class="header-title">Yemekhane</h1>
-            <span class="header-user" id="gorevliAdi">...</span>
-        </div>
-        <button onclick="cikisYap()" class="btn btn-sm btn-light text-primary rounded-pill px-3 fw-bold">Çıkış</button>
-    </div>
-
-    <div class="scanner-wrapper">
-        <div class="scanner-box">
-            <div id="reader"></div>
-        </div>
-        <div class="text-center mt-2 text-muted small"><i class="fas fa-qrcode me-1"></i>Barkod Okutunuz</div>
-    </div>
-
-    <div class="input-area">
-        <div class="input-group shadow-sm">
-            <input type="text" id="manualInput" class="form-control search-input" placeholder="No Gir (Misafir: 'm')" autocomplete="off">
-            <button class="btn btn-primary search-btn" onclick="manuelSorgula()"><i class="fas fa-search text-white"></i></button>
-        </div>
-    </div>
-
-    <div id="sonucKarti" class="student-card">
-        <div id="kartUstRenk" class="card-header-bg bg-success-grad">
-            <img id="ogrFoto" src="" class="profile-pic">
-        </div>
-        <div class="card-content">
-            <div id="ogrAd" class="st-name">Öğrenci Adı</div>
-            <div class="st-meta"><span id="ogrSinif" class="badge bg-light text-dark border me-2">9-A</span> <span id="ogrNo">1234</span></div>
-            
-            <div id="durumKutusu" class="status-badge status-ok">AFİYET OLSUN</div>
-            
-            <div class="mt-3 pt-3 border-top text-start">
-                <small class="text-muted d-block fw-bold mb-1" style="font-size:0.7rem">GÜNLÜK DURUM</small>
-                <div id="gunlukRapor" class="small text-secondary fw-bold">İlk girişi.</div>
+        <div class="d-flex align-items-center">
+            <img src="logo.jpg" alt="Logo" class="header-logo">
+            <div>
+                <small class="text-muted d-block" style="font-size:0.65rem; line-height:1;">GÖREVLİ</small>
+                <span id="staffName" class="fw-bold" style="color:var(--primary-dark); font-size:0.9rem;">...</span>
             </div>
         </div>
+        <button onclick="cikisYap()" class="btn-logout"><i class="fas fa-power-off me-1"></i> Çıkış</button>
     </div>
 
-    <div class="mt-4 px-3">
-        <h6 class="text-muted small fw-bold ms-2">SON GEÇİŞLER</h6>
-        <ul id="logListesi" class="history-list"></ul>
+    <div class="container-fluid px-3">
+        <div class="row g-2 mb-3">
+            <div class="col-4"><div class="stat-box"><div class="stat-val text-success" id="lblYiyen">0</div><div class="stat-label">Yiyen</div></div></div>
+            <div class="col-4"><div class="stat-box"><div class="stat-val text-danger" id="lblCift">0</div><div class="stat-label">Çift</div></div></div>
+            <div class="col-4"><div class="stat-box"><div class="stat-val text-warning" id="lblKalan">0</div><div class="stat-label">Kalan</div></div></div>
+        </div>
+
+        <div class="mb-3">
+            <button class="collapse-btn" type="button" data-bs-toggle="collapse" data-bs-target="#notEatenList" aria-expanded="false" id="btnToggleList">
+                <span><i class="fas fa-list-ul me-2"></i>Henüz Yemeyenler</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="collapse" id="notEatenList">
+                <div class="not-eaten-list" id="notEatenContainer">
+                    <div class="text-center p-3 text-muted small">Yükleniyor...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scanner-frame">
+            <div class="scan-line"></div>
+            <div id="reader" style="width:100%; height: 100%;"></div>
+        </div>
+        
+        <div class="white-card mt-3 p-2">
+            <div class="input-group">
+                <input type="text" id="manualInput" class="form-control border-0 bg-light" placeholder="No / 'm' (Misafir)" style="padding:12px; border-radius: 15px 0 0 15px; background:#f9f9f9; font-size: 16px;">
+                <button onclick="manuelIslem()" class="btn-search">SORGULA</button>
+            </div>
+        </div>
+
+        <div id="sonucKarti" class="white-card result-card">
+            <img id="ogrFoto" src="" class="rounded-circle mb-3" style="width:100px;height:100px;border:4px solid #f0f0f0; object-fit:cover;">
+            <h3 id="ogrAd" class="fw-bold m-0 text-dark h4"></h3>
+            <p id="ogrDetay" class="text-muted mb-0 small"></p>
+            <div id="durumMesaj" class="status-box"></div>
+        </div>
+
+        <div class="white-card mt-3">
+            <div class="live-list-title"><i class="fas fa-history me-2"></i>Bugün Senden Yemek Alanlar</div>
+            <div id="liveList" class="live-list-container">
+                <div class="text-center text-muted small py-3">Henüz işlem yok.</div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, query, where, getDocs, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, query, where, getDocs, onSnapshot, Timestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
     const firebaseConfig = { apiKey: "AIzaSyC2ATSLTN8ba3pao1kKd2cT1vHcT8rafT8", authDomain: "yemekhane-8914d.firebaseapp.com", projectId: "yemekhane-8914d", storageBucket: "yemekhane-8914d.firebasestorage.app", messagingSenderId: "352053991912", appId: "1:352053991912:web:f4ea149d68f16ae5d8ec5d" };
     const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
-    
-    const sesOnay = new Audio('https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg');
-    const sesHata = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
-    const DEFAULT_FOTO = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
-    let islemMesgul = false; let aktifGorevliEmail = "";
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            document.getElementById("loginOverlay").style.display = "none"; document.getElementById("appContainer").style.display = "block";
-            aktifGorevliEmail = user.email; document.getElementById("gorevliAdi").innerText = user.email.split('@')[0];
-            if(!html5QrcodeScanner) kamerayiBaslat();
-        } else { document.getElementById("loginOverlay").style.display = "flex"; document.getElementById("appContainer").style.display = "none"; }
+    const sesOnay = new Audio('https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3'); 
+    const sesHata = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+    
+    const getTurkiyeDate = () => { const d = new Date(); return new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().split('T')[0]; };
+
+    let islemMesgul = false, aktifEmail = "", aktifIsim = "GÖREVLİ";
+    let allStudents = []; 
+    let eatenTodaySet = new Set();
+    let updateListTimeout = null;
+
+    onAuthStateChanged(auth, async user => {
+        if(user) {
+            document.getElementById("loginOverlay").classList.add("d-none");
+            document.getElementById("appContainer").classList.remove("d-none");
+            aktifEmail = user.email;
+            try {
+                const uDoc = await getDoc(doc(db, "users", user.uid));
+                if(uDoc.exists() && uDoc.data().displayName) aktifIsim = uDoc.data().displayName.toUpperCase();
+                else aktifIsim = user.email.split('@')[0].toUpperCase();
+                document.getElementById("staffName").innerText = aktifIsim;
+            } catch(e) {}
+            
+            initDataStream();
+            startScanner();
+        } else {
+            document.getElementById("loginOverlay").classList.remove("d-none");
+            document.getElementById("appContainer").classList.add("d-none");
+        }
     });
 
-    window.scannerLogin = async () => {
-        const e = document.getElementById("scEmail").value; const p = document.getElementById("scPass").value;
-        if(!e || !p) return Swal.fire("Hata", "Bilgileri giriniz", "warning");
-        try { await setPersistence(auth, browserLocalPersistence); await signInWithEmailAndPassword(auth, e, p); } catch(err) { Swal.fire("Giriş Hatası", err.message, "error"); }
+    async function initDataStream() {
+        const sSnap = await getDocs(collection(db, "ogrenciler"));
+        allStudents = [];
+        sSnap.forEach(d => allStudents.push(d.data()));
+
+        const bugunStr = getTurkiyeDate();
+        const qToday = query(collection(db, "yemek_hareketleri"), where("tarih", "==", bugunStr));
+
+        onSnapshot(qToday, (snapshot) => {
+            eatenTodaySet.clear();
+            let doubleCount = 0;
+            let mealList = [];
+
+            snapshot.forEach(doc => {
+                const d = doc.data();
+                eatenTodaySet.add(d.barkod);
+                if(d.tur === 'ikinci_ogun') doubleCount++;
+                mealList.push(d);
+            });
+
+            document.getElementById("lblYiyen").innerText = eatenTodaySet.size;
+            document.getElementById("lblCift").innerText = doubleCount;
+            document.getElementById("lblKalan").innerText = Math.max(0, allStudents.length - eatenTodaySet.size);
+
+            renderLiveList(mealList);
+
+            const listEl = document.getElementById('notEatenList');
+            if (listEl.classList.contains('show')) {
+                clearTimeout(updateListTimeout);
+                updateListTimeout = setTimeout(renderNotEatenList, 200);
+            }
+        });
     }
-    window.cikisYap = () => { signOut(auth); location.reload(); }
 
-    let html5QrcodeScanner;
-    function kamerayiBaslat() { html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250}, aspectRatio: 1.0 }, false); html5QrcodeScanner.render(onScanSuccess, ()=>{}); }
-    function onScanSuccess(d) { if(!islemMesgul) anaIslem(d, false); }
+    document.getElementById('notEatenList').addEventListener('show.bs.collapse', renderNotEatenList);
 
-    window.manuelSorgula = async function() {
-        const val = document.getElementById("manualInput").value.trim(); if(!val) return;
-        document.getElementById("manualInput").blur();
-        if(val.toLowerCase() === 'm') { misafirGirisi(); }
-        else {
-            const qNo = query(collection(db, "ogrenciler"), where("numara", "==", val));
-            const snapNo = await getDocs(qNo);
-            if(!snapNo.empty) anaIslem(snapNo.docs[0].data().barkod, true); else anaIslem(val, true);
+    function renderNotEatenList() {
+        const container = document.getElementById("notEatenContainer");
+        const notEatenList = allStudents
+            .filter(s => !eatenTodaySet.has(s.barkod))
+            .sort((a, b) => a.ad_soyad.localeCompare(b.ad_soyad));
+
+        if(notEatenList.length === 0) {
+            container.innerHTML = '<div class="text-center text-success fw-bold p-3">Herkes Yemek Yedi! <i class="fas fa-check"></i></div>';
+            return;
         }
-        document.getElementById("manualInput").value = "";
+
+        let html = "";
+        notEatenList.forEach(s => {
+            html += `<div class="student-row"><span class="fw-bold text-dark">${s.ad_soyad}</span><span class="badge bg-secondary">${s.sinif}</span></div>`;
+        });
+        container.innerHTML = html;
     }
 
-    async function misafirGirisi() { anaIslem("MISAFIR_" + new Date().getTime(), true, true); }
+    function renderLiveList(data) {
+        const listDiv = document.getElementById("liveList");
+        if(data.length === 0) { listDiv.innerHTML = '<div class="text-center text-muted small py-3">Henüz işlem yok.</div>'; return; }
 
-    async function anaIslem(barkod, isManuel, isMisafir = false) {
-        islemMesgul = true; 
-        document.getElementById("sonucKarti").style.display = "none";
+        data.sort((a,b) => b.zaman.seconds - a.zaman.seconds);
+
+        listDiv.innerHTML = "";
+        data.forEach(m => {
+            const saat = new Date(m.zaman.seconds * 1000).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
+            const isDouble = m.tur === 'ikinci_ogun';
+            const badgeClass = isDouble ? 'badge-double' : 'badge-first';
+            const badgeText = isDouble ? '2. Hak' : 'Giriş';
+            
+            listDiv.innerHTML += `
+            <div class="live-item">
+                <div>
+                    <span class="live-name">${m.ad_soyad}</span>
+                    <span class="live-time"><i class="far fa-clock me-1"></i>${saat}</span>
+                </div>
+                <span class="live-badge ${badgeClass}">${badgeText}</span>
+            </div>`;
+        });
+    }
+
+    window.scannerLogin = async () => {
+        const e = document.getElementById("scEmail").value; 
+        const p = document.getElementById("scPass").value;
+        if(!e || !p) return Swal.fire({ icon: 'warning', title: 'Eksik Bilgi', text: 'Lütfen bilgileri giriniz.', confirmButtonColor: '#3498db' });
+
+        try { 
+            await setPersistence(auth, browserLocalPersistence); 
+            await signInWithEmailAndPassword(auth, e, p); 
+        } catch(err) { 
+            let msg = "Giriş başarısız.";
+            if(err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') msg = "E-Posta veya Şifre Hatalı!";
+            else if(err.code === 'auth/too-many-requests') msg = "Çok fazla deneme. Lütfen bekleyiniz.";
+            Swal.fire({ icon: 'error', title: 'Hata', text: msg, confirmButtonColor: '#e74c3c' });
+        }
+    };
+
+    window.cikisYap = async () => { try { await signOut(auth); window.location.reload(); } catch(e) { console.error(e); } }
+
+    function startScanner() {
+        const scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+        scanner.render((t) => { if(!islemMesgul) islemYap(t, false); });
+    }
+
+    window.manuelIslem = () => {
+        const val = document.getElementById("manualInput").value.trim();
+        if(val.toLowerCase() === 'm') islemYap("MISAFIR_"+Date.now(), true, true);
+        else if(val) checkNoAndProcess(val);
+        document.getElementById("manualInput").value = "";
+    };
+
+    async function checkNoAndProcess(no) {
+        const snap = await getDocs(query(collection(db,"ogrenciler"), where("numara","==",no)));
+        if(!snap.empty) islemYap(snap.docs[0].data().barkod, true);
+        else islemYap(no, true);
+    }
+
+    async function islemYap(barkod, manuel, misafir=false) {
+        if(islemMesgul) return; islemMesgul = true;
+        const ui = document.getElementById("sonucKarti"); ui.style.display = "none";
 
         try {
-            let ogrenci = null;
-            if (isMisafir) { ogrenci = { ad_soyad: "MİSAFİR", sinif: "Ziyaretçi", numara: "-", foto: "", barkod: barkod }; } 
-            else {
-                const qOgr = query(collection(db, "ogrenciler"), where("barkod", "==", barkod)); const snapOgr = await getDocs(qOgr);
-                if (!snapOgr.empty) { ogrenci = snapOgr.docs[0].data(); } 
-                else {
-                    sesHata.play(); 
-                    uiGuncelleHata(barkod);
-                    logEkle("Bilinmeyen", "Reddedildi");
-                    setTimeout(() => { islemMesgul = false; }, 2000); return;
-                }
-            }
-
-            // Kartı Doldur
-            document.getElementById("ogrAd").innerText = ogrenci.ad_soyad; 
-            document.getElementById("ogrSinif").innerText = ogrenci.sinif;
-            document.getElementById("ogrNo").innerText = "No: " + (ogrenci.numara || "-"); 
-            document.getElementById("ogrFoto").src = (ogrenci.foto && ogrenci.foto.length > 5) ? ogrenci.foto : DEFAULT_FOTO;
+            let ogr = { ad_soyad: "MİSAFİR", sinif: "Ziyaretçi", foto: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", barkod: barkod };
             
-            const bugun = new Date().toISOString().split('T')[0];
-            const qYemek = query(collection(db, "yemek_hareketleri"), where("barkod", "==", ogrenci.barkod), where("tarih", "==", bugun));
-            const snapYemek = await getDocs(qYemek);
-
-            if(snapYemek.empty) {
-                uiGuncelleBasarili();
-                sesOnay.play();
-                await addDoc(collection(db, "yemek_hareketleri"), { barkod: ogrenci.barkod, ad_soyad: ogrenci.ad_soyad, ogrenci_no: ogrenci.numara, tarih: bugun, zaman: Timestamp.now(), tur: "ilk_ogun", islem_yapan: aktifGorevliEmail });
-                logEkle(ogrenci.ad_soyad, "Giriş");
-            } else {
-                sesHata.play(); 
-                uiGuncelleCift();
-                Swal.fire({title: 'Dikkat!', text: `${ogrenci.ad_soyad} zaten yemiş. 2. hak verilsin mi?`, icon: 'warning', showCancelButton: true, confirmButtonText: 'Evet', confirmButtonColor: '#d33', heightAuto: false}).then(async (result) => {
-                    if (result.isConfirmed) {
-                        await addDoc(collection(db, "yemek_hareketleri"), { barkod: ogrenci.barkod, ad_soyad: ogrenci.ad_soyad, ogrenci_no: ogrenci.numara, tarih: bugun, zaman: Timestamp.now(), tur: "ikinci_ogun", islem_yapan: aktifGorevliEmail });
-                        document.getElementById("durumKutusu").innerHTML = "2. HAK VERİLDİ"; 
-                        document.getElementById("durumKutusu").style.background = "#0d6efd"; // Mavi
-                        logEkle(ogrenci.ad_soyad, "2. Hak");
-                    }
-                });
+            if(!misafir) {
+                const snap = await getDocs(query(collection(db,"ogrenciler"), where("barkod","==",barkod)));
+                if(snap.empty) { throw "Öğrenci Bulunamadı!"; }
+                ogr = snap.docs[0].data();
             }
-            document.getElementById("sonucKarti").style.display = "block";
-        } catch(e) { console.error(e); if(e.code==='permission-denied') Swal.fire("Hata","Giriş yapmanız gerekiyor","error"); }
-        setTimeout(() => { islemMesgul = false; }, 2000);
-    }
 
-    function uiGuncelleBasarili() {
-        document.getElementById("kartUstRenk").className = "card-header-bg bg-success-grad";
-        document.getElementById("durumKutusu").className = "status-badge status-ok";
-        document.getElementById("durumKutusu").innerHTML = 'AFİYET OLSUN';
-        document.getElementById("gunlukRapor").innerHTML = '<span class="text-success">İlk girişi.</span>';
-    }
-    function uiGuncelleCift() {
-        document.getElementById("kartUstRenk").className = "card-header-bg bg-danger-grad";
-        document.getElementById("durumKutusu").className = "status-badge status-err";
-        document.getElementById("durumKutusu").innerHTML = 'ZATEN YEDİ!';
-        document.getElementById("gunlukRapor").innerHTML = '<span class="text-danger">Giriş kaydı var!</span>';
-    }
-    function uiGuncelleHata(barkod) {
-        document.getElementById("kartUstRenk").className = "card-header-bg bg-dark-grad";
-        document.getElementById("ogrAd").innerText = "TANIMSIZ";
-        document.getElementById("ogrSinif").innerText = "YOK";
-        document.getElementById("ogrNo").innerText = barkod;
-        document.getElementById("ogrFoto").src = "https://cdn-icons-png.flaticon.com/512/10336/10336582.png";
-        document.getElementById("durumKutusu").className = "status-badge status-err";
-        document.getElementById("durumKutusu").innerHTML = 'GİRİŞ YASAK';
-        document.getElementById("durumKutusu").style.background = "#333";
-        document.getElementById("gunlukRapor").innerHTML = '<span class="text-danger">Listede bulunamadı.</span>';
-        document.getElementById("sonucKarti").style.display = "block";
-    }
+            document.getElementById("ogrAd").innerText = ogr.ad_soyad;
+            document.getElementById("ogrDetay").innerText = `${ogr.sinif || ''} ${ogr.numara || ''}`;
+            document.getElementById("ogrFoto").src = ogr.foto || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
 
-    function logEkle(isim, tip) {
-        const list = document.getElementById("logListesi"); const li = document.createElement("li");
-        li.className = "history-item";
-        let renk = "#6c757d"; if(tip === "Giriş") renk = "#28a745"; if(tip === "2. Hak") renk = "#0d6efd"; if(tip === "Reddedildi") renk = "#dc3545";
-        li.innerHTML = `<span><span class="dot" style="background:${renk}"></span>${isim}</span> <span style="color:${renk};font-weight:bold;">${tip}</span>`;
-        list.prepend(li); if(list.children.length > 5) list.lastElementChild.remove();
+            const bugun = getTurkiyeDate();
+            const yemekSnap = await getDocs(query(collection(db,"yemek_hareketleri"), where("barkod","==",ogr.barkod), where("tarih","==",bugun)));
+            
+            const kacinciOgun = yemekSnap.size + 1;
+            const box = document.getElementById("durumMesaj");
+            const card = document.getElementById("sonucKarti");
+
+            if(kacinciOgun === 1) {
+                await addDoc(collection(db,"yemek_hareketleri"), { 
+                    barkod: ogr.barkod, ad_soyad: ogr.ad_soyad, ogrenci_no: ogr.numara||'', 
+                    tarih: bugun, zaman: Timestamp.now(), tur: "ilk_ogun", 
+                    islem_yapan: aktifEmail, islem_yapan_isim: aktifIsim 
+                });
+                
+                box.innerHTML = '<i class="fas fa-check-circle me-2"></i>AFİYET OLSUN';
+                card.style.borderColor = "#2ecc71";
+                box.style.background = "#e0f2f1";
+                box.style.color = "#00695c";
+                sesOnay.play();
+                
+                setTimeout(() => { islemMesgul = false; ui.style.display="none"; }, 2000);
+            } else {
+                box.innerHTML = `ZATEN YEDİ! (${kacinciOgun-1}. Kez)`;
+                card.style.borderColor = "#e74c3c";
+                box.style.background = "#ffebee";
+                box.style.color = "#c62828";
+                sesHata.play();
+                
+                const result = await Swal.fire({
+                    title: 'Mükerrer Geçiş!',
+                    text: `Bu öğrenci bugün ${kacinciOgun-1} kez yemiş. ${kacinciOgun}. hakkı vermek istiyor musunuz?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'EVET, VER',
+                    cancelButtonText: 'İPTAL',
+                    confirmButtonColor: '#e74c3c'
+                });
+
+                if(result.isConfirmed) {
+                    await addDoc(collection(db,"yemek_hareketleri"), { 
+                        barkod: ogr.barkod, ad_soyad: ogr.ad_soyad, ogrenci_no: ogr.numara||'', 
+                        tarih: bugun, zaman: Timestamp.now(), tur: "ikinci_ogun", 
+                        islem_yapan: aktifEmail, islem_yapan_isim: aktifIsim 
+                    });
+                    box.innerHTML = `${kacinciOgun}. HAK VERİLDİ`;
+                    box.style.background = "#e3f2fd";
+                    box.style.color = "#1565c0";
+                    card.style.borderColor = "#3498db";
+                }
+                islemMesgul = false;
+            }
+            ui.style.display = "block";
+            if(!yemekSnap.empty && !islemMesgul) islemMesgul = false; 
+
+        } catch(e) {
+            Swal.fire({
+                icon:'error', title:'Hata', text:e.message || e, 
+                timer:1500, showConfirmButton:false
+            });
+            islemMesgul = false;
+        }
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
