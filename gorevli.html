@@ -19,24 +19,28 @@
         }
         body { background-color: var(--bg-soft); font-family: 'Quicksand', sans-serif; color: #555; min-height: 100vh; overscroll-behavior-y: none; }
         .white-card { background: var(--white); border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.02); padding: 20px; margin-bottom: 15px; }
+        
+        /* Login Overlay */
         #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-soft); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .login-logo { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 4px solid rgba(52, 152, 219, 0.1); margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .soft-input { background: #f9f9f9; border: 2px solid #eee; border-radius: 15px; padding: 15px; font-size: 16px; width: 100%; margin-bottom: 15px; text-align: center; transition: 0.3s; }
         .soft-input:focus { background: white; border-color: var(--primary); outline: none; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1); }
         .btn-blue { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; font-weight: 700; width: 100%; box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3); transition: 0.3s; }
-        .btn-blue:active { transform: scale(0.98); }
-        #appContainer { max-width: 100%; margin: 0 auto; padding-bottom: 30px; }
+        
+        /* Header & Stats */
         .app-header { display: flex; justify-content: space-between; align-items: center; background: var(--white); padding: 12px 15px; border-radius: 0 0 20px 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); margin-bottom: 15px; }
         .header-logo { width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 2px solid #eee; margin-right: 12px; }
         .btn-logout { background: rgba(231, 76, 60, 0.1); color: var(--accent-red); border: 1px solid rgba(231, 76, 60, 0.2); padding: 6px 12px; border-radius: 15px; font-weight: 700; font-size: 0.8rem; }
         .stat-box { text-align: center; padding: 10px 2px; border-radius: 12px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; }
         .stat-val { font-size: 1.4rem; font-weight: 800; line-height: 1; }
         .stat-label { font-size: 0.65rem; color: #888; text-transform: uppercase; font-weight: 600; margin-top: 5px; }
-        .collapse-btn { background: #fff; border: 1px solid var(--accent-orange); color: var(--accent-orange); width: 100%; border-radius: 12px; padding: 12px; font-weight: 700; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
-        .not-eaten-list { max-height: 50vh; overflow-y: auto; background: white; border-radius: 15px; margin-top: 10px; padding: 10px; border: 1px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .student-row { padding: 10px; border-bottom: 1px solid #f5f5f5; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
         
-        /* === KAMERA VE BARKOD ALANI DÜZENLEMELERİ === */
+        /* Lists */
+        .collapse-btn { background: #fff; border: 1px solid var(--accent-orange); color: var(--accent-orange); width: 100%; border-radius: 12px; padding: 12px; font-weight: 700; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+        .not-eaten-list { max-height: 50vh; overflow-y: auto; background: white; border-radius: 15px; margin-top: 10px; padding: 10px; border: 1px solid #eee; }
+        .student-row { padding: 10px; border-bottom: 1px solid #f5f5f5; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+
+        /* === YENİLENEN KAMERA STİLLERİ === */
         .scanner-frame { 
             position: relative; 
             border-radius: 20px; 
@@ -44,80 +48,86 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
             border: 4px solid var(--white); 
             background: #000; 
-            height: 250px; /* Yükseklik biraz artırıldı */
+            height: 320px; /* Biraz daha uzattık ki video tam sığsın */
             margin-bottom: 15px; 
+            display: flex;
+            flex-direction: column;
         }
+
+        /* Kütüphanenin varsayılan stillerini eziyoruz */
         #reader {
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            overflow: hidden;
+            width: 100% !important;
+            height: 100% !important;
+            border: none !important;
+            padding: 0 !important;
+            position: relative;
         }
         
-        /* Kütüphanenin oluşturduğu video elementini zorla tam ekran yap */
         #reader video { 
-            object-fit: cover !important; /* Görüntüyü yay ve doldur */
+            object-fit: cover !important; 
             width: 100% !important; 
             height: 100% !important; 
-            border-radius: 20px;
+            border-radius: 15px !important;
         }
-        
-        /* Kütüphanenin dashboard (butonlar) kısmını düzenle */
-        #reader__dashboard {
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            width: 100%;
-            z-index: 20;
-            background: rgba(0,0,0,0.5); /* Okunaklı olması için yarı saydam arka plan */
-            padding: 5px;
-            text-align: center;
-        }
-        
+
         /* Tarama Çizgisi */
-        .scan-line { position: absolute; width: 100%; height: 3px; background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); top: 0; left: 0; z-index: 10; animation: scanAnim 2s infinite linear; opacity: 0.8; pointer-events: none;}
-        @keyframes scanAnim { 0% {top: 0;} 50% {top: 100%;} 100% {top: 0;} }
+        .scan-line { 
+            position: absolute; 
+            width: 100%; 
+            height: 3px; 
+            background: var(--accent-red); 
+            box-shadow: 0 0 10px var(--accent-red); 
+            top: 0; 
+            left: 0; 
+            z-index: 50; 
+            animation: scanAnim 2s infinite linear; 
+            opacity: 0.8; 
+            pointer-events: none;
+        }
+        @keyframes scanAnim { 0% {top: 10%;} 50% {top: 90%;} 100% {top: 10%;} }
+
+        /* Dashboard (Butonlar) düzenlemesi */
+        #reader__dashboard {
+            position: absolute !important;
+            bottom: 10px !important;
+            left: 5% !important;
+            width: 90% !important;
+            background: rgba(255, 255, 255, 0.85) !important;
+            border-radius: 15px !important;
+            padding: 10px !important;
+            z-index: 100 !important;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+        }
+
+        #reader__dashboard_section_csr span { display: none !important; } /* "Select Camera" yazısını gizle */
+        #reader__dashboard_section_swaplink { display: none !important; } /* Dosya yükleme linkini gizle */
         
-        /* Kütüphane Butonları Stili */
+        /* Butonları güzelleştir */
         #reader button { 
             background-color: var(--primary) !important; 
             color: white !important; 
             border: none !important; 
-            padding: 8px 15px !important; 
+            padding: 8px 12px !important; 
             border-radius: 8px !important; 
             font-weight: bold !important; 
-            font-size: 0.85rem !important;
-            margin: 2px !important;
-            cursor: pointer;
-        }
-        #reader select {
-            padding: 5px;
-            border-radius: 5px;
-            margin-bottom: 5px;
-            max-width: 90%;
+            font-size: 0.8rem !important;
+            width: 100% !important;
+            margin-top: 5px !important;
         }
         
-        /* Gereksiz linkleri gizle (örn: dosya yükle) */
-        #reader__dashboard_section_csr span, #reader__dashboard_section_swaplink {
-            display: none !important;
+        #reader select {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            width: 100% !important;
+            font-size: 0.9rem;
+            background: #fff;
+            margin-bottom: 5px;
         }
 
+        /* Result Card & Live List */
         .btn-search { background: var(--primary); color: white; border: none; font-weight: 700; padding: 0 20px; border-radius: 0 15px 15px 0; transition: 0.3s; }
-        
-        .result-card { 
-            display: none; 
-            margin-top: 15px; 
-            text-align: center; 
-            border-top: 5px solid; 
-            animation: slideUp 0.3s ease; 
-            padding: 20px;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
+        .result-card { display: none; margin-top: 15px; text-align: center; border-top: 5px solid; animation: slideUp 0.3s ease; padding: 20px; max-width: 400px; margin-left: auto; margin-right: auto; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .status-box { padding: 10px; border-radius: 10px; font-weight: 800; font-size: 1.1rem; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
         @keyframes slideUp { from {transform: translateY(20px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
         .live-list-title { font-size: 0.85rem; font-weight: 700; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 8px; }
@@ -160,6 +170,26 @@
             <div class="col-4"><div class="stat-box"><div class="stat-val text-danger" id="lblCift">0</div><div class="stat-label">Çift</div></div></div>
             <div class="col-4"><div class="stat-box"><div class="stat-val text-warning" id="lblKalan">0</div><div class="stat-label">Kalan</div></div></div>
         </div>
+        
+        <div class="scanner-frame">
+            <div class="scan-line"></div>
+            <div id="reader"></div>
+        </div>
+        
+        <div class="white-card mt-3 p-2">
+            <div class="input-group">
+                <input type="text" id="manualInput" class="form-control border-0 bg-light" placeholder="No / 'm' (Misafir)" style="padding:12px; border-radius: 15px 0 0 15px; background:#f9f9f9; font-size: 16px;">
+                <button onclick="manuelIslem()" class="btn-search">SORGULA</button>
+            </div>
+        </div>
+
+        <div id="sonucKarti" class="white-card result-card">
+            <img id="ogrFoto" src="" class="rounded-circle mb-3" style="width:100px;height:100px;border:4px solid #f0f0f0; object-fit:cover;">
+            <h3 id="ogrAd" class="fw-bold m-0 text-dark h4"></h3>
+            <p id="ogrDetay" class="text-muted mb-0 small"></p>
+            <div id="durumMesaj" class="status-box"></div>
+        </div>
+
         <div class="mb-3">
             <button class="collapse-btn" type="button" data-bs-toggle="collapse" data-bs-target="#notEatenList" aria-expanded="false" id="btnToggleList">
                 <span><i class="fas fa-list-ul me-2"></i>Henüz Yemeyenler</span>
@@ -171,22 +201,7 @@
                 </div>
             </div>
         </div>
-        <div class="scanner-frame">
-            <div class="scan-line"></div>
-            <div id="reader"></div>
-        </div>
-        <div class="white-card mt-3 p-2">
-            <div class="input-group">
-                <input type="text" id="manualInput" class="form-control border-0 bg-light" placeholder="No / 'm' (Misafir)" style="padding:12px; border-radius: 15px 0 0 15px; background:#f9f9f9; font-size: 16px;">
-                <button onclick="manuelIslem()" class="btn-search">SORGULA</button>
-            </div>
-        </div>
-        <div id="sonucKarti" class="white-card result-card">
-            <img id="ogrFoto" src="" class="rounded-circle mb-3" style="width:100px;height:100px;border:4px solid #f0f0f0; object-fit:cover;">
-            <h3 id="ogrAd" class="fw-bold m-0 text-dark h4"></h3>
-            <p id="ogrDetay" class="text-muted mb-0 small"></p>
-            <div id="durumMesaj" class="status-box"></div>
-        </div>
+
         <div class="white-card mt-3">
             <div class="live-list-title"><i class="fas fa-history me-2"></i>Bugün Senden Yemek Alanlar</div>
             <div id="liveList" class="live-list-container">
@@ -268,57 +283,56 @@
     };
     window.cikisYap = async () => { try { await signOut(auth); window.location.reload(); } catch(e) { console.error(e); } }
     
-    // TÜRKÇELEŞTİRME VE DÜZENLEME HACK
-    function turkcelestir() {
+    // GÖRSEL İYİLEŞTİRME VE TÜRKÇELEŞTİRME
+    function uiDuzeltmeleri() {
         const reader = document.getElementById("reader");
         if (!reader) return;
         
-        // Butonları bul ve Türkçeleştir
+        // Butonları Türkçeleştir
         const buttons = reader.getElementsByTagName("button");
         for (let btn of buttons) {
-            if (btn.innerText.includes("Request Camera Permissions")) btn.innerText = "Kamera İzni İste";
+            if (btn.innerText.includes("Request Camera Permissions")) btn.innerText = "Kamera İzni Ver";
             if (btn.innerText.includes("Start Scanning")) btn.innerText = "Taramayı Başlat";
-            if (btn.innerText.includes("Stop Scanning")) btn.innerText = "Taramayı Durdur";
+            if (btn.innerText.includes("Stop Scanning")) btn.innerText = "Kamerayı Durdur";
         }
         
-        // Linkleri bul (genelde resim yükleme linki) ve metni değiştir (veya CSS ile gizlendi)
-        const links = reader.getElementsByTagName("a");
-        for (let link of links) {
-            if (link.innerText.includes("Scan an Image File")) link.style.display = 'none';
-        }
-        
-        // Select elementini (Kamera seçimi) bul
-        const selects = reader.getElementsByTagName("select");
-        if(selects.length > 0) {
-            // "Select Camera" yazan option var mı diye bakmak yerine label ekleyebiliriz ama 
-            // Html5QrcodeScanner arayüzünde "Select Camera" genellikle bir text node olarak durur.
-            // Onu bulmak zor olabilir, CSS ile gizlemek daha kolaydır.
-        }
-        
-        // Metinleri düğüm bazında ara ve değiştir (daha derin tarama)
-        const walker = document.createTreeWalker(reader, NodeFilter.SHOW_TEXT, null, false);
-        let node;
-        while(node = walker.nextNode()) {
-            if(node.nodeValue.includes("Select Camera")) node.nodeValue = node.nodeValue.replace("Select Camera", "Kamera Seçin");
-            if(node.nodeValue.includes("No cameras found")) node.nodeValue = "Kamera bulunamadı";
-            if(node.nodeValue.includes("Last result")) node.nodeValue = "Sonuç:";
+        // "Select Camera" yazısını bulursan sil (CSS ile de gizledik ama garanti olsun)
+        const labels = reader.getElementsByTagName("span");
+        for (let label of labels) {
+            if (label.innerText.includes("Select Camera")) label.style.display = 'none';
         }
     }
 
     function startScanner() { 
+        // qrbox: 250 yerine dinamik veya video boyutunda yapıyoruz
+        // ÖNEMLİ: mobilde tam ekran gibi durması için qrbox'ı genişletiyoruz
         const config = { 
             fps: 10, 
-            qrbox: 250, 
+            qrbox: { width: 250, height: 250 },
+            aspectRatio: 1.0, 
             facingMode: "environment"
         };
         
         const scanner = new Html5QrcodeScanner("reader", config); 
+        
         scanner.render((t) => { 
             if(!islemMesgul) islemYap(t, false); 
+        }, (error) => {
+            // Hata olursa (örn: okuma hatası) konsola bas ama kullanıcıyı rahatsız etme
+            // console.warn(error);
         });
 
-        // Kütüphane arayüzü yüklendikten sonra sürekli kontrol edip Türkçeleştir
-        setInterval(turkcelestir, 500);
+        // Arayüz yüklendiğinde butonları ve stilleri düzeltmek için sürekli kontrol
+        const uiInterval = setInterval(() => {
+            uiDuzeltmeleri();
+            // Video elementini zorla sığdır
+            const video = document.querySelector("#reader video");
+            if(video) {
+                video.style.objectFit = "cover";
+                video.style.width = "100%";
+                video.style.height = "100%";
+            }
+        }, 500);
     }
     
     window.manuelIslem = () => { const val = document.getElementById("manualInput").value.trim(); if(val.toLowerCase() === 'm') islemYap("MISAFIR_"+Date.now(), true, true); else if(val) checkNoAndProcess(val); document.getElementById("manualInput").value = ""; };
