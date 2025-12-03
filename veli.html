@@ -5,117 +5,35 @@
     <title>Veli Bilgilendirme</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#3498db">
-    
     <link rel="icon" type="image/jpeg" href="veli.jpg">
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
     <style>
-        :root {
-            --primary: #3498db; 
-            --primary-dark: #2980b9; 
-            --bg-soft: #f4f7f6;
-            --white: #ffffff;
-            --accent-green: #2ecc71;
-            --accent-red: #e74c3c;
-        }
-        
-        body { 
-            background-color: var(--bg-soft); 
-            font-family: 'Quicksand', sans-serif; 
-            color: #555;
-            min-height: 100vh;
-            overscroll-behavior-y: none;
-        }
-
-        .mobile-container {
-            max-width: 480px; 
-            width: 100%;
-            margin: 0 auto; 
-            background: var(--white); 
-            min-height: 100vh; 
-            display: flex; flex-direction: column;
-            position: relative;
-        }
-
-        /* GİRİŞ EKRANI */
+        :root { --primary: #3498db; --primary-dark: #2980b9; --bg-soft: #f4f7f6; --white: #ffffff; --accent-green: #2ecc71; --accent-red: #e74c3c; }
+        body { background-color: var(--bg-soft); font-family: 'Quicksand', sans-serif; color: #555; min-height: 100vh; overscroll-behavior-y: none; }
+        .mobile-container { max-width: 480px; width: 100%; margin: 0 auto; background: var(--white); min-height: 100vh; display: flex; flex-direction: column; position: relative; }
         #authSection { min-height: 100vh; display: flex; flex-direction: column; }
-        
-        .auth-header {
-            background: linear-gradient(135deg, #3498db 0%, #87cefa 100%);
-            padding: 50px 30px 40px;
-            border-radius: 0 0 40px 40px;
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-
-        .auth-logo {
-            width: 100px; height: 100px; object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid rgba(255,255,255,0.3);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
-        
+        .auth-header { background: linear-gradient(135deg, #3498db 0%, #87cefa 100%); padding: 50px 30px 40px; border-radius: 0 0 40px 40px; text-align: center; color: white; margin-bottom: 30px; }
+        .auth-logo { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 4px solid rgba(255,255,255,0.3); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
         .auth-title { font-weight: 700; font-size: 1.6rem; margin-top: 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        
         .form-area { padding: 0 30px; flex: 1; }
-        
-        .soft-input {
-            background: #f9f9f9; border: 2px solid #eee; border-radius: 20px;
-            padding: 15px 20px; font-size: 16px; width: 100%; margin-bottom: 15px;
-            transition: 0.3s;
-        }
+        .soft-input { background: #f9f9f9; border: 2px solid #eee; border-radius: 20px; padding: 15px 20px; font-size: 16px; width: 100%; margin-bottom: 15px; transition: 0.3s; }
         .soft-input:focus { background: white; border-color: var(--primary); outline: none; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1); }
-        
-        .btn-soft {
-            background: var(--primary); color: white; border: none;
-            padding: 15px; border-radius: 20px; font-weight: 700; width: 100%;
-            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3); transition: 0.3s;
-        }
+        .btn-soft { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 20px; font-weight: 700; width: 100%; box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3); transition: 0.3s; }
         .btn-soft:active { transform: scale(0.98); }
-
-        /* PANEL EKRANI */
-        .panel-header {
-            background: linear-gradient(135deg, #2980b9 0%, #6dd5fa 100%);
-            padding: 40px 25px 40px; border-radius: 0 0 30px 30px;
-            color: white; position: relative;
-            box-shadow: 0 10px 20px rgba(41, 128, 185, 0.3); text-align: center;
-        }
-        
-        .panel-logo {
-            width: 80px; height: 80px; object-fit: cover; border-radius: 50%;
-            border: 3px solid rgba(255,255,255,0.4); box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            margin-bottom: 10px;
-        }
-        
-        .btn-logout {
-            position: absolute; top: 20px; right: 20px;
-            background: rgba(255,255,255,0.25); color: white;
-            border: none; padding: 8px 15px; border-radius: 15px; font-size: 0.85rem;
-            backdrop-filter: blur(5px); font-weight: 600; cursor: pointer;
-        }
-
+        .panel-header { background: linear-gradient(135deg, #2980b9 0%, #6dd5fa 100%); padding: 40px 25px 40px; border-radius: 0 0 30px 30px; color: white; position: relative; box-shadow: 0 10px 20px rgba(41, 128, 185, 0.3); text-align: center; }
+        .panel-logo { width: 80px; height: 80px; object-fit: cover; border-radius: 50%; border: 3px solid rgba(255,255,255,0.4); box-shadow: 0 5px 15px rgba(0,0,0,0.15); margin-bottom: 10px; }
+        .btn-logout { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.25); color: white; border: none; padding: 8px 15px; border-radius: 15px; font-size: 0.85rem; backdrop-filter: blur(5px); font-weight: 600; cursor: pointer; }
         .content-area { margin-top: -20px; padding: 0 20px 30px; }
-
-        .meal-card {
-            background: white; border-radius: 20px; padding: 15px 20px;
-            margin-bottom: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.04);
-            display: flex; align-items: center; justify-content: space-between;
-            border: 1px solid #f0f0f0;
-        }
-
+        .meal-card { background: white; border-radius: 20px; padding: 15px 20px; margin-bottom: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.04); display: flex; align-items: center; justify-content: space-between; border: 1px solid #f0f0f0; }
         .date-box { text-align: center; background: #f8f9fa; padding: 8px 12px; border-radius: 12px; min-width: 65px; }
         .date-day { font-weight: 800; font-size: 1rem; color: #555; line-height: 1; }
         .date-time { font-size: 0.7rem; color: #999; margin-top: 3px; }
-
         .meal-status { padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px; }
         .status-ok { background: #e0f2f1; color: #00695c; }
         .status-double { background: #ffebee; color: #c62828; }
-
         .nav-tabs-soft { border: none; justify-content: center; margin-bottom: 20px; background: #f1f1f1; border-radius: 25px; padding: 5px; }
         .nav-link { border: none; border-radius: 20px; color: #777; font-weight: 600; width: 50%; text-align: center; }
         .nav-link.active { background: white; color: var(--primary); shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -124,19 +42,16 @@
 <body>
 
 <div class="mobile-container">
-    
     <div id="authSection">
         <div class="auth-header">
             <img src="logo.jpg" alt="Okul Logosu" class="auth-logo mb-2">
             <div class="auth-title">Veli Portalı</div>
         </div>
-
         <div class="form-area">
             <ul class="nav nav-pills nav-tabs-soft mb-4">
                 <li class="nav-item w-50"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-login">Giriş Yap</button></li>
                 <li class="nav-item w-50"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-register">Kayıt Ol</button></li>
             </ul>
-
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-login">
                     <input type="email" id="loginEmail" class="form-control soft-input" placeholder="E-Posta Adresiniz">
@@ -166,17 +81,13 @@
                 <span class="badge bg-white text-primary mt-2 px-3 py-1 rounded-pill" id="veliOgrSinif">...</span>
             </div>
         </div>
-
         <div class="content-area">
             <h6 class="text-muted ms-2 mb-3 fw-bold small" style="text-transform: uppercase; letter-spacing: 1px;">Yemek Hareketleri</h6>
             <div id="yemekGecmisiListesi">
-                <div class="text-center py-5 text-muted opacity-50">
-                    <i class="fas fa-circle-notch fa-spin fa-2x mb-3"></i><br>Veriler yükleniyor...
-                </div>
+                <div class="text-center py-5 text-muted opacity-50"><i class="fas fa-circle-notch fa-spin fa-2x mb-3"></i><br>Veriler yükleniyor...</div>
             </div>
         </div>
     </div>
-
 </div>
 
 <script type="module">
@@ -188,26 +99,13 @@
     const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
 
     onAuthStateChanged(auth, (user) => {
-        if (user) {
-            verileriYukle(user.uid);
-        } else {
-            document.getElementById("authSection").classList.remove("d-none");
-            document.getElementById("panelSection").classList.add("d-none");
-        }
+        if (user) { verileriYukle(user.uid); } else { document.getElementById("authSection").classList.remove("d-none"); document.getElementById("panelSection").classList.add("d-none"); }
     });
 
     window.loginVeli = async () => {
         const e = document.getElementById("loginEmail").value; const p = document.getElementById("loginPass").value;
         if(!e || !p) return Swal.fire({ icon: 'warning', title: 'Dikkat', text: 'Lütfen e-posta ve şifrenizi giriniz.', confirmButtonColor: '#3498db' });
-        try { 
-            await setPersistence(auth, browserLocalPersistence);
-            await signInWithEmailAndPassword(auth, e, p); 
-        } catch(err) { 
-            let msg = "Giriş yapılamadı.";
-            if(err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found') msg = "Hatalı E-Posta veya Şifre!";
-            else if(err.code === 'auth/too-many-requests') msg = "Çok fazla deneme yaptınız. Lütfen bekleyiniz.";
-            Swal.fire({ icon: 'error', title: 'Hata', text: msg, confirmButtonColor: '#e74c3c' });
-        }
+        try { await setPersistence(auth, browserLocalPersistence); await signInWithEmailAndPassword(auth, e, p); } catch(err) { let msg = "Giriş yapılamadı."; if(err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found') msg = "Hatalı E-Posta veya Şifre!"; else if(err.code === 'auth/too-many-requests') msg = "Çok fazla deneme yaptınız. Lütfen bekleyiniz."; Swal.fire({ icon: 'error', title: 'Hata', text: msg, confirmButtonColor: '#e74c3c' }); }
     }
 
     window.registerVeli = async () => {
@@ -218,6 +116,7 @@
             if(!docSnap.exists() || docSnap.data().kullanildi) return Swal.fire({ icon: 'error', title: 'Geçersiz Kod', text: 'Bu kod hatalı veya daha önce kullanılmış!', confirmButtonColor: '#e74c3c' });
             await setPersistence(auth, browserLocalPersistence);
             const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+            // GÜVENLİK: Sadece 'veli' rolü atanıyor
             await setDoc(doc(db, "users", userCred.user.uid), { role: "veli", linked_student: String(docSnap.data().ogrenci_barkod), email: email });
             await updateDoc(docRef, { kullanildi: true }); 
             Swal.fire({ icon: 'success', title: 'Harika!', text: 'Kaydınız oluşturuldu. Hoş geldiniz.', confirmButtonColor: '#2ecc71' });
@@ -227,56 +126,19 @@
     async function verileriYukle(uid) {
         document.getElementById("authSection").classList.add("d-none"); document.getElementById("panelSection").classList.remove("d-none");
         try {
-            const userSnap = await getDoc(doc(db, "users", uid));
-            if(!userSnap.exists()) return;
-            const barkod = userSnap.data().linked_student;
-
+            const userSnap = await getDoc(doc(db, "users", uid)); if(!userSnap.exists()) return; const barkod = userSnap.data().linked_student;
             const qOgr = query(collection(db, "ogrenciler"), where("barkod", "==", barkod)); const snapOgr = await getDocs(qOgr);
-            if(!snapOgr.empty) { 
-                const d = snapOgr.docs[0].data(); 
-                document.getElementById("veliOgrAd").innerText = d.ad_soyad; 
-                document.getElementById("veliOgrSinif").innerText = d.sinif;
-            }
-
-            const qYemek = query(collection(db, "yemek_hareketleri"), where("barkod", "==", barkod)); 
-            const snapYemek = await getDocs(qYemek);
+            if(!snapOgr.empty) { const d = snapOgr.docs[0].data(); document.getElementById("veliOgrAd").innerText = d.ad_soyad; document.getElementById("veliOgrSinif").innerText = d.sinif; }
+            const qYemek = query(collection(db, "yemek_hareketleri"), where("barkod", "==", barkod)); const snapYemek = await getDocs(qYemek);
             const listDiv = document.getElementById("yemekGecmisiListesi"); listDiv.innerHTML = "";
-            
             if(snapYemek.empty) { listDiv.innerHTML = '<div class="text-center py-5 text-muted"><i class="fas fa-inbox fa-3x mb-3 opacity-50"></i><br>Veri bulunamadı.</div>'; return; }
-
-            let yemekData = [];
-            snapYemek.forEach(d => yemekData.push(d.data()));
-            yemekData.sort((a, b) => b.zaman.seconds - a.zaman.seconds);
-
+            let yemekData = []; snapYemek.forEach(d => yemekData.push(d.data())); yemekData.sort((a, b) => b.zaman.seconds - a.zaman.seconds);
             yemekData.slice(0, 50).forEach(data => {
-                const isDouble = data.tur === 'ikinci_ogun';
-                const statusClass = isDouble ? 'status-double' : 'status-ok';
-                const statusText = isDouble ? '2. HAK' : 'AFİYET OLSUN';
-                const icon = isDouble ? '<i class="fas fa-exclamation-circle me-1"></i>' : '<i class="fas fa-check-circle me-1"></i>';
-                
-                listDiv.innerHTML += `
-                <div class="meal-card">
-                    <div class="d-flex align-items-center">
-                        <div class="date-box">
-                            <div class="date-day">${data.tarih.split('-')[2]||data.tarih}</div>
-                            <div class="date-time">${new Date(data.zaman.seconds*1000).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'})}</div>
-                        </div>
-                        <div class="ms-3">
-                            <div class="fw-bold text-dark" style="font-size:0.95rem;">Yemek Hizmeti</div>
-                            <div class="small text-muted">Kantin/Yemekhane</div>
-                        </div>
-                    </div>
-                    <div class="meal-status ${statusClass}">
-                        ${icon}${statusText}
-                    </div>
-                </div>`;
+                const isDouble = data.tur === 'ikinci_ogun'; const statusClass = isDouble ? 'status-double' : 'status-ok'; const statusText = isDouble ? '2. HAK' : 'AFİYET OLSUN'; const icon = isDouble ? '<i class="fas fa-exclamation-circle me-1"></i>' : '<i class="fas fa-check-circle me-1"></i>';
+                listDiv.innerHTML += `<div class="meal-card"><div class="d-flex align-items-center"><div class="date-box"><div class="date-day">${data.tarih.split('-')[2]||data.tarih}</div><div class="date-time">${new Date(data.zaman.seconds*1000).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'})}</div></div><div class="ms-3"><div class="fw-bold text-dark" style="font-size:0.95rem;">Yemek Hizmeti</div><div class="small text-muted">Kantin/Yemekhane</div></div></div><div class="meal-status ${statusClass}">${icon}${statusText}</div></div>`;
             });
-        } catch(e) { 
-            console.error(e); 
-            document.getElementById("yemekGecmisiListesi").innerHTML = '<div class="text-center py-5 text-danger">Bağlantı hatası oluştu.</div>';
-        }
+        } catch(e) { console.error(e); document.getElementById("yemekGecmisiListesi").innerHTML = '<div class="text-center py-5 text-danger">Bağlantı hatası oluştu.</div>'; }
     }
-
     window.cikisYap = async () => { await signOut(auth); window.location.reload(); }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

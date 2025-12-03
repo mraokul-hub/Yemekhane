@@ -15,7 +15,6 @@
     
     <style>
         :root { 
-            /* PREMIUM RENK PALETİ (Ice Blue & Slate) */
             --bg-body: #e3e8ef; --bg-sidebar: #ffffff; --bg-card: #ffffff;          
             --text-main: #1e293b; --text-muted: #64748b;       
             --primary: #2563eb; --primary-hover: #1d4ed8; --primary-light: #eff6ff;    
@@ -24,66 +23,36 @@
             --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
             --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        
         body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; }
-        
-        /* GİRİŞ EKRANI */
         #loginSection { background: var(--bg-body); background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 24px 24px; }
         .login-card { background: var(--bg-card); border-radius: var(--border-radius); padding: 40px; width: 100%; max-width: 400px; border: 1px solid var(--border-color); box-shadow: var(--shadow-card); }
-
-        /* SIDEBAR */
         .sidebar { background-color: var(--bg-sidebar); min-height: 100vh; border-right: 1px solid var(--border-color); box-shadow: 4px 0 15px rgba(0,0,0,0.02); }
         .sidebar-logo { width: 90px; height: 90px; object-fit: cover; border-radius: 50%; border: 4px solid var(--bg-body); margin-bottom: 15px; box-shadow: var(--shadow-sm); }
-        
         .nav-link { color: var(--text-muted); margin-bottom: 5px; border-radius: 10px; padding: 12px 20px; font-weight: 600; transition: all 0.2s ease; }
         .nav-link:hover { background-color: var(--bg-body); color: var(--primary); transform: translateX(3px); }
         .nav-link.active { background-color: var(--primary-light); color: var(--primary); border-right: 4px solid var(--primary); }
-
-        /* KARTLAR */
         .admin-card { background: var(--bg-card); border-radius: var(--border-radius); box-shadow: var(--shadow-card); padding: 25px; margin-bottom: 25px; border: 1px solid #fff; }
-        
         .stat-card { border-top: 4px solid transparent; transition: transform 0.2s, box-shadow 0.2s; }
         .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--text-muted); }
         .stat-val { font-size: 2.5rem; font-weight: 800; margin-top: 5px; line-height: 1; color: var(--text-main); }
-
-        /* FORM & BUTTONS */
         .form-control { background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 10px; color: var(--text-main); }
         .form-control:focus { background-color: #fff; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-        .form-control:disabled { background-color: #e2e8f0; opacity: 0.7; cursor: not-allowed; }
-
         .btn-primary { background-color: var(--primary); border: none; padding: 10px 24px; border-radius: 10px; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); }
         .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
         .btn-warning { background-color: var(--warning); border:none; color:white; border-radius:10px; font-weight: 600; }
-        .btn-warning:hover { background-color: #d97706; color: white; }
         .btn-danger { background-color: var(--danger); border:none; border-radius:10px; }
         .btn-secondary { background-color: var(--text-muted); border:none; border-radius:10px; }
-
-        /* TABLO & LİSTE */
         .table thead th { background-color: #f8fafc; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; border-bottom: 1px solid var(--border-color); padding: 15px; }
         .table tbody td { padding: 15px; vertical-align: middle; }
         .sortable-th { cursor: pointer; transition: 0.2s; user-select: none; }
-        .sortable-th:hover { color: var(--primary); background-color: #eff6ff; }
-
         .feed-row { padding: 14px 15px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; transition: all 0.2s ease; border-left: 4px solid transparent; margin-bottom: 2px; border-radius: 6px; }
         .feed-row:nth-child(even) { background-color: #f8fafc; }
         .feed-row:hover { background-color: var(--primary-light); border-left-color: var(--primary); transform: translateX(5px); cursor: pointer; }
-        
-        .not-eaten-item { padding: 12px; border-bottom: 1px solid #f1f5f9; font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; }
-        .not-eaten-item:hover { background-color: #f8fafc; }
-        
-        /* Rozetler ve Silme Butonu */
         .badge-soft-success { background-color: #d1fae5; color: #065f46; }
         .badge-soft-danger { background-color: #fee2e2; color: #991b1b; }
-        .delete-meal-btn:hover { color: #dc2626 !important; transform: scale(1.2); transition: 0.2s; }
-
         #printArea { display: none; }
-        @media print {
-            body * { visibility: hidden; } #dashboardSection, .sidebar { display: none !important; }
-            #printArea { display: flex !important; visibility: visible !important; position: absolute; left: 0; top: 0; width: 100%; flex-wrap: wrap; background: white; z-index: 99999; }
-            #printArea * { visibility: visible !important; color: black !important; }
-            .col-print { width: 30%; float: left; margin: 1.5%; border: 1px solid #000; padding: 10px; text-align: center; page-break-inside: avoid; }
-        }
+        @media print { body * { visibility: hidden; } #dashboardSection, .sidebar { display: none !important; } #printArea { display: flex !important; visibility: visible !important; position: absolute; left: 0; top: 0; width: 100%; flex-wrap: wrap; background: white; z-index: 99999; } #printArea * { visibility: visible !important; color: black !important; } .col-print { width: 30%; float: left; margin: 1.5%; border: 1px solid #000; padding: 10px; text-align: center; page-break-inside: avoid; } }
     </style>
 </head>
 <body>
@@ -107,34 +76,29 @@
                 <h6 class="fw-bold text-dark mb-0 mt-2" style="letter-spacing: 1px;">YEMEKHANE</h6>
                 <small class="text-muted" style="font-size: 0.7rem;">YÖNETİM PANELİ</small>
             </div>
-            
             <ul class="nav flex-column gap-2">
                 <li class="nav-item"><a class="nav-link active" onclick="showTab('main', this)"><i class="fas fa-chart-line"></i> Genel Bakış</a></li>
                 <li class="nav-item"><a class="nav-link" onclick="showTab('students', this); loadStudents();"><i class="fas fa-user-graduate"></i> Öğrenci İşlemleri</a></li>
                 <li class="nav-item"><a class="nav-link" onclick="showTab('codes', this); loadVeliCodes();"><i class="fas fa-qrcode"></i> Erişim Kodları</a></li>
                 <li class="nav-item"><a class="nav-link" onclick="showTab('users', this); listScannerUsers();"><i class="fas fa-users-cog"></i> Personel Yönetimi</a></li>
             </ul>
-            
             <div class="mt-auto pt-5 pb-3 text-center">
                 <a class="nav-link text-danger fw-bold bg-light" onclick="window.logout()" style="border: 1px solid #fee2e2;"><i class="fas fa-sign-out-alt"></i> ÇIKIŞ YAP</a>
             </div>
         </nav>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            
             <div id="tab-main" class="tab-content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div><h3 class="fw-bold text-dark mb-0">Genel Durum</h3><p class="text-muted small mb-0">Günlük istatistikler ve özet.</p></div>
                     <div class="bg-white px-4 py-2 rounded-pill shadow-sm fw-bold text-primary border"><i class="far fa-calendar-alt me-2"></i><span id="bugunTarih"></span></div>
                 </div>
-
                 <div class="row g-4 mb-4">
                     <div class="col-md-3"><div class="admin-card stat-card h-100" style="border-top-color: var(--success);"><div class="stat-label" style="color: var(--success);">BUGÜN YİYEN</div><div class="stat-val text-dark" id="lblBugunYiyen">0</div></div></div>
                     <div class="col-md-3"><div class="admin-card stat-card h-100" style="border-top-color: var(--danger);"><div class="stat-label" style="color: var(--danger);">ÇİFT DİKİŞ</div><div class="stat-val text-dark" id="lblCiftDikis">0</div></div></div>
                     <div class="col-md-3"><div class="admin-card stat-card h-100" style="border-top-color: var(--warning);"><div class="stat-label" style="color: var(--warning);">HENÜZ YEMEYEN</div><div class="stat-val text-dark" id="lblYemeyen">0</div></div></div>
                     <div class="col-md-3"><div class="admin-card h-100 d-flex align-items-center justify-content-center p-2"><canvas id="yemekPieChart" style="max-height: 100px;"></canvas></div></div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-8">
                         <div class="admin-card" style="height: 600px; display: flex; flex-direction: column;">
@@ -144,12 +108,12 @@
                     </div>
                     <div class="col-md-4">
                         <div class="admin-card">
-                            <h5 class="fw-bold mb-3 pb-3 border-bottom text-dark">Henüz Yemeyenler Listesi</h5>
-                            <button class="btn btn-warning w-100 fw-bold d-flex justify-content-between align-items-center text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYemeyenler" aria-expanded="false" onclick="listYemeyenler()">
+                            <h5 class="fw-bold mb-3 pb-3 border-bottom text-dark">Henüz Yemeyenler</h5>
+                            <button class="btn btn-warning w-100 fw-bold d-flex justify-content-between align-items-center text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYemeyenler" onclick="listYemeyenler()">
                                 <span><i class="fas fa-list-ul me-2"></i>Listeyi Görüntüle</span> <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="collapse mt-3" id="collapseYemeyenler">
-                                <div id="yemeyenlerListesi" style="max-height: 400px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                <div id="yemeyenlerListesi" style="max-height: 400px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 8px;">
                                     <div class="text-center text-muted small py-3">Veriler yükleniyor...</div>
                                 </div>
                             </div>
@@ -220,25 +184,12 @@
             </div>
             <div class="modal-body p-4">
                 <input type="hidden" id="editScannerId">
-                <div class="mb-3">
-                    <label class="form-label fw-bold small text-muted">Görevli İsmi</label>
-                    <input type="text" id="scName" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold small text-muted">E-Posta</label>
-                    <input type="email" id="scEmail" class="form-control">
-                </div>
-                <div class="mb-3" id="passContainer">
-                    <label class="form-label fw-bold small text-muted">Şifre</label>
-                    <input type="text" id="scPass" class="form-control">
-                </div>
-                <div id="editStaffWarning" class="alert alert-warning small border-0 d-none">
-                    <i class="fas fa-shield-alt me-2"></i>Güvenlik gereği; şifreyi ve/veya e-postayı değiştirmek için kaydı silip yeniden oluşturunuz.
-                </div>
+                <div class="mb-3"><label class="form-label fw-bold small text-muted">Görevli İsmi</label><input type="text" id="scName" class="form-control"></div>
+                <div class="mb-3"><label class="form-label fw-bold small text-muted">E-Posta</label><input type="email" id="scEmail" class="form-control"></div>
+                <div class="mb-3" id="passContainer"><label class="form-label fw-bold small text-muted">Şifre</label><input type="text" id="scPass" class="form-control"></div>
+                <div id="editStaffWarning" class="alert alert-warning small border-0 d-none"><i class="fas fa-shield-alt me-2"></i>Güvenlik gereği; şifreyi ve/veya e-postayı değiştirmek için kaydı silip yeniden oluşturunuz.</div>
             </div>
-            <div class="modal-footer bg-light">
-                <button onclick="saveScannerUser()" class="btn btn-success w-100">Kaydet</button>
-            </div>
+            <div class="modal-footer bg-light"><button onclick="saveScannerUser()" class="btn btn-success w-100">Kaydet</button></div>
         </div>
     </div>
 </div>
@@ -248,7 +199,7 @@
 <script type="module">
     import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, updatePassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-    import { getFirestore, collection, query, where, onSnapshot, doc, setDoc, getDocs, orderBy, deleteDoc, limit, writeBatch, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, query, where, onSnapshot, doc, setDoc, getDoc, getDocs, orderBy, deleteDoc, limit, writeBatch, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
     const firebaseConfig = { apiKey: "AIzaSyC2ATSLTN8ba3pao1kKd2cT1vHcT8rafT8", authDomain: "yemekhane-8914d.firebaseapp.com", projectId: "yemekhane-8914d", storageBucket: "yemekhane-8914d.firebasestorage.app", messagingSenderId: "352053991912", appId: "1:352053991912:web:f4ea149d68f16ae5d8ec5d" };
     const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
@@ -257,9 +208,33 @@
     let allStudents = [], allCodes = [], eatenTodaySet = new Set();
     let sortDir = 1;
 
-    window.login = async () => { try { await setPersistence(auth, browserLocalPersistence); await signInWithEmailAndPassword(auth, document.getElementById("email").value, document.getElementById("password").value); await setDoc(doc(db,"users",auth.currentUser.uid),{role:"admin"},{merge:true}); } catch(e){Swal.fire("Hata",e.message,"error");} };
+    // GÜVENLİK GÜNCELLEMESİ: Rol kontrolü eklendi
+    window.login = async () => { 
+        try { 
+            await setPersistence(auth, browserLocalPersistence); 
+            const uc = await signInWithEmailAndPassword(auth, document.getElementById("email").value, document.getElementById("password").value); 
+            // Giriş sonrası rol kontrolü
+            const uDoc = await getDoc(doc(db,"users",uc.user.uid));
+            if(!uDoc.exists() || uDoc.data().role !== "admin") {
+                await signOut(auth);
+                throw new Error("Bu panele sadece Yöneticiler girebilir!");
+            }
+        } catch(e){Swal.fire("Yetkisiz Giriş",e.message,"error");} 
+    };
+
     window.logout = () => signOut(auth).then(()=>location.reload());
-    onAuthStateChanged(auth, user => { if(user) { document.getElementById("loginSection").classList.add("d-none"); document.getElementById("dashboardSection").classList.remove("d-none"); startSystem(); } });
+    onAuthStateChanged(auth, async user => { 
+        if(user) { 
+            const uDoc = await getDoc(doc(db,"users",user.uid));
+            if(uDoc.exists() && uDoc.data().role === "admin") {
+                document.getElementById("loginSection").classList.add("d-none"); 
+                document.getElementById("dashboardSection").classList.remove("d-none"); 
+                startSystem();
+            } else {
+                await signOut(auth);
+            }
+        } 
+    });
 
     function startSystem() {
         document.getElementById("bugunTarih").innerText = getTurkiyeDate();
@@ -323,47 +298,20 @@
 
     window.deleteMeal = async (e, docId) => {
         e.stopPropagation(); 
-        const result = await Swal.fire({
-            title: 'Emin misiniz?',
-            text: "Bu yemek kaydı silinecek!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#64748b',
-            confirmButtonText: 'Evet, Sil'
-        });
-
-        if (result.isConfirmed) {
-            try {
-                await deleteDoc(doc(db, "yemek_hareketleri", docId));
-                const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
-                Toast.fire({ icon: 'success', title: 'Kayıt silindi' });
-            } catch (err) {
-                Swal.fire("Hata", err.message, "error");
-            }
-        }
+        const result = await Swal.fire({ title: 'Emin misiniz?', text: "Bu yemek kaydı silinecek!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#64748b', confirmButtonText: 'Evet, Sil' });
+        if (result.isConfirmed) { try { await deleteDoc(doc(db, "yemek_hareketleri", docId)); Swal.fire({icon: 'success', title: 'Silindi', toast:true, position:'top-end', timer:3000, showConfirmButton:false}); } catch (err) { Swal.fire("Hata", err.message, "error"); } }
     };
 
     window.showHistory = async (barkod, ad) => {
-        document.getElementById("histName").innerText = ad;
-        const ul = document.getElementById("historyList");
-        ul.innerHTML = '<li class="list-group-item text-center">Yükleniyor...</li>';
-        new bootstrap.Modal(document.getElementById('historyModal')).show();
-        try {
-            const q = query(collection(db, "yemek_hareketleri"), where("barkod", "==", barkod));
-            const snap = await getDocs(q);
-            ul.innerHTML = "";
-            if(snap.empty) { ul.innerHTML = '<li class="list-group-item">Kayıt yok.</li>'; return; }
+        document.getElementById("histName").innerText = ad; const ul = document.getElementById("historyList"); ul.innerHTML = '<li class="list-group-item text-center">Yükleniyor...</li>'; new bootstrap.Modal(document.getElementById('historyModal')).show();
+        try { const q = query(collection(db, "yemek_hareketleri"), where("barkod", "==", barkod)); const snap = await getDocs(q); ul.innerHTML = ""; if(snap.empty) { ul.innerHTML = '<li class="list-group-item">Kayıt yok.</li>'; return; }
             let allMeals = []; snap.forEach(d => allMeals.push(d.data()));
-            let mealsByDate = {};
-            allMeals.forEach(m => { if(!mealsByDate[m.tarih]) mealsByDate[m.tarih] = []; mealsByDate[m.tarih].push(m); });
+            let mealsByDate = {}; allMeals.forEach(m => { if(!mealsByDate[m.tarih]) mealsByDate[m.tarih] = []; mealsByDate[m.tarih].push(m); });
             Object.keys(mealsByDate).sort().reverse().slice(0, 10).forEach(tarih => {
                 let dailyMeals = mealsByDate[tarih].sort((a,b) => a.zaman.seconds - b.zaman.seconds);
                 dailyMeals.forEach((m, idx) => {
                     const saat = new Date(m.zaman.seconds*1000).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
-                    const isFirst = (idx === 0);
-                    const label = isFirst ? 'Giriş' : (idx + 1) + '. Hak';
-                    const colorClass = isFirst ? 'text-success' : 'text-danger';
+                    const isFirst = (idx === 0); const label = isFirst ? 'Giriş' : (idx + 1) + '. Hak'; const colorClass = isFirst ? 'text-success' : 'text-danger';
                     ul.innerHTML += `<li class="list-group-item d-flex justify-content-between"><span><strong>${tarih}</strong> ${saat}</span><span class="fw-bold ${colorClass}">${label}</span></li>`;
                 });
             });
@@ -372,19 +320,10 @@
 
     function updateStats() {
         if(allStudents.length === 0) return;
-        
-        // MİSAFİR YİYİNCE ÖĞRENCİ SAYISI AZALMASIN DİYE GÜNCELLEME:
-        let eatenStudentCount = 0;
-        allStudents.forEach(s => {
-            if(eatenTodaySet.has(s.barkod)) eatenStudentCount++;
-        });
-        
-        const notEaten = Math.max(0, allStudents.length - eatenStudentCount);
-        document.getElementById("lblYemeyen").innerText = notEaten;
-        
-        const ctx = document.getElementById('yemekPieChart').getContext('2d');
-        if(window.myPie) window.myPie.destroy();
-        window.myPie = new Chart(ctx, { type: 'doughnut', data: { labels: ['Yiyen (Öğrenci)', 'Bekleyen'], datasets: [{ data: [eatenStudentCount, notEaten], backgroundColor: ['#10b981', '#cbd5e1'], borderWidth: 0 }] }, options: { responsive: true, plugins: { legend: { display: false } }, cutout: '70%' } });
+        let eatenStudentCount = 0; allStudents.forEach(s => { if(eatenTodaySet.has(s.barkod)) eatenStudentCount++; });
+        const notEaten = Math.max(0, allStudents.length - eatenStudentCount); document.getElementById("lblYemeyen").innerText = notEaten;
+        const ctx = document.getElementById('yemekPieChart').getContext('2d'); if(window.myPie) window.myPie.destroy();
+        window.myPie = new Chart(ctx, { type: 'doughnut', data: { labels: ['Yiyen', 'Bekleyen'], datasets: [{ data: [eatenStudentCount, notEaten], backgroundColor: ['#10b981', '#cbd5e1'], borderWidth: 0 }] }, options: { responsive: true, plugins: { legend: { display: false } }, cutout: '70%' } });
     }
 
     window.listYemeyenler = () => {
@@ -396,32 +335,15 @@
     };
 
     window.loadStudents = async () => { const s = await getDocs(collection(db,"ogrenciler")); allStudents = []; s.forEach(d=>allStudents.push(d.data())); filterStudents(); updateStats(); };
-    
     window.filterStudents = () => { 
-        const v = document.getElementById("studentSearch").value.toLowerCase(); 
-        const tb = document.getElementById("studentListBody"); 
-        tb.innerHTML = ""; 
+        const v = document.getElementById("studentSearch").value.toLowerCase(); const tb = document.getElementById("studentListBody"); tb.innerHTML = ""; 
         const f = allStudents.filter(s => (s.ad_soyad+s.numara+s.sinif+s.barkod).toLowerCase().includes(v)); 
-        f.slice(0, 100).forEach(s => { 
-            tb.innerHTML += `<tr><td><input type="checkbox" class="st-check form-check-input" value="${s.barkod}"></td><td>${s.numara}</td><td class="fw-bold text-primary">${s.ad_soyad}</td><td><span class="badge bg-light text-dark border">${s.sinif}</span></td><td class="text-muted small font-monospace">${s.barkod}</td><td><button onclick="openStudentModal('edit', '${s.barkod}')" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button> <button onclick="deleteStudent('${s.barkod}')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button></td></tr>`; 
-        }); 
+        f.slice(0, 100).forEach(s => { tb.innerHTML += `<tr><td><input type="checkbox" class="st-check form-check-input" value="${s.barkod}"></td><td>${s.numara}</td><td class="fw-bold text-primary">${s.ad_soyad}</td><td><span class="badge bg-light text-dark border">${s.sinif}</span></td><td class="text-muted small font-monospace">${s.barkod}</td><td><button onclick="openStudentModal('edit', '${s.barkod}')" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button> <button onclick="deleteStudent('${s.barkod}')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button></td></tr>`; }); 
     };
-
-    window.sortStudents = (key) => { 
-        sortDir *= -1; 
-        allStudents.sort((a, b) => {
-            let valA = a[key] ? a[key].toString() : "";
-            let valB = b[key] ? b[key].toString() : "";
-            if (key === 'numara' && !isNaN(valA) && !isNaN(valB)) { return (parseInt(valA) - parseInt(valB)) * sortDir; }
-            return valA.localeCompare(valB, 'tr', { numeric: true }) * sortDir;
-        });
-        filterStudents(); 
-    };
-
+    window.sortStudents = (key) => { sortDir *= -1; allStudents.sort((a, b) => { let valA = a[key] ? a[key].toString() : ""; let valB = b[key] ? b[key].toString() : ""; if (key === 'numara' && !isNaN(valA) && !isNaN(valB)) { return (parseInt(valA) - parseInt(valB)) * sortDir; } return valA.localeCompare(valB, 'tr', { numeric: true }) * sortDir; }); filterStudents(); };
     window.openStudentModal = (mode, barkod = null) => {
         const t = document.getElementById("modalTitle"), i = document.getElementById("editBarkodInput");
-        document.getElementById("editAd").value = ""; document.getElementById("editNo").value = ""; 
-        document.getElementById("editSinif").value = ""; document.getElementById("editOldBarkod").value = ""; i.value = "";
+        document.getElementById("editAd").value = ""; document.getElementById("editNo").value = ""; document.getElementById("editSinif").value = ""; document.getElementById("editOldBarkod").value = ""; i.value = "";
         if(mode === 'add') { t.innerText = "Öğrenci Ekle"; i.placeholder = "Boş bırakılırsa otomatik üretilir"; } 
         else { t.innerText = "Öğrenci Düzenle"; const s = allStudents.find(x => x.barkod === barkod); if(s) { document.getElementById("editAd").value = s.ad_soyad; document.getElementById("editNo").value = s.numara; document.getElementById("editSinif").value = s.sinif; document.getElementById("editOldBarkod").value = s.barkod; i.value = s.barkod; } }
         new bootstrap.Modal(document.getElementById('studentModal')).show();
@@ -436,125 +358,36 @@
     window.bulkDelete = async () => { const c = document.querySelectorAll('.st-check:checked'); if(c.length === 0) return Swal.fire("Seçim Yapın", "", "warning"); if(!confirm(`${c.length} kayıt silinecek?`)) return; for(const x of c) await deleteDoc(doc(db, "ogrenciler", x.value)); loadStudents(); Swal.fire("Silindi", "", "success"); };
 
     window.openScannerModal = (m, u=null, n='', e='') => { 
-        document.getElementById("editScannerId").value = u||""; 
-        document.getElementById("scName").value = n; 
-        document.getElementById("scEmail").value = e;
-        
-        const emailField = document.getElementById("scEmail");
-        const passContainer = document.getElementById("passContainer");
-        const warning = document.getElementById("editStaffWarning");
-
-        if(m === 'add') {
-            document.getElementById("scEmail").value = ""; 
-            document.getElementById("scPass").value = "";
-            emailField.disabled = false; 
-            passContainer.classList.remove("d-none"); 
-            warning.classList.add("d-none");
-            document.getElementById("scannerModalTitle").innerText = "Yeni Personel Ekle";
-        } else {
-            emailField.disabled = true; 
-            passContainer.classList.add("d-none"); 
-            warning.classList.remove("d-none");
-            document.getElementById("scannerModalTitle").innerText = "Personel Düzenle";
-        }
+        document.getElementById("editScannerId").value = u||""; document.getElementById("scName").value = n; document.getElementById("scEmail").value = e;
+        const emailField = document.getElementById("scEmail"), passContainer = document.getElementById("passContainer"), warning = document.getElementById("editStaffWarning");
+        if(m === 'add') { document.getElementById("scEmail").value = ""; document.getElementById("scPass").value = ""; emailField.disabled = false; passContainer.classList.remove("d-none"); warning.classList.add("d-none"); document.getElementById("scannerModalTitle").innerText = "Yeni Personel Ekle"; } 
+        else { emailField.disabled = true; passContainer.classList.add("d-none"); warning.classList.remove("d-none"); document.getElementById("scannerModalTitle").innerText = "Personel Düzenle"; }
         new bootstrap.Modal(document.getElementById('scannerModal')).show(); 
     };
 
     window.saveScannerUser = async () => {
-        const uid = document.getElementById("editScannerId").value;
-        const name = document.getElementById("scName").value;
-        
+        const uid = document.getElementById("editScannerId").value, name = document.getElementById("scName").value;
         if(!name) return Swal.fire("Eksik", "İsim zorunludur.", "warning");
         Swal.showLoading(); 
-
         if (uid) {
-            try {
-                await updateDoc(doc(db, "users", uid), { displayName: name, role: "scanner" });
-                bootstrap.Modal.getInstance(document.getElementById('scannerModal')).hide();
-                Swal.fire("Başarılı", "Personel bilgisi güncellendi.", "success");
-                listScannerUsers();
-            } catch (e) { Swal.fire("Hata", e.message, "error"); }
+            try { await updateDoc(doc(db, "users", uid), { displayName: name, role: "scanner" }); bootstrap.Modal.getInstance(document.getElementById('scannerModal')).hide(); Swal.fire("Başarılı", "Güncellendi.", "success"); listScannerUsers(); } catch (e) { Swal.fire("Hata", e.message, "error"); }
         } else {
-            const email = document.getElementById("scEmail").value;
-            const pass = document.getElementById("scPass").value;
-            if(!email || !pass) return Swal.fire("Eksik", "E-Posta ve Şifre zorunludur.", "warning");
-
-            let sa = null; 
-            try { 
-                sa = initializeApp(firebaseConfig, "ScUser"); 
-                const saAuth = getAuth(sa); 
-                const uc = await createUserWithEmailAndPassword(saAuth, email, pass); 
-                await setDoc(doc(db, "users", uc.user.uid), { email, displayName: name, role: "scanner", createdAt: new Date().toISOString() }); 
-                await signOut(saAuth); 
-                bootstrap.Modal.getInstance(document.getElementById('scannerModal')).hide(); 
-                Swal.fire("Başarılı", "Yeni personel oluşturuldu.", "success"); 
-                listScannerUsers(); 
-            } catch(e) { 
-                Swal.fire("Hata", e.message, "error"); 
-            } finally { 
-                if(sa) deleteApp(sa); 
-            }
+            const email = document.getElementById("scEmail").value, pass = document.getElementById("scPass").value; if(!email || !pass) return Swal.fire("Eksik", "E-Posta ve Şifre zorunludur.", "warning");
+            let sa = null; try { sa = initializeApp(firebaseConfig, "ScUser"); const saAuth = getAuth(sa); const uc = await createUserWithEmailAndPassword(saAuth, email, pass); await setDoc(doc(db, "users", uc.user.uid), { email, displayName: name, role: "scanner", createdAt: new Date().toISOString() }); await signOut(saAuth); bootstrap.Modal.getInstance(document.getElementById('scannerModal')).hide(); Swal.fire("Başarılı", "Oluşturuldu.", "success"); listScannerUsers(); } catch(e) { Swal.fire("Hata", e.message, "error"); } finally { if(sa) deleteApp(sa); }
         }
     };
-
     window.listScannerUsers = async () => { const t = document.getElementById("scannerListBody"); const q = query(collection(db, "users"), where("role", "==", "scanner")); const s = await getDocs(q); t.innerHTML = s.empty ? "<tr><td colspan='4'>Kayıt yok</td></tr>" : ""; s.forEach(d => { const u = d.data(); t.innerHTML += `<tr><td class="fw-bold">${u.displayName||'-'}</td><td>${u.email}</td><td><span class="badge bg-info text-dark">Görevli</span></td><td><button onclick="openScannerModal('edit', '${d.id}', '${u.displayName}', '${u.email}')" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button> <button onclick="deleteScanner('${d.id}')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button></td></tr>`; }); };
     window.deleteScanner = async (id) => { if(confirm("Silinsin mi?")) { await deleteDoc(doc(db,"users",id)); listScannerUsers(); } };
     window.changeAdminPass = async () => { const p=document.getElementById("newAdminPass").value; if(p.length<6) return Swal.fire("Hata","En az 6 karakter olmalı","warning"); try{await updatePassword(auth.currentUser,p);Swal.fire("Başarılı","Şifre güncellendi","success");document.getElementById("newAdminPass").value="";}catch(e){if(e.code==='auth/requires-recent-login'){const {value:cp}=await Swal.fire({title:'Güvenlik',text:'Mevcut şifrenizi girin:',input:'password',showCancelButton:true});if(cp){try{await reauthenticateWithCredential(auth.currentUser,EmailAuthProvider.credential(auth.currentUser.email,cp));await updatePassword(auth.currentUser,p);Swal.fire("Başarılı","Şifre güncellendi","success");}catch(z){Swal.fire("Hata","Yanlış şifre","error");}}}else{Swal.fire("Hata",e.message,"error");}}};
 
-    window.loadVeliCodes = async () => {
-        const s = await getDocs(collection(db, "veli_kodlari")); 
-        allCodes = []; 
-        s.forEach(d => { 
-            const c = d.data(); 
-            const student = allStudents.find(s => s.barkod == c.ogrenci_barkod);
-            c.id = d.id;
-            c.ogrAd = student ? student.ad_soyad : "Bilinmeyen";
-            c.ogrNo = student ? student.numara : "-"; 
-            allCodes.push(c); 
-        }); 
-        filterCodes(); 
-        renderPrint(); 
-    };
-
-    window.filterCodes = () => { 
-        const v = document.getElementById("codeSearch").value.toLowerCase(); 
-        const tb = document.getElementById("codeListBody"); 
-        tb.innerHTML = ""; 
-        allCodes.filter(c => (c.ogrAd + c.ogrNo).toLowerCase().includes(v)).forEach(c => { 
-            tb.innerHTML += `<tr>
-                <td><span class="badge bg-light text-dark border">${c.ogrNo}</span></td>
-                <td>${c.ogrAd}</td>
-                <td class="fw-bold text-primary">${c.id}</td>
-                <td>${c.kullanildi?'<span class="text-danger">Kullanıldı</span>':'Aktif'}</td>
-                <td><button onclick="deleteCode('${c.id}')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button></td>
-            </tr>`; 
-        }); 
-    };
-
+    window.loadVeliCodes = async () => { const s = await getDocs(collection(db, "veli_kodlari")); allCodes = []; s.forEach(d => { const c = d.data(); const student = allStudents.find(s => s.barkod == c.ogrenci_barkod); c.id = d.id; c.ogrAd = student ? student.ad_soyad : "Bilinmeyen"; c.ogrNo = student ? student.numara : "-"; allCodes.push(c); }); filterCodes(); renderPrint(); };
+    window.filterCodes = () => { const v = document.getElementById("codeSearch").value.toLowerCase(); const tb = document.getElementById("codeListBody"); tb.innerHTML = ""; allCodes.filter(c => (c.ogrAd + c.ogrNo).toLowerCase().includes(v)).forEach(c => { tb.innerHTML += `<tr><td><span class="badge bg-light text-dark border">${c.ogrNo}</span></td><td>${c.ogrAd}</td><td class="fw-bold text-primary">${c.id}</td><td>${c.kullanildi?'<span class="text-danger">Kullanıldı</span>':'Aktif'}</td><td><button onclick="deleteCode('${c.id}')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button></td></tr>`; }); };
     window.renderPrint = () => { const p = document.getElementById("printArea"); p.innerHTML = ""; allCodes.filter(c=>!c.kullanildi).forEach(c => { p.innerHTML += `<div class="col-print"><div style="border:1px solid #000; padding:10px;"><h5>YEMEKHANE</h5><small>Veli Erişim Kodu</small><h3>${c.id}</h3><p>${c.ogrAd}</p></div></div>`; }); };
     window.generateMissingCodes = async () => { let c=0; const e = new Set(allCodes.map(x=>x.ogrenci_barkod)); for(const s of allStudents) { if(!e.has(s.barkod)) { await setDoc(doc(db,"veli_kodlari",Math.floor(100000+Math.random()*900000).toString()),{ogrenci_barkod:s.barkod, kullanildi:false}); c++; } } loadVeliCodes(); Swal.fire(`${c} kod üretildi`); };
     window.regenerateAllCodes = async () => { if(confirm("Tümü yenilenecek!")) { const s = await getDocs(collection(db,"veli_kodlari")); s.forEach(d=>deleteDoc(d.ref)); generateMissingCodes(); } };
     window.deleteAllCodes = async () => { if(confirm("Hepsi silinecek!")) { const s = await getDocs(collection(db,"veli_kodlari")); s.forEach(d=>deleteDoc(d.ref)); loadVeliCodes(); } };
     window.deleteCode = async (id) => { await deleteDoc(doc(db,"veli_kodlari",id)); loadVeliCodes(); };
-    window.excelYukle = async () => { 
-        const fi = document.getElementById('excelDosyasi'); if(fi.files.length===0) return Swal.fire("Uyarı","Dosya seçiniz","warning");
-        Swal.showLoading();
-        const r = new FileReader();
-        r.onload = async function(e) {
-            try {
-                const data = new Uint8Array(e.target.result); const workbook = XLSX.read(data, {type:'array'});
-                const j = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-                let c=0; 
-                for(const ogr of j) { 
-                    if(ogr.barkod && ogr.ad_soyad) { 
-                        const b=String(ogr.barkod).trim(); 
-                        await setDoc(doc(db,"ogrenciler",b),{barkod:b,ad_soyad:ogr.ad_soyad,sinif:ogr.sinif?String(ogr.sinif).trim():"-",numara:ogr.numara?String(ogr.numara).trim():"",foto:ogr.foto||""}); c++; 
-                    } 
-                }
-                Swal.fire("Tamam", `${c} yüklendi.`, "success"); loadStudents();
-            } catch(z) { Swal.fire("Hata",z.message,"error"); }
-        }; r.readAsArrayBuffer(fi.files[0]);
-    };
+    window.excelYukle = async () => { const fi = document.getElementById('excelDosyasi'); if(fi.files.length===0) return Swal.fire("Uyarı","Dosya seçiniz","warning"); Swal.showLoading(); const r = new FileReader(); r.onload = async function(e) { try { const data = new Uint8Array(e.target.result); const workbook = XLSX.read(data, {type:'array'}); const j = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]); let c=0; for(const ogr of j) { if(ogr.barkod && ogr.ad_soyad) { const b=String(ogr.barkod).trim(); await setDoc(doc(db,"ogrenciler",b),{barkod:b,ad_soyad:ogr.ad_soyad,sinif:ogr.sinif?String(ogr.sinif).trim():"-",numara:ogr.numara?String(ogr.numara).trim():"",foto:ogr.foto||""}); c++; } } Swal.fire("Tamam", `${c} yüklendi.`, "success"); loadStudents(); } catch(z) { Swal.fire("Hata",z.message,"error"); } }; r.readAsArrayBuffer(fi.files[0]); };
     window.showTab = (id, el) => { document.querySelectorAll('.tab-content').forEach(x=>x.classList.add('d-none')); document.getElementById('tab-'+id).classList.remove('d-none'); document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active')); if(el)el.classList.add('active'); };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
