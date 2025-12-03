@@ -36,7 +36,7 @@
         .not-eaten-list { max-height: 50vh; overflow-y: auto; background: white; border-radius: 15px; margin-top: 10px; padding: 10px; border: 1px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .student-row { padding: 10px; border-bottom: 1px solid #f5f5f5; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
         
-        /* DEĞİŞTİRİLEN BÖLÜM: GÜNCELLENMİŞ BARCODE BLOK STİLİ */
+        /* DEĞİŞTİRİLEN BÖLÜM: GÜNCELLENMİŞ VE KÜÇÜLTÜLMÜŞ BARCODE BLOK STİLİ */
         .scanner-frame { 
             position: relative; 
             border-radius: 20px; 
@@ -44,8 +44,8 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
             border: 4px solid var(--white); 
             background: #000; 
-            /* padding-top değeri kaldırıldı. Height ile sabit bir yükseklik verilecek. */
-            height: 300px; /* Okuyucuya sabit bir yükseklik verildi */
+            /* Yükseklik 300px'den 220px'e düşürüldü */
+            height: 220px; 
             margin-bottom: 15px; 
         }
         #reader {
@@ -54,9 +54,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex; /* İçeriğin ortalanması için eklendi */
-            justify-content: center; /* İçeriğin ortalanması için eklendi */
-            align-items: center; /* İçeriğin ortalanması için eklendi */
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
         }
         
         .scan-line { position: absolute; width: 100%; height: 3px; background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); top: 0; left: 0; z-index: 10; animation: scanAnim 2s infinite linear; opacity: 0.8; }
@@ -66,13 +66,24 @@
             width: 100% !important; 
             height: 100% !important; 
         }
-        /* html5-qrcode kütüphanesinin eklediği div'in stilini eziyor: */
+        /* html5-qrcode kütüphanesinin eklediği div'in boyutlarını zorla sığdır */
         #reader div {
             width: 100% !important;
             height: 100% !important;
             overflow: hidden;
         }
-        #reader button { background-color: var(--primary) !important; color: white !important; border: none !important; padding: 10px 20px !important; border-radius: 10px !important; font-weight: bold !important; margin-top: 80px !important; font-family: sans-serif !important; }
+        /* html5-qrcode'un "Start Scanning" butonu (mobil cihazlarda görünebilir) */
+        #reader button { 
+            background-color: var(--primary) !important; 
+            color: white !important; 
+            border: none !important; 
+            padding: 10px 20px !important; 
+            border-radius: 10px !important; 
+            font-weight: bold !important; 
+            /* Yüksekliği düşürdüğümüz için butonun konumu ayarlandı */
+            margin-top: 0px !important; 
+            font-family: sans-serif !important; 
+        }
         .btn-search { background: var(--primary); color: white; border: none; font-weight: 700; padding: 0 20px; border-radius: 0 15px 15px 0; transition: 0.3s; }
         
         /* SONUÇ KARTI STİLİ */
