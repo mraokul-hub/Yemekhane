@@ -40,7 +40,7 @@
         .not-eaten-list { max-height: 50vh; overflow-y: auto; background: white; border-radius: 15px; margin-top: 10px; padding: 10px; border: 1px solid #eee; }
         .student-row { padding: 10px; border-bottom: 1px solid #f5f5f5; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
 
-        /* === YENİLENEN KAMERA STİLLERİ === */
+        /* Scanner Frame */
         .scanner-frame { 
             position: relative; 
             border-radius: 20px; 
@@ -48,84 +48,35 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
             border: 4px solid var(--white); 
             background: #000; 
-            height: 320px; /* Biraz daha uzattık ki video tam sığsın */
+            height: 320px; 
             margin-bottom: 15px; 
             display: flex;
             flex-direction: column;
         }
 
-        /* Kütüphanenin varsayılan stillerini eziyoruz */
-        #reader {
-            width: 100% !important;
-            height: 100% !important;
-            border: none !important;
-            padding: 0 !important;
-            position: relative;
-        }
-        
-        #reader video { 
-            object-fit: cover !important; 
-            width: 100% !important; 
-            height: 100% !important; 
-            border-radius: 15px !important;
-        }
+        #reader { width: 100% !important; height: 100% !important; border: none !important; padding: 0 !important; position: relative; }
+        #reader video { object-fit: cover !important; width: 100% !important; height: 100% !important; border-radius: 15px !important; }
 
-        /* Tarama Çizgisi */
         .scan-line { 
-            position: absolute; 
-            width: 100%; 
-            height: 3px; 
-            background: var(--accent-red); 
-            box-shadow: 0 0 10px var(--accent-red); 
-            top: 0; 
-            left: 0; 
-            z-index: 50; 
-            animation: scanAnim 2s infinite linear; 
-            opacity: 0.8; 
-            pointer-events: none;
+            position: absolute; width: 100%; height: 3px; background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); top: 0; left: 0; z-index: 50; 
+            animation: scanAnim 2s infinite linear; opacity: 0.8; pointer-events: none;
         }
         @keyframes scanAnim { 0% {top: 10%;} 50% {top: 90%;} 100% {top: 10%;} }
 
-        /* Dashboard (Butonlar) düzenlemesi */
         #reader__dashboard {
-            position: absolute !important;
-            bottom: 10px !important;
-            left: 5% !important;
-            width: 90% !important;
-            background: rgba(255, 255, 255, 0.85) !important;
-            border-radius: 15px !important;
-            padding: 10px !important;
-            z-index: 100 !important;
+            position: absolute !important; bottom: 10px !important; left: 5% !important; width: 90% !important;
+            background: rgba(255, 255, 255, 0.85) !important; border-radius: 15px !important; padding: 10px !important; z-index: 100 !important;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
         }
-
-        #reader__dashboard_section_csr span { display: none !important; } /* "Select Camera" yazısını gizle */
-        #reader__dashboard_section_swaplink { display: none !important; } /* Dosya yükleme linkini gizle */
+        #reader__dashboard_section_csr span, #reader__dashboard_section_swaplink { display: none !important; }
         
-        /* Butonları güzelleştir */
         #reader button { 
-            background-color: var(--primary) !important; 
-            color: white !important; 
-            border: none !important; 
-            padding: 8px 12px !important; 
-            border-radius: 8px !important; 
-            font-weight: bold !important; 
-            font-size: 0.8rem !important;
-            width: 100% !important;
-            margin-top: 5px !important;
+            background-color: var(--primary) !important; color: white !important; border: none !important; padding: 8px 12px !important; 
+            border-radius: 8px !important; font-weight: bold !important; font-size: 0.8rem !important; width: 100% !important; margin-top: 5px !important;
         }
-        
-        #reader select {
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            width: 100% !important;
-            font-size: 0.9rem;
-            background: #fff;
-            margin-bottom: 5px;
-        }
+        #reader select { padding: 8px; border-radius: 8px; border: 1px solid #ddd; width: 100% !important; font-size: 0.9rem; background: #fff; margin-bottom: 5px; }
 
-        /* Result Card & Live List */
+        /* Result & Live List */
         .btn-search { background: var(--primary); color: white; border: none; font-weight: 700; padding: 0 20px; border-radius: 0 15px 15px 0; transition: 0.3s; }
         .result-card { display: none; margin-top: 15px; text-align: center; border-top: 5px solid; animation: slideUp 0.3s ease; padding: 20px; max-width: 400px; margin-left: auto; margin-right: auto; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .status-box { padding: 10px; border-radius: 10px; font-weight: 800; font-size: 1.1rem; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
@@ -219,8 +170,9 @@
     const firebaseConfig = { apiKey: "AIzaSyC2ATSLTN8ba3pao1kKd2cT1vHcT8rafT8", authDomain: "yemekhane-8914d.firebaseapp.com", projectId: "yemekhane-8914d", storageBucket: "yemekhane-8914d.firebasestorage.app", messagingSenderId: "352053991912", appId: "1:352053991912:web:f4ea149d68f16ae5d8ec5d" };
     const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
 
-    const sesOnay = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3'); 
+    const sesOnay = new Audio('https://raw.githubusercontent.com/IonDen/ion.sound/master/sounds/glass.mp3');
     const sesHata = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+    
     const getTurkiyeDate = () => { const d = new Date(); return new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().split('T')[0]; };
 
     let islemMesgul = false, aktifEmail = "", aktifIsim = "GÖREVLİ", allStudents = [], eatenTodaySet = new Set(), updateListTimeout = null;
@@ -265,15 +217,53 @@
         const container = document.getElementById("notEatenContainer");
         const notEatenList = allStudents.filter(s => !eatenTodaySet.has(s.barkod)).sort((a, b) => a.ad_soyad.localeCompare(b.ad_soyad));
         if(notEatenList.length === 0) { container.innerHTML = '<div class="text-center text-success fw-bold p-3">Herkes Yemek Yedi! <i class="fas fa-check"></i></div>'; return; }
-        let html = ""; notEatenList.forEach(s => { html += `<div class="student-row"><span class="fw-bold text-dark">${s.ad_soyad}</span><span class="badge bg-secondary">${s.sinif}</span></div>`; }); container.innerHTML = html;
+        
+        let html = ""; 
+        notEatenList.forEach(s => { 
+            // Numarayı burada da gösteriyoruz
+            const noBadge = s.numara ? `<small class="text-muted me-2" style="font-weight:600;">${s.numara}</small>` : '';
+            html += `
+            <div class="student-row">
+                <div class="d-flex align-items-center">
+                    ${noBadge}
+                    <span class="fw-bold text-dark">${s.ad_soyad}</span>
+                </div>
+                <span class="badge bg-secondary">${s.sinif}</span>
+            </div>`; 
+        }); 
+        container.innerHTML = html;
     }
+    
     function renderLiveList(data) {
-        const listDiv = document.getElementById("liveList"); if(data.length === 0) { listDiv.innerHTML = '<div class="text-center text-muted small py-3">Henüz senin yaptığın işlem yok.</div>'; return; }
+        const listDiv = document.getElementById("liveList"); 
+        if(data.length === 0) { listDiv.innerHTML = '<div class="text-center text-muted small py-3">Henüz senin yaptığın işlem yok.</div>'; return; }
         data.sort((a,b) => b.zaman.seconds - a.zaman.seconds);
-        listDiv.innerHTML = ""; data.forEach(m => {
-            const saat = new Date(m.zaman.seconds * 1000).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'}); const isDouble = m.tur === 'ikinci_ogun'; const badgeClass = isDouble ? 'badge-double' : 'badge-first'; const badgeText = isDouble ? '2. Hak' : 'Giriş';
-            let sinifText = ""; const stRec = allStudents.find(s => s.barkod === m.barkod); if(stRec && stRec.sinif) sinifText = `(${stRec.sinif})`;
-            listDiv.innerHTML += `<div class="live-item"><div><span class="live-name">${m.ad_soyad} <small class="text-muted" style="font-weight:normal;">${sinifText}</small></span><span class="live-time"><i class="far fa-clock me-1"></i>${saat}</span></div><span class="live-badge ${badgeClass}">${badgeText}</span></div>`;
+        listDiv.innerHTML = ""; 
+        data.forEach(m => {
+            const saat = new Date(m.zaman.seconds * 1000).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'}); 
+            const isDouble = m.tur === 'ikinci_ogun'; 
+            const badgeClass = isDouble ? 'badge-double' : 'badge-first'; 
+            const badgeText = isDouble ? '2. Hak' : 'Giriş';
+            
+            let sinifText = ""; 
+            const stRec = allStudents.find(s => s.barkod === m.barkod); 
+            if(stRec && stRec.sinif) sinifText = `(${stRec.sinif})`;
+            
+            // Numara Gösterimi:
+            const ogrNo = m.ogrenci_no || (stRec ? stRec.numara : "") || "";
+            const noHtml = ogrNo ? `<span class="text-primary fw-bold me-1">${ogrNo}</span> - ` : "";
+
+            listDiv.innerHTML += `
+            <div class="live-item">
+                <div>
+                    <span class="live-name">
+                        ${noHtml}${m.ad_soyad} 
+                        <small class="text-muted" style="font-weight:normal;">${sinifText}</small>
+                    </span>
+                    <span class="live-time"><i class="far fa-clock me-1"></i>${saat}</span>
+                </div>
+                <span class="live-badge ${badgeClass}">${badgeText}</span>
+            </div>`;
         });
     }
 
@@ -283,20 +273,15 @@
     };
     window.cikisYap = async () => { try { await signOut(auth); window.location.reload(); } catch(e) { console.error(e); } }
     
-    // GÖRSEL İYİLEŞTİRME VE TÜRKÇELEŞTİRME
     function uiDuzeltmeleri() {
         const reader = document.getElementById("reader");
         if (!reader) return;
-        
-        // Butonları Türkçeleştir
         const buttons = reader.getElementsByTagName("button");
         for (let btn of buttons) {
             if (btn.innerText.includes("Request Camera Permissions")) btn.innerText = "Kamera İzni Ver";
             if (btn.innerText.includes("Start Scanning")) btn.innerText = "Taramayı Başlat";
             if (btn.innerText.includes("Stop Scanning")) btn.innerText = "Kamerayı Durdur";
         }
-        
-        // "Select Camera" yazısını bulursan sil (CSS ile de gizledik ama garanti olsun)
         const labels = reader.getElementsByTagName("span");
         for (let label of labels) {
             if (label.innerText.includes("Select Camera")) label.style.display = 'none';
@@ -304,28 +289,20 @@
     }
 
     function startScanner() { 
-        // qrbox: 250 yerine dinamik veya video boyutunda yapıyoruz
-        // ÖNEMLİ: mobilde tam ekran gibi durması için qrbox'ı genişletiyoruz
         const config = { 
             fps: 10, 
             qrbox: { width: 250, height: 250 },
             aspectRatio: 1.0, 
             facingMode: "environment"
         };
-        
         const scanner = new Html5QrcodeScanner("reader", config); 
         
         scanner.render((t) => { 
             if(!islemMesgul) islemYap(t, false); 
-        }, (error) => {
-            // Hata olursa (örn: okuma hatası) konsola bas ama kullanıcıyı rahatsız etme
-            // console.warn(error);
-        });
+        }, (error) => {});
 
-        // Arayüz yüklendiğinde butonları ve stilleri düzeltmek için sürekli kontrol
         const uiInterval = setInterval(() => {
             uiDuzeltmeleri();
-            // Video elementini zorla sığdır
             const video = document.querySelector("#reader video");
             if(video) {
                 video.style.objectFit = "cover";
@@ -351,9 +328,13 @@
             const kacinciOgun = yemekSnap.size + 1; const box = document.getElementById("durumMesaj"); const card = document.getElementById("sonucKarti");
             if(kacinciOgun === 1) {
                 await addDoc(collection(db,"yemek_hareketleri"), { barkod: ogr.barkod, ad_soyad: ogr.ad_soyad, ogrenci_no: ogr.numara||'', tarih: bugun, zaman: Timestamp.now(), tur: "ilk_ogun", islem_yapan: aktifEmail, islem_yapan_isim: aktifIsim });
-                box.innerHTML = '<i class="fas fa-check-circle me-2"></i>AFİYET OLSUN'; card.style.borderColor = "#2ecc71"; box.style.background = "#e0f2f1"; box.style.color = "#00695c"; sesOnay.play(); setTimeout(() => { islemMesgul = false; ui.style.display="none"; }, 2000);
+                box.innerHTML = '<i class="fas fa-check-circle me-2"></i>AFİYET OLSUN'; card.style.borderColor = "#2ecc71"; box.style.background = "#e0f2f1"; box.style.color = "#00695c"; 
+                sesOnay.currentTime = 0; 
+                sesOnay.play().catch(e => console.log("Ses oynatma hatası:", e));
+                setTimeout(() => { islemMesgul = false; ui.style.display="none"; }, 2000);
             } else {
-                box.innerHTML = `ZATEN YEDİ! (${kacinciOgun-1}. Kez)`; card.style.borderColor = "#e74c3c"; box.style.background = "#ffebee"; box.style.color = "#c62828"; sesHata.play();
+                box.innerHTML = `ZATEN YEDİ! (${kacinciOgun-1}. Kez)`; card.style.borderColor = "#e74c3c"; box.style.background = "#ffebee"; box.style.color = "#c62828"; 
+                sesHata.play().catch(e => console.log("Ses hatası:", e));
                 const result = await Swal.fire({ title: 'Mükerrer Geçiş!', text: `Bu öğrenci bugün ${kacinciOgun-1} kez yemiş. ${kacinciOgun}. hakkı vermek istiyor musunuz?`, icon: 'warning', showCancelButton: true, confirmButtonText: 'EVET, VER', cancelButtonText: 'İPTAL', confirmButtonColor: '#e74c3c' });
                 if(result.isConfirmed) { await addDoc(collection(db,"yemek_hareketleri"), { barkod: ogr.barkod, ad_soyad: ogr.ad_soyad, ogrenci_no: ogr.numara||'', tarih: bugun, zaman: Timestamp.now(), tur: "ikinci_ogun", islem_yapan: aktifEmail, islem_yapan_isim: aktifIsim }); box.innerHTML = `${kacinciOgun}. HAK VERİLDİ`; box.style.background = "#e3f2fd"; box.style.color = "#1565c0"; card.style.borderColor = "#3498db"; }
                 islemMesgul = false;
