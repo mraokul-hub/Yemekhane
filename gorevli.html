@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Yemekhane Görevli</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3498db">
+    
     <link rel="icon" type="image/jpeg" href="gorevli.jpg">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -28,7 +30,8 @@
             font-family: 'Quicksand', sans-serif; 
             color: #555;
             min-height: 100vh;
-            overscroll-behavior-y: none; /* Mobilde çekme efektini engeller */
+            /* Mobil çekme yenilemesini engeller (App hissi için) */
+            overscroll-behavior-y: none; 
         }
 
         .white-card {
@@ -58,7 +61,8 @@
 
         .soft-input {
             background: #f9f9f9; border: 2px solid #eee; border-radius: 15px;
-            padding: 15px; font-size: 16px; width: 100%; margin-bottom: 15px;
+            padding: 15px; font-size: 16px; /* iOS zoom engellemek için min 16px */
+            width: 100%; margin-bottom: 15px;
             text-align: center; transition: 0.3s;
         }
         .soft-input:focus { background: white; border-color: var(--primary); outline: none; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1); }
@@ -79,8 +83,8 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.03); margin-bottom: 15px;
         }
         .header-logo {
-            width: 40px; height: 40px; object-fit: cover; border-radius: 50%;
-            border: 2px solid #eee; margin-right: 10px;
+            width: 50px; height: 50px; object-fit: cover; border-radius: 50%;
+            border: 2px solid #eee; margin-right: 12px;
         }
         .btn-logout {
             background: rgba(231, 76, 60, 0.1); color: var(--accent-red);
@@ -112,56 +116,26 @@
             font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;
         }
 
-        /* SCANNER DÜZENİ (DÜZELTİLDİ) */
+        /* SCANNER */
         .scanner-frame {
-            position: relative; 
-            border-radius: 20px; 
-            overflow: hidden;
+            position: relative; border-radius: 20px; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 4px solid var(--white); 
-            background: #000;
-            /* Kare görünüm için genişlik neyse yükseklik de o civarda olsun ama mobilde taşmasın */
-            width: 100%;
-            max-width: 350px;
-            margin: 0 auto 15px auto; /* Ortala */
-            aspect-ratio: 1 / 1; /* Tam Kare */
+            border: 4px solid var(--white); background: #000;
+            height: 280px; /* Mobilde sabit yükseklik */
+            margin-bottom: 15px;
         }
-
-        /* Kütüphane İçin Zorunlu CSS Ayarları (Kamera Fit) */
-        #reader { width: 100%; height: 100%; }
-        #reader video { 
-            width: 100% !important; 
-            height: 100% !important; 
-            object-fit: cover !important; /* Kamerayı çerçeveye doldur */
-            border-radius: 16px;
-        }
-        
-        /* Gezen Lazer */
+        #reader video { object-fit: cover; width: 100%; height: 100%; }
         .scan-line {
             position: absolute; width: 100%; height: 3px; background: var(--accent-red);
-            box-shadow: 0 0 15px var(--accent-red); top: 0; left: 0; z-index: 10;
-            animation: scanAnim 2s infinite linear; opacity: 0.9;
-            pointer-events: none;
+            box-shadow: 0 0 10px var(--accent-red); top: 0; left: 0; z-index: 10;
+            animation: scanAnim 2s infinite linear; opacity: 0.8;
         }
         @keyframes scanAnim { 0% {top: 0;} 50% {top: 100%;} 100% {top: 0;} }
-
-        /* Kütüphane Butonlarını Temaya Uydur */
         #reader button {
             background-color: var(--primary) !important; color: white !important;
             border: none !important; padding: 10px 20px !important; border-radius: 10px !important;
-            font-weight: bold !important; font-family: 'Quicksand', sans-serif !important;
-            /* Butonu ortalamak için */
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 20; font-size: 1rem !important; width: max-content;
+            font-weight: bold !important; margin-top: 80px !important; font-family: sans-serif !important;
         }
-        /* Tarama başlayınca buton kaybolur, ama durdur butonu gelirse onu alta alalım */
-        #html5-qrcode-button-camera-stop {
-            top: auto !important; bottom: 10px !important; 
-            background-color: rgba(0,0,0,0.5) !important; font-size: 0.8rem !important;
-        }
-
-        /* Gereksiz yazıları gizle */
-        #reader__dashboard_section_csr span, #reader__dashboard_section_swaplink { display: none !important; }
 
         /* MANUEL GİRİŞ */
         .btn-search {
@@ -213,9 +187,9 @@
     <div class="app-header">
         <div class="d-flex align-items-center">
             <img src="logo.jpg" alt="Logo" class="header-logo">
-            <div>
-                <small class="text-muted d-block" style="font-size:0.65rem; line-height:1;">GÖREVLİ</small>
-                <span id="staffName" class="fw-bold" style="color:var(--primary-dark); font-size:0.9rem;">...</span>
+            <div class="d-flex flex-column justify-content-center">
+                <span class="fw-bold text-dark" style="font-size: 1.2rem; line-height: 1;">GÖREVLİ:</span>
+                <span id="staffName" class="text-muted" style="font-size: 0.9rem;">...</span>
             </div>
         </div>
         <button onclick="cikisYap()" class="btn-logout"><i class="fas fa-power-off me-1"></i> Çıkış</button>
@@ -242,7 +216,7 @@
 
         <div class="scanner-frame">
             <div class="scan-line"></div>
-            <div id="reader"></div>
+            <div id="reader" style="width:100%; height: 100%;"></div>
         </div>
         
         <div class="white-card mt-3 p-2">
@@ -288,18 +262,28 @@
 
     onAuthStateChanged(auth, async user => {
         if(user) {
-            document.getElementById("loginOverlay").classList.add("d-none");
-            document.getElementById("appContainer").classList.remove("d-none");
-            aktifEmail = user.email;
             try {
                 const uDoc = await getDoc(doc(db, "users", user.uid));
-                if(uDoc.exists() && uDoc.data().displayName) aktifIsim = uDoc.data().displayName.toUpperCase();
-                else aktifIsim = user.email.split('@')[0].toUpperCase();
+                
+                if (!uDoc.exists() || uDoc.data().role !== 'scanner') {
+                    await signOut(auth);
+                    Swal.fire({ icon: 'error', title: 'Yetkisiz Giriş', text: 'Bu panele sadece Görevli Personel (scanner) girebilir.', confirmButtonColor: '#e74c3c' });
+                    return;
+                }
+
+                document.getElementById("loginOverlay").classList.add("d-none");
+                document.getElementById("appContainer").classList.remove("d-none");
+                aktifEmail = user.email;
+                if(uDoc.data().displayName) aktifIsim = uDoc.data().displayName; 
+                else aktifIsim = user.email.split('@')[0];
                 document.getElementById("staffName").innerText = aktifIsim;
-            } catch(e) {}
-            
-            initDataStream();
-            startScanner();
+                
+                initDataStream();
+                startScanner();
+            } catch(e) {
+                console.error("Yetki kontrol hatası:", e);
+                await signOut(auth);
+            }
         } else {
             document.getElementById("loginOverlay").classList.remove("d-none");
             document.getElementById("appContainer").classList.add("d-none");
@@ -328,9 +312,15 @@
 
             document.getElementById("lblYiyen").innerText = eatenTodaySet.size;
             document.getElementById("lblCift").innerText = doubleCount;
-            document.getElementById("lblKalan").innerText = Math.max(0, allStudents.length - eatenTodaySet.size);
+            
+            let eatenStudentCount = 0;
+            allStudents.forEach(s => {
+                if(eatenTodaySet.has(s.barkod)) eatenStudentCount++;
+            });
+            document.getElementById("lblKalan").innerText = Math.max(0, allStudents.length - eatenStudentCount);
 
-            renderLiveList(mealList);
+            const myActions = mealList.filter(m => m.islem_yapan === aktifEmail);
+            renderLiveList(myActions);
 
             const listEl = document.getElementById('notEatenList');
             if (listEl.classList.contains('show')) {
@@ -362,7 +352,7 @@
 
     function renderLiveList(data) {
         const listDiv = document.getElementById("liveList");
-        if(data.length === 0) { listDiv.innerHTML = '<div class="text-center text-muted small py-3">Henüz işlem yok.</div>'; return; }
+        if(data.length === 0) { listDiv.innerHTML = '<div class="text-center text-muted small py-3">Henüz senin yaptığın işlem yok.</div>'; return; }
 
         data.sort((a,b) => b.zaman.seconds - a.zaman.seconds);
 
@@ -373,10 +363,14 @@
             const badgeClass = isDouble ? 'badge-double' : 'badge-first';
             const badgeText = isDouble ? '2. Hak' : 'Giriş';
             
+            let sinifText = "";
+            const stRec = allStudents.find(s => s.barkod === m.barkod);
+            if(stRec && stRec.sinif) sinifText = `(${stRec.sinif})`;
+
             listDiv.innerHTML += `
             <div class="live-item">
                 <div>
-                    <span class="live-name">${m.ad_soyad}</span>
+                    <span class="live-name">${m.ad_soyad} <small class="text-muted" style="font-weight:normal;">${sinifText}</small></span>
                     <span class="live-time"><i class="far fa-clock me-1"></i>${saat}</span>
                 </div>
                 <span class="live-badge ${badgeClass}">${badgeText}</span>
@@ -403,12 +397,7 @@
     window.cikisYap = async () => { try { await signOut(auth); window.location.reload(); } catch(e) { console.error(e); } }
 
     function startScanner() {
-        const scanner = new Html5QrcodeScanner("reader", { 
-            fps: 10, 
-            qrbox: { width: 250, height: 250 }, // Kare tarama alanı
-            aspectRatio: 1.0, // Kare oran
-            disableFlip: false 
-        });
+        const scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
         scanner.render((t) => { if(!islemMesgul) islemYap(t, false); });
     }
 
