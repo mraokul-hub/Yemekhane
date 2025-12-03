@@ -26,7 +26,21 @@
         body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; min-height: 100vh; }
         #loginSection { background: var(--bg-body); background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 24px 24px; }
         .login-card { background: var(--bg-card); border-radius: var(--border-radius); padding: 40px; width: 100%; max-width: 400px; border: 1px solid var(--border-color); box-shadow: var(--shadow-card); }
-        .sidebar { background-color: var(--bg-sidebar); min-height: 100vh; border-right: 1px solid var(--border-color); box-shadow: 4px 0 15px rgba(0,0,0,0.02); }
+        /* MOBILE FIX: Offcanvas'ın masaüstü görünümü için */
+        .sidebar { 
+            background-color: var(--bg-sidebar); 
+            min-height: 100vh; 
+            border-right: 1px solid var(--border-color); 
+            box-shadow: 4px 0 15px rgba(0,0,0,0.02); 
+        }
+        @media (max-width: 767.98px) {
+            .offcanvas-start.sidebar {
+                width: 75%; /* Mobil menü genişliği */
+                min-height: 100vh;
+                border-right: none;
+            }
+        }
+        /* /MOBILE FIX */
         .sidebar-logo { width: 90px; height: 90px; object-fit: cover; border-radius: 50%; border: 4px solid var(--bg-body); margin-bottom: 15px; box-shadow: var(--shadow-sm); }
         .nav-link { color: var(--text-muted); margin-bottom: 5px; border-radius: 10px; padding: 12px 20px; font-weight: 600; transition: all 0.2s ease; }
         .nav-link:hover { background-color: var(--bg-body); color: var(--primary); transform: translateX(3px); }
@@ -70,34 +84,45 @@
 
 <div id="dashboardSection" class="container-fluid d-none">
     <div class="row">
-        <nav class="col-md-3 col-lg-2 d-none d-md-block sidebar p-3 text-center text-md-start">
-            <div class="text-center py-4 border-bottom mb-3" style="border-color: var(--bg-body) !important;">
-                <img src="logo.jpg" alt="Logo" class="sidebar-logo">
-                <h6 class="fw-bold text-dark mb-0 mt-2" style="letter-spacing: 1px;">YEMEKHANE</h6>
-                <small class="text-muted" style="font-size: 0.7rem;">YÖNETİM PANELİ</small>
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 sidebar p-3 text-center text-md-start offcanvas offcanvas-start d-md-block" tabindex="-1" aria-labelledby="sidebarMenuLabel">
+            <div class="offcanvas-header d-md-none border-bottom">
+                <h5 class="offcanvas-title fw-bold" id="sidebarMenuLabel">Yönetim Menüsü</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <ul class="nav flex-column gap-2">
-                <li class="nav-item"><a class="nav-link active" onclick="showTab('main', this)"><i class="fas fa-chart-line"></i> Genel Bakış</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showTab('students', this); loadStudents();"><i class="fas fa-user-graduate"></i> Öğrenci İşlemleri</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showTab('codes', this); loadVeliCodes();"><i class="fas fa-qrcode"></i> Erişim Kodları</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showTab('users', this); listScannerUsers();"><i class="fas fa-users-cog"></i> Personel Yönetimi</a></li>
-            </ul>
-            <div class="mt-auto pt-5 pb-3 text-center">
-                <a class="nav-link text-danger fw-bold bg-light" onclick="window.logout()" style="border: 1px solid #fee2e2;"><i class="fas fa-sign-out-alt"></i> ÇIKIŞ YAP</a>
+            <div class="offcanvas-body p-0 d-md-block">
+                <div class="text-center py-4 border-bottom mb-3" style="border-color: var(--bg-body) !important;">
+                    <img src="logo.jpg" alt="Logo" class="sidebar-logo">
+                    <h6 class="fw-bold text-dark mb-0 mt-2" style="letter-spacing: 1px;">YEMEKHANE</h6>
+                    <small class="text-muted" style="font-size: 0.7rem;">YÖNETİM PANELİ</small>
+                </div>
+                <ul class="nav flex-column gap-2">
+                    <li class="nav-item"><a class="nav-link active" onclick="showTab('main', this)"><i class="fas fa-chart-line"></i> Genel Bakış</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showTab('students', this); loadStudents();"><i class="fas fa-user-graduate"></i> Öğrenci İşlemleri</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showTab('codes', this); loadVeliCodes();"><i class="fas fa-qrcode"></i> Erişim Kodları</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showTab('users', this); listScannerUsers();"><i class="fas fa-users-cog"></i> Personel Yönetimi</a></li>
+                </ul>
+                <div class="mt-auto pt-5 pb-3 text-center">
+                    <a class="nav-link text-danger fw-bold bg-light" onclick="window.logout()" style="border: 1px solid #fee2e2;"><i class="fas fa-sign-out-alt"></i> ÇIKIŞ YAP</a>
+                </div>
             </div>
         </nav>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <div class="d-flex d-md-none justify-content-end mb-3">
+                <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+                    <i class="fas fa-bars"></i> Menü
+                </button>
+            </div>
             <div id="tab-main" class="tab-content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div><h3 class="fw-bold text-dark mb-0">Genel Durum</h3><p class="text-muted small mb-0">Günlük istatistikler ve özet.</p></div>
                     <div class="bg-white px-4 py-2 rounded-pill shadow-sm fw-bold text-primary border"><i class="far fa-calendar-alt me-2"></i><span id="bugunTarih"></span></div>
                 </div>
                 <div class="row g-4 mb-4">
-                    <div class="col-md-3"><div class="admin-card stat-card h-100" style="border-top-color: var(--success);"><div class="stat-label" style="color: var(--success);">BUGÜN YİYEN</div><div class="stat-val text-dark" id="lblBugunYiyen">0</div></div></div>
-                    <div class="col-md-3"><div class="admin-card stat-card h-100" style="border-top-color: var(--danger);"><div class="stat-label" style="color: var(--danger);">ÇİFT DİKİŞ</div><div class="stat-val text-dark" id="lblCiftDikis">0</div></div></div>
-                    <div class="col-md-3"><div class="admin-card stat-card h-100" style="border-top-color: var(--warning);"><div class="stat-label" style="color: var(--warning);">HENÜZ YEMEYEN</div><div class="stat-val text-dark" id="lblYemeyen">0</div></div></div>
-                    <div class="col-md-3"><div class="admin-card h-100 d-flex align-items-center justify-content-center p-2"><canvas id="yemekPieChart" style="max-height: 100px;"></canvas></div></div>
+                    <div class="col-6 col-md-3"><div class="admin-card stat-card h-100" style="border-top-color: var(--success);"><div class="stat-label" style="color: var(--success);">BUGÜN YİYEN</div><div class="stat-val text-dark" id="lblBugunYiyen">0</div></div></div>
+                    <div class="col-6 col-md-3"><div class="admin-card stat-card h-100" style="border-top-color: var(--danger);"><div class="stat-label" style="color: var(--danger);">ÇİFT DİKİŞ</div><div class="stat-val text-dark" id="lblCiftDikis">0</div></div></div>
+                    <div class="col-6 col-md-3"><div class="admin-card stat-card h-100" style="border-top-color: var(--warning);"><div class="stat-label" style="color: var(--warning);">HENÜZ YEMEYEN</div><div class="stat-val text-dark" id="lblYemeyen">0</div></div></div>
+                    <div class="col-6 col-md-3"><div class="admin-card h-100 d-flex align-items-center justify-content-center p-2"><canvas id="yemekPieChart" style="max-height: 100px;"></canvas></div></div>
                 </div>
                 <div class="row">
                     <div class="col-md-8">
@@ -125,12 +150,12 @@
             <div id="tab-students" class="tab-content d-none">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div><h3 class="fw-bold text-dark mb-0">Öğrenci Yönetimi</h3><p class="text-muted small mb-0">Öğrenci kayıt işlemleri.</p></div>
-                    <div class="d-flex gap-2"><button onclick="openStudentModal('add')" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Yeni Öğrenci</button><button onclick="bulkDelete()" class="btn btn-danger"><i class="fas fa-trash-alt me-1"></i> Seçilenleri Sil</button></div>
+                    <div class="d-flex gap-2 flex-wrap"><button onclick="openStudentModal('add')" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Yeni Öğrenci</button><button onclick="bulkDelete()" class="btn btn-danger"><i class="fas fa-trash-alt me-1"></i> Seçilenleri Sil</button></div>
                 </div>
                 <div class="admin-card">
                     <div class="row mb-4 g-2">
-                        <div class="col-md-8"><div class="input-group"><span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-search"></i></span><input type="text" id="studentSearch" class="form-control border-start-0 ps-0" placeholder="İsim, Numara veya Sınıf Ara..." onkeyup="filterStudents()"></div></div>
-                        <div class="col-md-4"><input type="file" id="excelDosyasi" class="form-control" accept=".xlsx" onchange="excelYukle()"></div>
+                        <div class="col-12 col-md-8"><div class="input-group"><span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-search"></i></span><input type="text" id="studentSearch" class="form-control border-start-0 ps-0" placeholder="İsim, Numara veya Sınıf Ara..." onkeyup="filterStudents()"></div></div>
+                        <div class="col-12 col-md-4"><input type="file" id="excelDosyasi" class="form-control" accept=".xlsx" onchange="excelYukle()"></div>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -388,7 +413,21 @@
     window.deleteAllCodes = async () => { if(confirm("Hepsi silinecek!")) { const s = await getDocs(collection(db,"veli_kodlari")); s.forEach(d=>deleteDoc(d.ref)); loadVeliCodes(); } };
     window.deleteCode = async (id) => { await deleteDoc(doc(db,"veli_kodlari",id)); loadVeliCodes(); };
     window.excelYukle = async () => { const fi = document.getElementById('excelDosyasi'); if(fi.files.length===0) return Swal.fire("Uyarı","Dosya seçiniz","warning"); Swal.showLoading(); const r = new FileReader(); r.onload = async function(e) { try { const data = new Uint8Array(e.target.result); const workbook = XLSX.read(data, {type:'array'}); const j = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]); let c=0; for(const ogr of j) { if(ogr.barkod && ogr.ad_soyad) { const b=String(ogr.barkod).trim(); await setDoc(doc(db,"ogrenciler",b),{barkod:b,ad_soyad:ogr.ad_soyad,sinif:ogr.sinif?String(ogr.sinif).trim():"-",numara:ogr.numara?String(ogr.numara).trim():"",foto:ogr.foto||""}); c++; } } Swal.fire("Tamam", `${c} yüklendi.`, "success"); loadStudents(); } catch(z) { Swal.fire("Hata",z.message,"error"); } }; r.readAsArrayBuffer(fi.files[0]); };
-    window.showTab = (id, el) => { document.querySelectorAll('.tab-content').forEach(x=>x.classList.add('d-none')); document.getElementById('tab-'+id).classList.remove('d-none'); document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active')); if(el)el.classList.add('active'); };
+    
+    // MOBILE FIX: Menüden bir sekmeye tıklandığında offcanvas'ı kapat
+    window.showTab = (id, el) => { 
+        document.querySelectorAll('.tab-content').forEach(x=>x.classList.add('d-none')); 
+        document.getElementById('tab-'+id).classList.remove('d-none'); 
+        document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active')); 
+        if(el)el.classList.add('active'); 
+        
+        // Offcanvas menüyü kapatma
+        const offcanvasEl = document.getElementById('sidebarMenu');
+        if (offcanvasEl.classList.contains('show')) {
+            // Bootstrap'in offcanvas örneğini alıp kapatır
+            bootstrap.Offcanvas.getInstance(offcanvasEl).hide();
+        }
+    };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
