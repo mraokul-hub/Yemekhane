@@ -84,8 +84,18 @@
             #printArea { display: block !important; visibility: visible !important; position: absolute; left: 0; top: 0; width: 210mm; margin: 0; padding: 5mm; }
             #printArea * { visibility: visible !important; }
             .print-page { page-break-after: always; display: grid; justify-items: center; align-content: start; }
+            
+            /* Kart Basım Grid (2x4) */
             .print-page.cards { grid-template-columns: repeat(2, 1fr); gap: 5mm; padding-top: 5mm; }
-            .print-page.codes { grid-template-columns: repeat(3, 1fr); gap: 5mm; padding-top: 5mm; }
+            
+            /* KOD BASIM GRID (3x5 = 15 Adet) */
+            .print-page.codes { 
+                grid-template-columns: repeat(3, 1fr); 
+                grid-template-rows: repeat(5, auto);
+                gap: 5mm; 
+                padding-top: 10mm; 
+            }
+            
             .meal-card-container { width: 86mm; height: 54mm; position: relative; background-size: 100% 100%; border: 1px solid #ddd; border-radius: 3mm; margin-bottom: 5mm; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .card-photo-box { position: absolute; top: 19mm; left: 4.5mm; width: 26mm; height: 30mm; display: flex; align-items: center; justify-content: center; overflow: hidden; }
             .card-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 2mm; }
@@ -95,27 +105,37 @@
             .info-sep { width: 3mm; text-align: center; font-weight: 700; }
             .info-val { flex: 1; font-weight: 500; color: #000; }
             .card-qr-area { position: absolute; bottom: 3.5mm; right: 3.5mm; width: 20mm; height: 20mm; display: flex; align-items: center; justify-content: center; }
-            .code-card-print { width: 60mm; height: 50mm; border: 2px dashed #333; padding: 5mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin-bottom: 5mm; }
+            
+            /* Kod Kartı Stili */
+            .code-card-print { 
+                width: 100%; 
+                height: 48mm; /* A4'e 5 satır sığması için yükseklik */
+                border: 2px dashed #333; 
+                padding: 2mm; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+                justify-content: center; 
+                text-align: center; 
+            }
         }
 
         /* ========= MOBİL UYUMLULUK ========= */
         @media (max-width: 991.98px) {
-             /* Mobilde sıralamayı değiştir: Grafikler önce, Akış sonra */
             .order-mobile-first { order: -1; }
             .sticky-lg-top { position: static !important; }
         }
 
         @media (max-width: 767.98px) { 
-            /* Sidebar */
+            /* Sidebar & Menu */
             .sidebar { position: fixed; top: 0; left: -280px; width: 280px; transition: left 0.3s; z-index: 1060; height: 100vh; overflow-y: auto; } 
             .sidebar.show { left: 0; } 
             
             /* Main Content Adjustments */
             main { width: 100% !important; padding: 15px 10px !important; margin-left: 0 !important; } 
-            #mobile-menu-btn { display: block; margin-bottom: 15px; } 
-
+            
             /* Stats Cards */
-            .row.g-3.mb-4 > .col-6 { width: 50%; } /* İkili dizilim */
+            .row.g-3.mb-4 > .col-6 { width: 50%; } 
             .stat-card-new { padding: 15px 10px; flex-direction: column; text-align: center; align-items: center; }
             .stat-icon-box { margin-bottom: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
             .stat-info h3 { font-size: 1.4rem; }
@@ -150,7 +170,6 @@
             /* Modals */
             .modal-dialog { margin: 10px; }
         }
-        #mobile-menu-btn { display: none; }
         
         /* Desktop Sticky Fix */
         @media (min-width: 992px) {
@@ -172,7 +191,11 @@
 
 <div id="dashboardSection" class="container-fluid d-none">
     <div class="row">
-        <button class="btn btn-primary d-md-none rounded-0 shadow-sm" id="mobile-menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar"><i class="fas fa-bars me-2"></i> Menü</button>
+        <div class="col-12 d-md-none p-3 pb-0">
+             <button class="btn btn-primary w-100 rounded-3 shadow-sm py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+                <i class="fas fa-bars me-2"></i> YÖNETİM MENÜSÜNÜ AÇ
+            </button>
+        </div>
 
         <nav class="col-md-3 col-lg-2 d-none d-md-block sidebar p-3 text-center text-md-start">
             <div class="text-center py-4 border-bottom mb-3" style="border-color: var(--bg-body) !important;">
@@ -311,7 +334,7 @@
                         <button onclick="generateMissingCodes()" class="btn btn-primary btn-sm flex-fill">Eksikleri Tamamla</button>
                         <button onclick="regenerateAllCodes()" class="btn btn-warning btn-sm text-white flex-fill">Tümünü Yenile</button>
                         <button onclick="deleteAllCodes()" class="btn btn-danger btn-sm flex-fill">Tümünü Sil</button>
-                        <button onclick="printCodes()" class="btn btn-secondary btn-sm flex-fill"><i class="fas fa-print me-1"></i> Yazdır</button>
+                        <button onclick="printCodes()" class="btn btn-secondary btn-sm flex-fill"><i class="fas fa-print me-1"></i> Yazdır (3x5)</button>
                     </div>
                     <div class="input-group"><span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-search"></i></span><input type="text" id="codeSearch" class="form-control border-start-0 ps-0" placeholder="Öğrenci Ara..." onkeyup="filterCodes()"></div>
                 </div>
