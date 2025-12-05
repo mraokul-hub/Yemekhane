@@ -70,10 +70,51 @@
         .sort-btn { font-size: 0.7rem; padding: 4px 10px; border-radius: 6px; border: 1px solid #ddd; background: white; color: #555; margin-left: 3px; cursor: pointer; }
         .sort-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
         
-        /* Foto Yükleme */
-        .photo-upload-container { position: relative; width: 120px; height: 140px; margin: 0 auto 20px; border: 2px dashed #cbd5e1; border-radius: 10px; overflow: hidden; background: #f8fafc; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        /* Foto Yükleme - GÜNCELLENMİŞ BOYUTLAR: 122x144 */
+        .photo-upload-container { 
+            position: relative; 
+            width: 122px;  
+            height: 144px; 
+            margin: 0 auto 20px; 
+            border: 2px dashed #cbd5e1; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            background: #f8fafc; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-direction: column; 
+        }
         .photo-upload-container.has-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
-        .upload-placeholder { text-align: center; color: var(--text-muted); }
+        
+        /* İkon Modu için Özel Stil - Ogrsimge.jpg tam otursun */
+        .photo-upload-container.is-placeholder img { 
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Kareyi doldur */
+            padding: 0; 
+            opacity: 1; 
+        }
+
+        .upload-placeholder { 
+            position: absolute; 
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            text-align: center; 
+            color: var(--text-muted); 
+            transition: 0.3s; 
+            padding: 5px 0;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .photo-upload-container:hover { border-color: var(--primary); }
+        .photo-upload-container:hover .upload-placeholder { color: var(--primary); background: rgba(255, 255, 255, 0.95); }
+        
         #bulkUploadLog { max-height: 200px; overflow-y: auto; background: #2d3436; color: #00b894; font-family: monospace; font-size: 0.8rem; padding: 10px; border-radius: 8px; }
 
         /* Baskı */
@@ -84,18 +125,8 @@
             #printArea { display: block !important; visibility: visible !important; position: absolute; left: 0; top: 0; width: 210mm; margin: 0; padding: 5mm; }
             #printArea * { visibility: visible !important; }
             .print-page { page-break-after: always; display: grid; justify-items: center; align-content: start; }
-            
-            /* Kart Basım Grid (2x4) */
             .print-page.cards { grid-template-columns: repeat(2, 1fr); gap: 5mm; padding-top: 5mm; }
-            
-            /* KOD BASIM GRID (3x5 = 15 Adet) */
-            .print-page.codes { 
-                grid-template-columns: repeat(3, 1fr); 
-                grid-template-rows: repeat(5, auto);
-                gap: 5mm; 
-                padding-top: 10mm; 
-            }
-            
+            .print-page.codes { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(5, auto); gap: 5mm; padding-top: 10mm; }
             .meal-card-container { width: 86mm; height: 54mm; position: relative; background-size: 100% 100%; border: 1px solid #ddd; border-radius: 3mm; margin-bottom: 5mm; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .card-photo-box { position: absolute; top: 19mm; left: 4.5mm; width: 26mm; height: 30mm; display: flex; align-items: center; justify-content: center; overflow: hidden; }
             .card-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 2mm; }
@@ -105,19 +136,7 @@
             .info-sep { width: 3mm; text-align: center; font-weight: 700; }
             .info-val { flex: 1; font-weight: 500; color: #000; }
             .card-qr-area { position: absolute; bottom: 3.5mm; right: 3.5mm; width: 20mm; height: 20mm; display: flex; align-items: center; justify-content: center; }
-            
-            /* Kod Kartı Stili */
-            .code-card-print { 
-                width: 100%; 
-                height: 48mm; /* A4'e 5 satır sığması için yükseklik */
-                border: 2px dashed #333; 
-                padding: 2mm; 
-                display: flex; 
-                flex-direction: column; 
-                align-items: center; 
-                justify-content: center; 
-                text-align: center; 
-            }
+            .code-card-print { width: 100%; height: 48mm; border: 2px dashed #333; padding: 2mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         }
 
         /* ========= MOBİL UYUMLULUK ========= */
@@ -127,51 +146,32 @@
         }
 
         @media (max-width: 767.98px) { 
-            /* Sidebar & Menu */
             .sidebar { position: fixed; top: 0; left: -280px; width: 280px; transition: left 0.3s; z-index: 1060; height: 100vh; overflow-y: auto; } 
             .sidebar.show { left: 0; } 
-            
-            /* Main Content Adjustments */
             main { width: 100% !important; padding: 15px 10px !important; margin-left: 0 !important; } 
-            
-            /* Stats Cards */
             .row.g-3.mb-4 > .col-6 { width: 50%; } 
             .stat-card-new { padding: 15px 10px; flex-direction: column; text-align: center; align-items: center; }
             .stat-icon-box { margin-bottom: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
             .stat-info h3 { font-size: 1.4rem; }
             .stat-info h6 { font-size: 0.7rem; }
-            
-            /* Feed List */
             .feed-row { padding: 10px 5px; flex-wrap: wrap; }
             .feed-avatar { width: 32px; height: 32px; font-size: 0.8rem; margin-right: 8px; }
             .feed-row .fw-bold { font-size: 0.9rem; }
             .feed-row .small { font-size: 0.75rem; }
-            
-            /* Buttons */
             .delete-btn-wrapper { padding: 8px; }
             .btn { width: 100%; margin-bottom: 5px; }
             .d-flex.gap-2 { flex-direction: column; gap: 5px !important; }
             .d-flex.justify-content-between { flex-direction: column; align-items: flex-start; gap: 10px; }
-            
-            /* Tables */
             .table { font-size: 0.8rem; }
             .table thead th { padding: 10px 5px; }
             .table tbody td { padding: 10px 5px; }
             .badge { font-size: 0.7rem; padding: 4px 6px; }
-
-            /* Pie Chart Container */
             .admin-card canvas { max-height: 200px; }
-            
-            /* Inputs */
             .input-group { flex-direction: column; }
             .input-group-text { width: 100%; border-right: 1px solid #cbd5e1 !important; border-bottom: 0; border-radius: 10px 10px 0 0; }
             .input-group .form-control { width: 100% !important; border-left: 1px solid #cbd5e1 !important; border-radius: 0 0 10px 10px; }
-            
-            /* Modals */
             .modal-dialog { margin: 10px; }
         }
-        
-        /* Desktop Sticky Fix */
         @media (min-width: 992px) {
             .sticky-dashboard { position: sticky; top: 20px; z-index: 900; }
         }
@@ -205,10 +205,13 @@
             </div>
             <ul class="nav flex-column gap-2">
                 <li class="nav-item"><a class="nav-link active" onclick="showTab('main', this)"><i class="fas fa-chart-line w-25"></i> Genel Bakış</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showTab('students', this); loadStudents();"><i class="fas fa-user-graduate w-25"></i> Öğrenci İşlemleri</a></li>
+                
+                <li class="nav-item"><a class="nav-link" onclick="showTab('students', this); loadStudents();"><i class="fas fa-user w-25"></i> Öğrenci İşlemleri</a></li>
+                
                 <li class="nav-item"><a class="nav-link" onclick="showTab('codes', this); loadVeliCodes();"><i class="fas fa-qrcode w-25"></i> Erişim Kodları</a></li>
                 <li class="nav-item"><a class="nav-link" onclick="showTab('cards', this); loadCardPrinting();"><i class="fas fa-id-card w-25"></i> Kart Basım</a></li>
                 <li class="nav-item"><a class="nav-link" onclick="showTab('reports', this)"><i class="fas fa-file-excel w-25"></i> Raporlar</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="showTab('menu', this); loadMonthlyMenu();"><i class="fas fa-utensils w-25"></i> Yemek Menüsü</a></li>
                 <li class="nav-item"><a class="nav-link" onclick="showTab('users', this); listScannerUsers();"><i class="fas fa-users-cog w-25"></i> Personel</a></li>
             </ul>
             <div class="mt-auto pt-5 pb-3 text-center"><a class="nav-link text-danger fw-bold bg-light" onclick="window.logout()" style="border: 1px solid #fee2e2;"><i class="fas fa-sign-out-alt"></i> ÇIKIŞ YAP</a></div>
@@ -222,6 +225,20 @@
                     <div class="bg-white px-4 py-2 rounded-pill shadow-sm fw-bold text-primary border d-flex align-items-center mt-2 mt-md-0"><i class="far fa-calendar-alt me-2"></i><span id="bugunTarih"></span></div>
                 </div>
                 
+                <div class="admin-card mb-4 bg-primary text-white border-0" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="fw-bold text-white-50 mb-1" style="text-transform: uppercase; letter-spacing: 1px;">BUGÜNÜN MENÜSÜ</h6>
+                            <div id="dashboardDailyMenu" class="fs-4 fw-bold">
+                                <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
+                            </div>
+                        </div>
+                        <div class="opacity-25">
+                            <i class="fas fa-utensils fa-4x"></i>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row g-3 mb-4">
                     <div class="col-6 col-xl-3"><div class="admin-card stat-card-new"><div class="stat-info"><h6>Toplam Mevcut</h6><h3 id="lblToplamOgrenci">0</h3></div><div class="stat-icon-box bg-light text-primary"><i class="fas fa-users"></i></div></div></div>
                     <div class="col-6 col-xl-3"><div class="admin-card stat-card-new"><div class="stat-info"><h6 class="text-success">Bugün Yiyen</h6><h3 id="lblBugunYiyen" class="text-success">0</h3></div><div class="stat-icon-box" style="background:#d1fae5; color:#065f46;"><i class="fas fa-utensils"></i></div></div></div>
@@ -374,6 +391,34 @@
                     </div>
                 </div>
             </div>
+
+            <div id="tab-menu" class="tab-content d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-bold text-dark">Aylık Yemek Menüsü</h3>
+                </div>
+                <div class="admin-card mb-4">
+                    <div class="alert alert-info border-0 small">
+                        <i class="fas fa-info-circle me-2"></i> <strong>Excel Formatı:</strong> A Sütunu: Tarih (YYYY-MM-DD), B Sütunu: Yemekler.
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-9">
+                            <input type="file" id="menuExcelInput" class="form-control" accept=".xlsx">
+                        </div>
+                        <div class="col-md-3">
+                            <button onclick="uploadMenuExcel()" class="btn btn-success w-100 fw-bold"><i class="fas fa-upload me-1"></i> Menüyü Yükle</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-card">
+                    <h5 class="fw-bold mb-3 text-primary">Yüklü Menüler</h5>
+                    <div class="table-responsive" style="max-height: 500px; overflow-y:auto;">
+                        <table class="table table-hover">
+                            <thead><tr><th>Tarih</th><th>Menü İçeriği</th><th>İşlem</th></tr></thead>
+                            <tbody id="menuListBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             
             <div id="tab-users" class="tab-content d-none">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
@@ -417,6 +462,7 @@
             <li class="nav-item"><a class="nav-link" onclick="showTab('codes', this); loadVeliCodes();"><i class="fas fa-qrcode w-25"></i> Erişim Kodları</a></li>
             <li class="nav-item"><a class="nav-link" onclick="showTab('cards', this); loadCardPrinting();"><i class="fas fa-id-card w-25"></i> Kart Basım</a></li>
             <li class="nav-item"><a class="nav-link" onclick="showTab('reports', this)"><i class="fas fa-file-excel w-25"></i> Raporlar</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="showTab('menu', this); loadMonthlyMenu();"><i class="fas fa-utensils w-25"></i> Yemek Menüsü</a></li>
             <li class="nav-item"><a class="nav-link" onclick="showTab('users', this); listScannerUsers();"><i class="fas fa-users-cog w-25"></i> Personel</a></li>
         </ul>
         <div class="pt-5 mt-auto"><a class="nav-link text-danger fw-bold bg-light" onclick="window.logout()" style="border: 1px solid #fee2e2;"><i class="fas fa-sign-out-alt"></i> ÇIKIŞ YAP</a></div>
@@ -429,8 +475,8 @@
             <div class="modal-header bg-primary text-white"><h5 class="modal-title fw-bold" id="modalTitle">Öğrenci İşlemi</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
             <div class="modal-body p-4">
                 <input type="hidden" id="editOldBarkod">
-                <div class="photo-upload-container" onclick="document.getElementById('editFotoInput').click()" id="photoContainer">
-                    <img id="previewFoto" src="" alt="Öğrenci">
+                <div class="photo-upload-container is-placeholder" onclick="document.getElementById('editFotoInput').click()" id="photoContainer">
+                    <img id="previewFoto" src="Ogrsimge.jpg" alt="Öğrenci">
                     <div class="upload-placeholder" id="uploadPlaceholder"><i class="fas fa-camera"></i><span>Fotoğraf Ekle</span></div>
                 </div>
                 <input type="file" id="editFotoInput" accept="image/*" onchange="previewImage(this)">
@@ -483,7 +529,9 @@
     const firebaseConfig = { apiKey: "AIzaSyC2ATSLTN8ba3pao1kKd2cT1vHcT8rafT8", authDomain: "yemekhane-8914d.firebaseapp.com", projectId: "yemekhane-8914d", storageBucket: "yemekhane-8914d.firebasestorage.app", messagingSenderId: "352053991912", appId: "1:352053991912:web:f4ea149d68f16ae5d8ec5d" };
     const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
     
+    // YEREL SAAT AYARI
     const getTurkiyeDate = () => { const d = new Date(); return new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().split('T')[0]; };
+    
     let allStudents = [], allCodes = [], eatenTodaySet = new Set();
     let currentReportData = []; 
     let sortDir = 1;
@@ -498,6 +546,9 @@
     function startSystem() {
         document.getElementById("bugunTarih").innerText = getTurkiyeDate();
         loadStudents(); 
+        
+        getDailyMenu('dashboardDailyMenu'); // Sadece Dashboard'a çek
+        
         const bugunStr = getTurkiyeDate();
         const qToday = query(collection(db, "yemek_hareketleri"), where("tarih", "==", bugunStr));
         onSnapshot(qToday, snap => {
@@ -552,8 +603,55 @@
     window.sortStudents = (key) => { sortDir *= -1; allStudents.sort((a, b) => { let valA = a[key] ? a[key].toString() : ""; let valB = b[key] ? b[key].toString() : ""; if (key === 'numara' && !isNaN(valA) && !isNaN(valB)) { return (parseInt(valA) - parseInt(valB)) * sortDir; } return valA.localeCompare(valB, 'tr', { numeric: true }) * sortDir; }); filterStudents(); };
     
     // FOTO & DİĞER FONKSİYONLAR
-    window.previewImage = (input) => { if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = function(e) { document.getElementById('previewFoto').src = e.target.result; document.getElementById('photoContainer').classList.add('has-img'); }; reader.readAsDataURL(input.files[0]); } };
-    window.openStudentModal = (mode, barkod = null) => { const t = document.getElementById("modalTitle"), i = document.getElementById("editBarkodInput"); document.getElementById("editAd").value = ""; document.getElementById("editNo").value = ""; document.getElementById("editSinif").value = ""; document.getElementById("editOldBarkod").value = ""; i.value = ""; document.getElementById("previewFoto").src = ""; document.getElementById("photoContainer").classList.remove("has-img"); document.getElementById("editFotoInput").value = ""; if(mode === 'add') { t.innerText = "Öğrenci Ekle"; i.placeholder = "Boş bırakılırsa otomatik üretilir"; } else { t.innerText = "Öğrenci Düzenle"; const s = allStudents.find(x => x.barkod === barkod); if(s) { document.getElementById("editAd").value = s.ad_soyad; document.getElementById("editNo").value = s.numara; document.getElementById("editSinif").value = s.sinif; document.getElementById("editOldBarkod").value = s.barkod; i.value = s.barkod; if(s.foto && s.foto.length > 10) { document.getElementById("previewFoto").src = s.foto; document.getElementById("photoContainer").classList.add("has-img"); } } } new bootstrap.Modal(document.getElementById('studentModal')).show(); };
+    window.previewImage = (input) => { 
+        if (input.files && input.files[0]) { 
+            const reader = new FileReader(); 
+            reader.onload = function(e) { 
+                document.getElementById('previewFoto').src = e.target.result; 
+                document.getElementById('photoContainer').classList.remove('is-placeholder'); // Normal moda dön
+                document.getElementById('photoContainer').classList.add('has-img'); 
+            }; 
+            reader.readAsDataURL(input.files[0]); 
+        } 
+    };
+    window.openStudentModal = (mode, barkod = null) => { 
+        const t = document.getElementById("modalTitle"), i = document.getElementById("editBarkodInput"); 
+        document.getElementById("editAd").value = ""; 
+        document.getElementById("editNo").value = ""; 
+        document.getElementById("editSinif").value = ""; 
+        document.getElementById("editOldBarkod").value = ""; 
+        i.value = ""; 
+        
+        // FOTOĞRAF ALANI SIFIRLAMA
+        const defaultPhoto = "Ogrsimge.jpg";
+        const photoContainer = document.getElementById("photoContainer");
+        
+        document.getElementById("previewFoto").src = defaultPhoto; 
+        photoContainer.classList.remove("has-img"); 
+        photoContainer.classList.add("is-placeholder"); // İkon modu aktif
+        document.getElementById("editFotoInput").value = ""; 
+        
+        if(mode === 'add') { 
+            t.innerText = "Öğrenci Ekle"; 
+            i.placeholder = "Boş bırakılırsa otomatik üretilir"; 
+        } else { 
+            t.innerText = "Öğrenci Düzenle"; 
+            const s = allStudents.find(x => x.barkod === barkod); 
+            if(s) { 
+                document.getElementById("editAd").value = s.ad_soyad; 
+                document.getElementById("editNo").value = s.numara; 
+                document.getElementById("editSinif").value = s.sinif; 
+                document.getElementById("editOldBarkod").value = s.barkod; 
+                i.value = s.barkod; 
+                if(s.foto && s.foto.length > 10) { 
+                    document.getElementById("previewFoto").src = s.foto; 
+                    photoContainer.classList.add("has-img");
+                    photoContainer.classList.remove("is-placeholder"); // Gerçek foto modu
+                } 
+            } 
+        } 
+        new bootstrap.Modal(document.getElementById('studentModal')).show(); 
+    };
     const resizeImage = (base64Str, maxWidth = 300, maxHeight = 400) => { return new Promise((resolve) => { let img = new Image(); img.src = base64Str; img.onload = () => { let canvas = document.createElement('canvas'); let width = img.width; let height = img.height; if (width > height) { if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; } } else { if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; } } canvas.width = width; canvas.height = height; let ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height); resolve(canvas.toDataURL('image/jpeg', 0.8)); }; }); };
     window.openBulkPhotoModal = () => { document.getElementById("bulkUploadLog").innerHTML = "Hazır..."; document.getElementById("bulkPhotoInput").value = ""; new bootstrap.Modal(document.getElementById('bulkPhotoModal')).show(); };
     window.uploadBulkPhotos = async () => { const input = document.getElementById("bulkPhotoInput"); const log = document.getElementById("bulkUploadLog"); if(input.files.length === 0) return Swal.fire("Uyarı", "Lütfen fotoğraf seçiniz", "warning"); log.innerHTML = "İşlem başlıyor...<br>"; let successCount = 0; for (let i = 0; i < input.files.length; i++) { const file = input.files[i]; const fileName = file.name.split('.')[0]; const student = allStudents.find(s => s.numara === fileName); if (student) { const reader = new FileReader(); reader.readAsDataURL(file); await new Promise(resolve => reader.onload = () => resolve()); const resizedPhoto = await resizeImage(reader.result); try { await setDoc(doc(db, "ogrenciler", student.barkod), { foto: resizedPhoto }, { merge: true }); log.innerHTML += `<span class="text-success">✔ ${fileName} yüklendi.</span><br>`; successCount++; } catch(e) { log.innerHTML += `<span class="text-danger">✖ ${fileName} hata: ${e.message}</span><br>`; } } else { log.innerHTML += `<span class="text-warning">⚠ ${fileName} bulunamadı.</span><br>`; } log.scrollTop = log.scrollHeight; } log.innerHTML += `<br><strong>BİTTİ! Toplam ${successCount} fotoğraf güncellendi.</strong>`; await loadStudents(); };
@@ -573,107 +671,10 @@
     window.printCards = (side) => { const checkboxes = document.querySelectorAll('.card-check:checked'); if(checkboxes.length === 0) return Swal.fire("Seçim Yapın", "Lütfen yazdırılacak öğrencileri seçiniz.", "warning"); const printArea = document.getElementById("printArea"); printArea.innerHTML = ""; let bgImg = side === 'front' ? localStorage.getItem('cardFront') : localStorage.getItem('cardBack'); if(!bgImg) { bgImg = side === 'front' ? '2.jpg' : '3.jpg'; } let selectedStudents = []; checkboxes.forEach(cb => { const st = allStudents.find(s => s.barkod === cb.value); if(st) selectedStudents.push(st); }); selectedStudents.sort((a, b) => { let valA = a[cardSortKey] ? a[cardSortKey].toString() : ""; let valB = b[cardSortKey] ? b[cardSortKey].toString() : ""; if (cardSortKey === 'numara' && !isNaN(valA) && !isNaN(valB)) { return parseInt(valA) - parseInt(valB); } return valA.localeCompare(valB, 'tr', { numeric: true }); }); const cardsPerPage = 8; for (let i = 0; i < selectedStudents.length; i += cardsPerPage) { const pageStudents = selectedStudents.slice(i, i + cardsPerPage); const pageDiv = document.createElement("div"); pageDiv.className = "print-page cards"; pageStudents.forEach(st => { const cardContainer = document.createElement("div"); cardContainer.className = "meal-card-container"; cardContainer.style.backgroundImage = `url('${bgImg}')`; if(side === 'front') { const photoBox = document.createElement("div"); photoBox.className = "card-photo-box"; if(st.foto && st.foto.length > 50) { const img = document.createElement("img"); img.src = st.foto; img.className = "card-photo"; photoBox.appendChild(img); } else { photoBox.innerHTML = ''; } cardContainer.appendChild(photoBox); const infoBox = document.createElement("div"); infoBox.className = "card-info-area"; infoBox.innerHTML = `<div class="info-row"><span class="info-label">Adı Soyadı</span><span class="info-sep">:</span><span class="info-val">${st.ad_soyad}</span></div><div class="info-row"><span class="info-label">Sınıfı</span><span class="info-sep">:</span><span class="info-val">${st.sinif}</span></div><div class="info-row"><span class="info-label">Numarası</span><span class="info-sep">:</span><span class="info-val">${st.numara}</span></div>`; cardContainer.appendChild(infoBox); const qrBox = document.createElement("div"); qrBox.id = "qr_" + st.barkod; qrBox.className = "card-qr-area"; cardContainer.appendChild(qrBox); } pageDiv.appendChild(cardContainer); }); printArea.appendChild(pageDiv); } if(side === 'front') { selectedStudents.forEach(st => { const el = document.getElementById("qr_" + st.barkod); if(el) { new QRCode(el, { text: st.barkod, width: 61, height: 61, colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H }); } }); } setTimeout(() => { window.print(); localStorage.removeItem('cardFront'); localStorage.removeItem('cardBack'); }, 500); };
     window.printCodes = () => { const printArea = document.getElementById("printArea"); printArea.innerHTML = ""; const validCodes = allCodes.filter(c => !c.kullanildi); if(validCodes.length === 0) return Swal.fire("Bilgi", "Yazdırılacak kod yok.", "info"); const codesPerPage = 15; for (let i = 0; i < validCodes.length; i += codesPerPage) { const pageCodes = validCodes.slice(i, i + codesPerPage); const pageDiv = document.createElement("div"); pageDiv.className = "print-page codes"; pageCodes.forEach(c => { const codeCard = document.createElement("div"); codeCard.className = "code-card-print"; codeCard.innerHTML = `<div style="font-weight:bold; font-size:14pt;">YEMEKHANE</div><div style="font-size:10pt; margin-bottom:5px;">Veli Erişim Kodu</div><div style="font-size:24pt; font-weight:800; letter-spacing:2px; border:2px solid #000; padding:5px 15px; border-radius:10px; margin:5px 0;">${c.id}</div><div style="font-size:12pt; font-weight:600;">${c.ogrAd}</div>`; pageDiv.appendChild(codeCard); }); printArea.appendChild(pageDiv); } setTimeout(() => { window.print(); }, 500); };
 
-    // RAPORLAMA - YEMEYENLER DAHİL
-    window.sortReport = (key) => {
-        if(key === window.lastReportSortKey) reportSortDir *= -1; else reportSortDir = 1; window.lastReportSortKey = key;
-        currentReportData.sort((a, b) => {
-            let valA = a[key] ? a[key].toString().toLowerCase() : ""; let valB = b[key] ? b[key].toString().toLowerCase() : "";
-            if (key === 'Tarih') { return valA.localeCompare(valB) * reportSortDir; }
-            if (key === 'Öğrenci No' && !isNaN(valA) && !isNaN(valB)) { return (parseInt(valA) - parseInt(valB)) * reportSortDir; }
-            return valA.localeCompare(valB, 'tr', { numeric: true }) * reportSortDir;
-        });
-        renderReportTable();
-    };
-
-    window.renderReportTable = () => {
-        const tbody = document.getElementById("reportListBody"); tbody.innerHTML = "";
-        currentReportData.forEach(row => {
-            let badgeClass = '';
-            if (row['Yemek Hakkı'].includes('Giriş') || row['Yemek Hakkı'].startsWith('1.')) badgeClass = 'badge-soft-success';
-            else if (row['Yemek Hakkı'] === 'Yemedi') badgeClass = 'badge-soft-secondary';
-            else badgeClass = 'badge-soft-danger';
-            
-            tbody.innerHTML += `<tr><td>${row.Tarih}</td><td>${row.Saat}</td><td>${row['Öğrenci No']}</td><td class="fw-bold">${row['Ad Soyad']}</td><td><span class="badge ${badgeClass}">${row['Yemek Hakkı']}</span></td><td class="small text-muted">${row['İşlemi Yapan']}</td></tr>`;
-        });
-    };
-
-    window.queryReports = async () => { 
-        const start = document.getElementById("reportStartDate").value; const end = document.getElementById("reportEndDate").value; 
-        if(!start || !end) return Swal.fire("Uyarı", "Başlangıç ve Bitiş tarihi seçiniz.", "warning"); 
-        if(start > end) return Swal.fire("Hata", "Başlangıç tarihi bitiş tarihinden büyük olamaz.", "error"); 
-        
-        Swal.showLoading(); 
-        try { 
-            const q = query(collection(db, "yemek_hareketleri"), where("tarih", ">=", start), where("tarih", "<=", end)); 
-            const snap = await getDocs(q); 
-            
-            // 1. Hareket verilerini çek
-            let rawList = []; 
-            snap.forEach(d => { let data = d.data(); data._timestamp = data.zaman.seconds; rawList.push(data); });
-            
-            // 2. Seçili tarih aralığındaki tüm günleri bul
-            let loopDate = new Date(start);
-            const endDateObj = new Date(end);
-            const allDates = [];
-            while(loopDate <= endDateObj){
-                allDates.push(loopDate.toISOString().split('T')[0]);
-                loopDate.setDate(loopDate.getDate() + 1);
-            }
-
-            // 3. Verileri işle
-            currentReportData = [];
-            const processedMap = {}; // "Tarih_Barkod" -> true/false
-
-            // Hareketleri işle
-            const tracker = {}; 
-            rawList.sort((a,b) => a._timestamp - b._timestamp);
-            rawList.forEach(row => {
-                const key = `${row.barkod}_${row.tarih}`; 
-                if(!tracker[key]) tracker[key] = 0; tracker[key]++; 
-                processedMap[`${row.tarih}_${row.barkod}`] = true;
-                
-                const jsDate = new Date(row._timestamp * 1000); 
-                const timeStr = jsDate.toLocaleTimeString('tr-TR', {hour: '2-digit', minute: '2-digit'});
-                const rank = tracker[key];
-                
-                currentReportData.push({ 
-                    "Tarih": row.tarih, 
-                    "Saat": timeStr, 
-                    "Öğrenci No": row.ogrenci_no || "-", 
-                    "Ad Soyad": row.ad_soyad, 
-                    "Yemek Hakkı": rank === 1 ? "Giriş" : `${rank}. Hak`, 
-                    "İşlemi Yapan": row.islem_yapan_isim || row.islem_yapan || "Sistem" 
-                });
-            });
-
-            // 4. Yemeyenleri Ekle
-            allDates.forEach(dateStr => {
-                allStudents.forEach(st => {
-                    if (!processedMap[`${dateStr}_${st.barkod}`]) {
-                        currentReportData.push({ 
-                            "Tarih": dateStr, 
-                            "Saat": "-", 
-                            "Öğrenci No": st.numara || "-", 
-                            "Ad Soyad": st.ad_soyad, 
-                            "Yemek Hakkı": "Yemedi", 
-                            "İşlemi Yapan": "-" 
-                        });
-                    }
-                });
-            });
-
-            // Son sıralama (Tarihe göre)
-            currentReportData.sort((a, b) => a.Tarih.localeCompare(b.Tarih));
-
-            document.getElementById("reportTotalCount").innerText = currentReportData.length; 
-            renderReportTable(); 
-            Swal.close(); 
-        } catch(e) { Swal.fire("Hata", "Veri çekilirken hata oluştu: " + e.message, "error"); } 
-    };
-
+    window.sortReport = (key) => { if(key === window.lastReportSortKey) reportSortDir *= -1; else reportSortDir = 1; window.lastReportSortKey = key; currentReportData.sort((a, b) => { let valA = a[key] ? a[key].toString().toLowerCase() : ""; let valB = b[key] ? b[key].toString().toLowerCase() : ""; if (key === 'Tarih') { return valA.localeCompare(valB) * reportSortDir; } if (key === 'Öğrenci No' && !isNaN(valA) && !isNaN(valB)) { return (parseInt(valA) - parseInt(valB)) * reportSortDir; } return valA.localeCompare(valB, 'tr', { numeric: true }) * reportSortDir; }); renderReportTable(); };
+    window.renderReportTable = () => { const tbody = document.getElementById("reportListBody"); tbody.innerHTML = ""; currentReportData.forEach(row => { let badgeClass = ''; if (row['Yemek Hakkı'].includes('Giriş') || row['Yemek Hakkı'].startsWith('1.')) badgeClass = 'badge-soft-success'; else if (row['Yemek Hakkı'] === 'Yemedi') badgeClass = 'badge-soft-secondary'; else badgeClass = 'badge-soft-danger'; tbody.innerHTML += `<tr><td>${row.Tarih}</td><td>${row.Saat}</td><td>${row['Öğrenci No']}</td><td class="fw-bold">${row['Ad Soyad']}</td><td><span class="badge ${badgeClass}">${row['Yemek Hakkı']}</span></td><td class="small text-muted">${row['İşlemi Yapan']}</td></tr>`; }); };
+    window.queryReports = async () => { const start = document.getElementById("reportStartDate").value; const end = document.getElementById("reportEndDate").value; if(!start || !end) return Swal.fire("Uyarı", "Başlangıç ve Bitiş tarihi seçiniz.", "warning"); if(start > end) return Swal.fire("Hata", "Başlangıç tarihi bitiş tarihinden büyük olamaz.", "error"); Swal.showLoading(); try { const q = query(collection(db, "yemek_hareketleri"), where("tarih", ">=", start), where("tarih", "<=", end)); const snap = await getDocs(q); let rawList = []; snap.forEach(d => { let data = d.data(); data._timestamp = data.zaman.seconds; rawList.push(data); }); let loopDate = new Date(start); const endDateObj = new Date(end); const allDates = []; while(loopDate <= endDateObj){ allDates.push(loopDate.toISOString().split('T')[0]); loopDate.setDate(loopDate.getDate() + 1); } currentReportData = []; const processedMap = {}; const tracker = {}; rawList.sort((a,b) => a._timestamp - b._timestamp); rawList.forEach(row => { const key = `${row.barkod}_${row.tarih}`; if(!tracker[key]) tracker[key] = 0; tracker[key]++; processedMap[`${row.tarih}_${row.barkod}`] = true; const jsDate = new Date(row._timestamp * 1000); const timeStr = jsDate.toLocaleTimeString('tr-TR', {hour: '2-digit', minute: '2-digit'}); const rank = tracker[key]; currentReportData.push({ "Tarih": row.tarih, "Saat": timeStr, "Öğrenci No": row.ogrenci_no || "-", "Ad Soyad": row.ad_soyad, "Yemek Hakkı": rank === 1 ? "Giriş" : `${rank}. Hak`, "İşlemi Yapan": row.islem_yapan_isim || row.islem_yapan || "Sistem" }); }); allDates.forEach(dateStr => { allStudents.forEach(st => { if (!processedMap[`${dateStr}_${st.barkod}`]) { currentReportData.push({ "Tarih": dateStr, "Saat": "-", "Öğrenci No": st.numara || "-", "Ad Soyad": st.ad_soyad, "Yemek Hakkı": "Yemedi", "İşlemi Yapan": "-" }); } }); }); currentReportData.sort((a, b) => a.Tarih.localeCompare(b.Tarih)); document.getElementById("reportTotalCount").innerText = currentReportData.length; renderReportTable(); Swal.close(); } catch(e) { Swal.fire("Hata", "Veri çekilirken hata oluştu: " + e.message, "error"); } };
     window.downloadExcel = () => { if(!currentReportData || currentReportData.length === 0) { return Swal.fire("Uyarı", "İndirilecek veri yok.", "warning"); } const worksheet = XLSX.utils.json_to_sheet(currentReportData); const workbook = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(workbook, worksheet, "Rapor"); const start = document.getElementById("reportStartDate").value; const end = document.getElementById("reportEndDate").value; XLSX.writeFile(workbook, `Yemekhane_Rapor_${start}_${end}.xlsx`); };
-    
-    // DİĞER PERSONEL KODLARI
     window.openScannerModal = (m, u=null, n='', e='') => { document.getElementById("editScannerId").value = u||""; document.getElementById("scName").value = n; document.getElementById("scEmail").value = e; const emailField = document.getElementById("scEmail"), passContainer = document.getElementById("passContainer"), warning = document.getElementById("editStaffWarning"); if(m === 'add') { document.getElementById("scEmail").value = ""; document.getElementById("scPass").value = ""; emailField.disabled = false; passContainer.classList.remove("d-none"); warning.classList.add("d-none"); document.getElementById("scannerModalTitle").innerText = "Yeni Personel Ekle"; } else { emailField.disabled = true; passContainer.classList.add("d-none"); warning.classList.remove("d-none"); document.getElementById("scannerModalTitle").innerText = "Personel Düzenle"; } new bootstrap.Modal(document.getElementById('scannerModal')).show(); };
     window.saveScannerUser = async () => { const uid = document.getElementById("editScannerId").value, name = document.getElementById("scName").value; if(!name) return Swal.fire("Eksik", "İsim zorunludur.", "warning"); Swal.showLoading(); if (uid) { try { await updateDoc(doc(db, "users", uid), { displayName: name, role: "scanner" }); bootstrap.Modal.getInstance(document.getElementById('scannerModal')).hide(); Swal.fire("Başarılı", "Güncellendi.", "success"); listScannerUsers(); } catch (e) { Swal.fire("Hata", e.message, "error"); } } else { const email = document.getElementById("scEmail").value, pass = document.getElementById("scPass").value; if(!email || !pass) return Swal.fire("Eksik", "E-Posta ve Şifre zorunludur.", "warning"); let sa = null; try { sa = initializeApp(firebaseConfig, "ScUser"); const saAuth = getAuth(sa); const uc = await createUserWithEmailAndPassword(saAuth, email, pass); await setDoc(doc(db, "users", uc.user.uid), { email, displayName: name, role: "scanner", createdAt: new Date().toISOString() }); await signOut(saAuth); bootstrap.Modal.getInstance(document.getElementById('scannerModal')).hide(); Swal.fire("Başarılı", "Oluşturuldu.", "success"); listScannerUsers(); } catch(e) { Swal.fire("Hata", e.message, "error"); } finally { if(sa) deleteApp(sa); } } };
     window.listScannerUsers = async () => { const t = document.getElementById("scannerListBody"); const q = query(collection(db, "users"), where("role", "==", "scanner")); const s = await getDocs(q); t.innerHTML = s.empty ? "<tr><td colspan='4'>Kayıt yok</td></tr>" : ""; s.forEach(d => { const u = d.data(); t.innerHTML += `<tr><td class="fw-bold">${u.displayName||'-'}</td><td>${u.email}</td><td><span class="badge bg-info text-dark">Görevli</span></td><td><button onclick="openScannerModal('edit', '${d.id}', '${u.displayName}', '${u.email}')" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button> <button onclick="deleteScanner('${d.id}')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button></td></tr>`; }); };
@@ -685,6 +686,44 @@
     window.regenerateAllCodes = async () => { if(confirm("Tümü yenilenecek!")) { const s = await getDocs(collection(db,"veli_kodlari")); s.forEach(d=>deleteDoc(d.ref)); generateMissingCodes(); } };
     window.deleteAllCodes = async () => { if(confirm("Hepsi silinecek!")) { const s = await getDocs(collection(db,"veli_kodlari")); s.forEach(d=>deleteDoc(d.ref)); loadVeliCodes(); } };
     window.deleteCode = async (id) => { await deleteDoc(doc(db,"veli_kodlari",id)); loadVeliCodes(); };
+    
+    // EXCEL YÜKLEME (Tarih Düzeltmeli)
+    window.uploadMenuExcel = async () => {
+        const fi = document.getElementById('menuExcelInput');
+        if(fi.files.length===0) return Swal.fire("Uyarı","Dosya seçiniz","warning");
+        Swal.showLoading();
+        const r = new FileReader();
+        const excelDateToJS = (serial) => { if(typeof serial === 'string' && serial.includes('-')) return serial; if(!isNaN(serial)) { const utc_days  = Math.floor(serial - 25569); const utc_value = utc_days * 86400; const date_info = new Date(utc_value * 1000); return date_info.toISOString().split('T')[0]; } return serial; };
+        r.onload = async function(e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type:'array'});
+                const j = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]); 
+                const batch = writeBatch(db);
+                let count = 0;
+                j.forEach(row => {
+                    const keys = Object.keys(row);
+                    let rawDate = row['Tarih'] || row[keys[0]]; 
+                    let mealStr = row['Yemek'] || row[keys[1]]; 
+                    let dateStr = excelDateToJS(rawDate);
+                    if(dateStr && mealStr) {
+                        const docRef = doc(db, "yemek_menusu", dateStr); 
+                        batch.set(docRef, { tarih: dateStr, icerik: mealStr });
+                        count++;
+                    }
+                });
+                await batch.commit();
+                Swal.fire("Başarılı", `${count} günlük menü yüklendi.`, "success");
+                loadMonthlyMenu();
+            } catch(z) { Swal.fire("Hata", z.message, "error"); }
+        };
+        r.readAsArrayBuffer(fi.files[0]);
+    };
+    
+    window.loadMonthlyMenu = async () => { const tb = document.getElementById("menuListBody"); tb.innerHTML = '<tr><td colspan="3" class="text-center">Yükleniyor...</td></tr>'; const q = query(collection(db, "yemek_menusu"), orderBy("tarih", "desc"), limit(30)); const snap = await getDocs(q); tb.innerHTML = ""; if(snap.empty) { tb.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Menü bulunamadı.</td></tr>'; return; } snap.forEach(d => { const m = d.data(); tb.innerHTML += `<tr><td class="fw-bold">${m.tarih}</td><td>${m.icerik}</td><td><button onclick="deleteMenu('${d.id}')" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button></td></tr>`; }); };
+    window.deleteMenu = async (id) => { if(confirm("Bu menü silinsin mi?")) { await deleteDoc(doc(db, "yemek_menusu", id)); loadMonthlyMenu(); } };
+    window.getDailyMenu = async (elementId) => { const el = document.getElementById(elementId); if(!el) return; const todayStr = getTurkiyeDate(); try { const docSnap = await getDoc(doc(db, "yemek_menusu", todayStr)); if(docSnap.exists()) { el.innerHTML = `<span class="fw-bold"><i class="fas fa-utensils me-2"></i>Afiyet Olsun!</span><br>${docSnap.data().icerik}`; if(elementId === 'dashboardDailyMenu') { } else { el.classList.add("text-primary"); } } else { el.innerHTML = `<span class="opacity-50 small"><i class="fas fa-exclamation-circle me-1"></i> Bugün için menü girişi yapılmamış.</span>`; } } catch(e) { el.innerText = ""; } };
+    
     window.excelYukle = async () => { const fi = document.getElementById('excelDosyasi'); if(fi.files.length===0) return Swal.fire("Uyarı","Dosya seçiniz","warning"); Swal.showLoading(); const r = new FileReader(); r.onload = async function(e) { try { const data = new Uint8Array(e.target.result); const workbook = XLSX.read(data, {type:'array'}); const j = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]); let c=0; for(const ogr of j) { if(ogr.barkod && ogr.ad_soyad) { const b=String(ogr.barkod).trim(); await setDoc(doc(db,"ogrenciler",b),{barkod:b,ad_soyad:ogr.ad_soyad,sinif:ogr.sinif?String(ogr.sinif).trim():"-",numara:ogr.numara?String(ogr.numara).trim():"",foto:ogr.foto||""}); c++; } } Swal.fire("Tamam", `${c} yüklendi.`, "success"); loadStudents(); } catch(z) { Swal.fire("Hata",z.message,"error"); } }; r.readAsArrayBuffer(fi.files[0]); };
     window.showTab = (id, el) => { document.querySelectorAll('.tab-content').forEach(x=>x.classList.add('d-none')); document.getElementById('tab-'+id).classList.remove('d-none'); document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active')); if(el){el.classList.add('active');} document.querySelectorAll('.offcanvas-body .nav-link').forEach(x=>{ x.classList.remove('active'); if(x.getAttribute('onclick').includes(id)) x.classList.add('active'); }); };
     document.addEventListener('DOMContentLoaded', () => { const mobileSidebar = document.getElementById('mobileSidebar'); if (mobileSidebar) { mobileSidebar.addEventListener('hide.bs.offcanvas', () => { document.querySelectorAll('.nav-link').forEach(x => x.classList.remove('active')); const activeTab = document.querySelector('.tab-content:not(.d-none)'); if (activeTab) { const tabId = activeTab.id.replace('tab-', ''); document.querySelector(`.sidebar .nav-link[onclick*="'${tabId}'"]`)?.classList.add('active'); } }); } });
